@@ -60,14 +60,13 @@ const Home = () => {
         </div>
       </header>
 
-      <Toolbar />
-
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
         {/* File Browser */}
         <main className="flex-1 overflow-auto p-4">
+          <Toolbar />
           <FileTable
             files={files}
             setShowPreview={setShowPreview}

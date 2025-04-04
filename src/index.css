@@ -16,3 +16,6 @@ body {
 .file-table tbody tr.selected {
   background-color: #e4eeff !important;
 }
+button {
+  cursor: pointer;
+}

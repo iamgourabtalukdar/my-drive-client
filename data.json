@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Project Proposal.docx",
+    "type": "document",
+    "owner": "me",
+    "modified": "Today, 10:30 AM",
+    "size": "2.4 MB",
+    "starred": false
+  },
+  {
+    "id": 2,
+    "name": "Budget Q3.xlsx",
+    "type": "spreadsheet",
+    "owner": "me",
+    "modified": "Yesterday, 3:45 PM",
+    "size": "1.8 MB",
+    "starred": true
+  },
+  {
+    "id": 3,
+    "name": "Team Photo.jpg",
+    "type": "image",
+    "owner": "me",
+    "modified": "Jul 12, 2023",
+    "size": "4.2 MB",
+    "starred": false
+  },
+  {
+    "id": 4,
+    "name": "Presentation.pdf",
+    "type": "pdf",
+    "owner": "me",
+    "modified": "Jul 10, 2023",
+    "size": "5.7 MB",
+    "starred": false
+  },
+  {
+    "id": 5,
+    "name": "Client Assets",
+    "type": "folder",
+    "owner": "me",
+    "modified": "Jul 5, 2023",
+    "size": "-",
+    "starred": false
+  }
+]

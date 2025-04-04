@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FileFolderContextMenu from "../contexts/FileFolderContextMenu";
 import FileItem from "./FileItem";
+import { motion } from "framer-motion";
 
 const FileTable = ({
   files,
@@ -23,7 +24,12 @@ const FileTable = ({
           setContextMenu={setContextMenu}
         />
       )}
-      <table className="file-table w-full">
+      <motion.table
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="file-table w-full"
+      >
         <thead>
           <tr className="border-b border-gray-200 text-left text-gray-600">
             <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tl">
@@ -57,7 +63,7 @@ const FileTable = ({
             />
           ))}
         </tbody>
-      </table>
+      </motion.table>
     </>
   );
 };

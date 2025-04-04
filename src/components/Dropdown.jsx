@@ -30,7 +30,7 @@ const Dropdown = ({ label, menuItems }) => {
           className="pe-2 ps-3 py-2 border border-gray-300 flex items-center rounded-md"
         >
           <span>{label}</span>
-          <span class="material-icons text-sm ">arrow_drop_down</span>
+          <span className="material-icons text-sm ">arrow_drop_down</span>
         </button>
       </div>
 

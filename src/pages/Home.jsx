@@ -2,15 +2,32 @@ import Sidebar from "../components/Sidebar";
 import Toolbar from "../components/Toolbar";
 import FileTable from "../components/FileTable";
 import PreviewPanel from "../components/PreviewPanel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import files from "../../data.json";
+import { useNavigate } from "react-router";
 
-const Home = () => {
+const Home = ({ serverURL }) => {
+  const navigate = useNavigate();
   // const [files, setFiles] = useState(data);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`${serverURL}/folder`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+      } else {
+        navigate("/signin");
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
     <div className="bg-white  font-sans text-gray-800 h-screen flex flex-col">
       {/* Header */}

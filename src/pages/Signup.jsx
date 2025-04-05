@@ -11,12 +11,13 @@ import {
   FiTwitter,
   FiFacebook,
 } from "react-icons/fi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
-const SignUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignUp = ({ serverURL }) => {
+  const navigate = useNavigate();
+  const [name, setName] = useState("gourab talukdar");
+  const [email, setEmail] = useState("hello@gmail.com");
+  const [password, setPassword] = useState("abcd@123");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -26,8 +27,8 @@ const SignUp = () => {
     if (!name) newErrors.name = "Name is required";
     if (!email) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
-    if (password && password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
+    if (password && password.length < 4)
+      newErrors.password = "Password must be at least 4 characters";
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       newErrors.email = "Invalid email format";
 
@@ -35,14 +36,29 @@ const SignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       setIsLoading(true);
-      setTimeout(() => {
-        console.log("Sign Up Submitted", { name, email, password });
+      const response = await fetch(`${serverURL}/user/signup`, {
+        method: "POST",
+        body: JSON.stringify({ name, email, password }),
+        headers: {
+          "content-type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (response.status === 201 && data.status) {
+        setTimeout(() => {
+          navigate("/signin");
+        }, 2000);
+      } else {
+        setErrors(data.errors);
         setIsLoading(false);
-      }, 1500);
+      }
     }
   };
 
@@ -192,6 +208,7 @@ const SignUp = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
+              className="relative"
             >
               <button
                 type="submit"
@@ -233,6 +250,9 @@ const SignUp = () => {
                   </>
                 )}
               </button>
+              <p className="text-center text-red-500 text-sm absolute left-1/2 transform -translate-x-1/2">
+                {errors.message}
+              </p>
             </motion.div>
           </form>
           {/* Footer with login link */}

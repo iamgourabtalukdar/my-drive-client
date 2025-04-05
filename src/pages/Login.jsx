@@ -10,11 +10,12 @@ import {
   FiTwitter,
   FiFacebook,
 } from "react-icons/fi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = ({ serverURL }) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("hello@gmail.com");
+  const [password, setPassword] = useState("abcd@123");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -23,8 +24,8 @@ const Login = () => {
     const newErrors = {};
     if (!email) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
-    if (password && password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
+    if (password && password.length < 4)
+      newErrors.password = "Password must be at least 4 characters";
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       newErrors.email = "Invalid email format";
 
@@ -32,16 +33,29 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       setIsLoading(true);
       // Simulate API call
-      setTimeout(() => {
-        console.log("Login submitted", { email, password });
+
+      const response = await fetch(`${serverURL}/user/signin`, {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "content-type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 200 && data.status) {
+        navigate("/drive");
+      } else {
+        setErrors(data.errors);
         setIsLoading(false);
-        // Redirect or show success message here
-      }, 1500);
+      }
     }
   };
 
@@ -75,7 +89,7 @@ const Login = () => {
           </div>
 
           {/* Form section */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6  space-y-6">
             {/* Email field with animation */}
             <motion.div
               initial={{ opacity: 0, x: -10 }}
@@ -209,6 +223,7 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
+              className="relative"
             >
               <button
                 type="submit"
@@ -250,6 +265,9 @@ const Login = () => {
                   </>
                 )}
               </button>
+              <p className="text-center text-red-500 text-sm absolute left-1/2 transform -translate-x-1/2">
+                {errors.message}
+              </p>
             </motion.div>
           </form>
 
@@ -261,7 +279,7 @@ const Login = () => {
             className="px-6 py-4 bg-gray-50 text-center"
           >
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Don't have an account?
               <Link
                 to="/signup"
                 className="font-medium text-indigo-600 hover:text-indigo-500"

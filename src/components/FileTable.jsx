@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FileFolderContextMenu from "../contexts/FileFolderContextMenu";
+import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
 

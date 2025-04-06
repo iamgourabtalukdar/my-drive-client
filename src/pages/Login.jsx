@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 
-const Login = ({ serverURL }) => {
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("hello@gmail.com");
   const [password, setPassword] = useState("abcd@123");
@@ -39,14 +39,17 @@ const Login = ({ serverURL }) => {
       setIsLoading(true);
       // Simulate API call
 
-      const response = await fetch(`${serverURL}/user/signin`, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "content-type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/user/signin`,
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "content-type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
 

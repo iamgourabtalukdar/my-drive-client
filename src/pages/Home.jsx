@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import files from "../../data.json";
 import { useNavigate } from "react-router";
 
-const Home = ({ serverURL }) => {
+const Home = () => {
   const navigate = useNavigate();
   // const [files, setFiles] = useState(data);
 
@@ -15,10 +15,13 @@ const Home = ({ serverURL }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${serverURL}/folder`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/folder`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       if (response.status === 200) {
       } else {

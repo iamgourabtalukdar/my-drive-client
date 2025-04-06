@@ -13,7 +13,7 @@ import {
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 
-const SignUp = ({ serverURL }) => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("gourab talukdar");
   const [email, setEmail] = useState("hello@gmail.com");
@@ -40,14 +40,17 @@ const SignUp = ({ serverURL }) => {
     e.preventDefault();
     if (validateForm()) {
       setIsLoading(true);
-      const response = await fetch(`${serverURL}/user/signup`, {
-        method: "POST",
-        body: JSON.stringify({ name, email, password }),
-        headers: {
-          "content-type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/user/signup`,
+        {
+          method: "POST",
+          body: JSON.stringify({ name, email, password }),
+          headers: {
+            "content-type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       const data = await response.json();
       console.log(data);

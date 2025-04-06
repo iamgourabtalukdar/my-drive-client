@@ -4,33 +4,40 @@ import FileTable from "../components/FileTable";
 import PreviewPanel from "../components/PreviewPanel";
 import { useEffect, useState } from "react";
 import files from "../../data.json";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const Home = () => {
+  const params = useParams();
+  const folderId = params.folderId || "";
   const navigate = useNavigate();
-  // const [files, setFiles] = useState(data);
+  // const [files, setFiles] = useState([]);
+  const [folders, setFolders] = useState([]);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/folder`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      if (response.status === 200) {
-      } else {
-        navigate("/signin");
+  // fetch folder data
+  async function fetchFolderData() {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/folder/${folderId}`,
+      {
+        method: "GET",
+        credentials: "include",
       }
-    }
+    );
 
-    fetchData();
-  }, []);
+    const data = await response.json();
+    if (response.status === 200) {
+      setFolders(data.folders);
+    } else {
+      navigate("/signin");
+    }
+  }
+  // only call when folderId is changed
+  useEffect(() => {
+    fetchFolderData();
+  }, [folderId]);
+
   return (
     <div className="bg-white  font-sans text-gray-800 h-screen flex flex-col">
       {/* Header */}
@@ -82,13 +89,14 @@ const Home = () => {
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+        <Sidebar fetchFolderData={fetchFolderData} />
 
         {/* File Browser */}
         <main className="flex-1 overflow-auto p-4">
           <Toolbar />
           <FileTable
             files={files}
+            folders={folders}
             setShowPreview={setShowPreview}
             selectedFile={selectedFile}
             setSelectedFile={setSelectedFile}

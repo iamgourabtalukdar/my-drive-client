@@ -2,9 +2,11 @@ import { useState } from "react";
 import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
+import FolderItem from "./FolderItem";
 
 const FileTable = ({
   files,
+  folders,
   selectedFile,
   setSelectedFile,
   setShowPreview,
@@ -52,7 +54,17 @@ const FileTable = ({
           </tr>
         </thead>
         <tbody>
-          {files.map((file) => (
+          {folders.map((folder) => (
+            <FolderItem
+              key={folder.id}
+              folder={folder}
+              setSelectedFile={setSelectedFile}
+              setShowPreview={setShowPreview}
+              setContextMenu={setContextMenu}
+              fileSelectClass={selectedFile?.id === folder.id ? "selected" : ""}
+            />
+          ))}
+          {/* {files.map((file) => (
             <FileItem
               key={file.id}
               file={file}
@@ -61,7 +73,7 @@ const FileTable = ({
               setContextMenu={setContextMenu}
               fileSelectClass={selectedFile?.id === file.id ? "selected" : ""}
             />
-          ))}
+          ))} */}
         </tbody>
       </motion.table>
     </>

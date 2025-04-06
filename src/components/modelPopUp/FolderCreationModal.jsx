@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
 
-const FolderCreationModal = ({ isOpen, onCloseHandler }) => {
+const FolderCreationModal = ({ isOpen, onCloseHandler, fetchFolderData }) => {
   const [folderName, setFolderName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,6 +40,7 @@ const FolderCreationModal = ({ isOpen, onCloseHandler }) => {
     if (response.status === 201) {
       setFolderName("");
       onCloseHandler();
+      fetchFolderData();
     } else {
       setError(data.errors.message);
     }

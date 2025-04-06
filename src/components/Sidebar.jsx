@@ -3,7 +3,7 @@ import FolderCreationModal from "./modelPopUp/FolderCreationModal";
 import { useState } from "react";
 import { useParams } from "react-router";
 
-const Sidebar = () => {
+const Sidebar = ({ fetchFolderData }) => {
   const [isShowNewFolderModel, setIsShowNewFolderModel] = useState(false);
 
   return (
@@ -69,6 +69,7 @@ const Sidebar = () => {
           <FolderCreationModal
             isOpen={isShowNewFolderModel}
             onCloseHandler={() => setIsShowNewFolderModel(false)}
+            fetchFolderData={fetchFolderData}
           />,
           document.getElementById("portal")
         )}

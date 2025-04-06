@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom";
 import FolderCreationModal from "./modelPopUp/FolderCreationModal";
 import { useState } from "react";
+import { useParams } from "react-router";
 
 const Sidebar = () => {
   const [isShowNewFolderModel, setIsShowNewFolderModel] = useState(false);

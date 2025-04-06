@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useParams } from "react-router";
 
 const FolderCreationModal = ({ isOpen, onCloseHandler }) => {
   const [folderName, setFolderName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const params = useParams();
+  const folderId = params.folderId || "";
 
-  const handleSubmit = async (e) => {
+  const createNewFolderHandler = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -20,16 +23,27 @@ const FolderCreationModal = ({ isOpen, onCloseHandler }) => {
       return;
     }
 
-    try {
-      setIsLoading(true);
-      // await onSubmitHandler(folderName.trim());
+    setIsLoading(true);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/folder`,
+      {
+        method: "POST",
+        body: JSON.stringify({ name: folderName.trim() }),
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+          "Parent-Folder-Id": folderId,
+        },
+      }
+    );
+    const data = await response.json();
+    if (response.status === 201) {
       setFolderName("");
       onCloseHandler();
-    } catch (err) {
-      setError("Failed to create folder. Please try again.");
-    } finally {
-      setIsLoading(false);
+    } else {
+      setError(data.errors.message);
     }
+    setIsLoading(false);
   };
 
   if (!isOpen) return null;
@@ -47,7 +61,7 @@ const FolderCreationModal = ({ isOpen, onCloseHandler }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6">
+        <form onSubmit={createNewFolderHandler} className="p-6">
           <div className="mb-4 relative">
             <label
               htmlFor="folderName"

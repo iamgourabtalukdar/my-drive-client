@@ -11,7 +11,7 @@ const FolderItem = ({
 }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/drive/${folder.id}`);
+    navigate(`/drive/folder/${folder.id}`);
     // setSelectedFile(folder);
     // setShowPreview(true);
   };

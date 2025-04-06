@@ -54,7 +54,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.status === 200 && data.status) {
-        navigate("/drive");
+        navigate("/drive/folder");
       } else {
         setErrors(data.errors);
         setIsLoading(false);

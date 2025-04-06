@@ -7,7 +7,11 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="drive/:folderId?" element={<Home />} />
+        <Route path="drive">
+          <Route index element={<Home />} />
+          <Route path="folder/:folderId?" element={<Home />} />
+        </Route>
+        {/* <Route path="drive/:folderId?" element={<Home />} /> */}
         <Route index element={<Login />} />
         <Route path="signin" element={<Login />} />
         <Route path="signup" element={<SignUp />} />

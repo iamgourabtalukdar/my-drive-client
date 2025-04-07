@@ -1,9 +1,8 @@
 import { createPortal } from "react-dom";
 import FolderCreationModal from "./modelPopUp/FolderCreationModal";
 import { useState } from "react";
-import { useParams } from "react-router";
 
-const Sidebar = ({ fetchFolderData }) => {
+const Sidebar = ({ fetchFolderData, onUploadClick }) => {
   const [isShowNewFolderModel, setIsShowNewFolderModel] = useState(false);
 
   return (
@@ -16,7 +15,10 @@ const Sidebar = ({ fetchFolderData }) => {
             </span>
             <span>New</span>
           </button>
-          <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
+          <button
+            className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+            onClick={onUploadClick}
+          >
             <span className="material-icons text-blue-500">upload</span>
             <span>Upload File</span>
           </button>

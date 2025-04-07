@@ -5,41 +5,86 @@ import PreviewPanel from "../components/PreviewPanel";
 import { useEffect, useState } from "react";
 import files from "../../data.json";
 import { useNavigate, useParams } from "react-router";
+import FileUpload from "../components/FileUpload";
 
 const Home = () => {
   const params = useParams();
   const folderId = params.folderId || "";
   const navigate = useNavigate();
-  // const [files, setFiles] = useState([]);
   const [folders, setFolders] = useState([]);
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [showFileUpload, setShowFileUpload] = useState(false);
+
+  // Handle file upload
+  const handleFilesUpload = async (files) => {
+    try {
+      const formData = new FormData();
+      files.forEach((file) => {
+        formData.append("files", file.file);
+      });
+
+      if (folderId) {
+        formData.append("folderId", folderId);
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/files/upload`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+          headers: {
+            "File-Count": files.length,
+            "Parent-Folder-Id": folderId,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        console.log("Files uploaded successfully:", data);
+        // Refresh the folder data to show new files
+        fetchFolderData();
+      } else {
+        console.error("Upload failed:", data.message);
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    } finally {
+      setShowFileUpload(false);
+    }
+  };
 
   // fetch folder data
   async function fetchFolderData() {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/folder/${folderId}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/folder/${folderId}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
 
-    const data = await response.json();
-    if (response.status === 200) {
-      setFolders(data.folders);
-    } else {
-      navigate("/signin");
+      const data = await response.json();
+      if (response.status === 200) {
+        setFolders(data.folders);
+      } else {
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.error("Error fetching folder data:", error);
     }
   }
-  // only call when folderId is changed
+
   useEffect(() => {
     fetchFolderData();
   }, [folderId]);
 
   return (
-    <div className="bg-white  font-sans text-gray-800 h-screen flex flex-col">
+    <div className="bg-white font-sans text-gray-800 h-screen flex flex-col">
       {/* Header */}
       <header className="border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
@@ -89,11 +134,15 @@ const Home = () => {
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar fetchFolderData={fetchFolderData} />
+        <Sidebar
+          fetchFolderData={fetchFolderData}
+          onUploadClick={() => setShowFileUpload(true)}
+        />
 
         {/* File Browser */}
         <main className="flex-1 overflow-auto p-4">
-          <Toolbar />
+          <Toolbar onUploadClick={() => setShowFileUpload(true)} />
+
           <FileTable
             files={files}
             folders={folders}
@@ -109,8 +158,17 @@ const Home = () => {
           showPreview={showPreview}
           setShowPreview={setShowPreview}
         />
+
+        {/* File Upload Modal */}
+        {showFileUpload && (
+          <FileUpload
+            onFilesUpload={handleFilesUpload}
+            onClose={() => setShowFileUpload(false)}
+          />
+        )}
       </div>
     </div>
   );
 };
+
 export default Home;

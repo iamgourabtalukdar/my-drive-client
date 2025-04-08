@@ -28,6 +28,14 @@ export const getFileIcon = (extension) => {
 
     // pdf
     ".pdf": "pdf",
+
+    // videos
+    ".mp4": "video",
+    ".mkv": "video",
+    ".mov": "video",
+    ".avi": "video",
+    ".webm": "video",
+    ".flv": "video",
   };
 
   const type = extensionToType[ext] || "default";
@@ -37,6 +45,7 @@ export const getFileIcon = (extension) => {
     spreadsheet: "grid_on",
     image: "image",
     pdf: "picture_as_pdf",
+    video: "movie",
     folder: "folder",
     default: "insert_drive_file",
   };

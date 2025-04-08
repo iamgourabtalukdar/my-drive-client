@@ -64,7 +64,7 @@ const FileTable = ({
               fileSelectClass={selectedFile?.id === folder.id ? "selected" : ""}
             />
           ))}
-          {/* {files.map((file) => (
+          {files.map((file) => (
             <FileItem
               key={file.id}
               file={file}
@@ -73,7 +73,7 @@ const FileTable = ({
               setContextMenu={setContextMenu}
               fileSelectClass={selectedFile?.id === file.id ? "selected" : ""}
             />
-          ))} */}
+          ))}
         </tbody>
       </motion.table>
     </>

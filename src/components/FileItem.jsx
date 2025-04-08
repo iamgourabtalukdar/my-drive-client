@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/formatDate";
+import { formatFileSize } from "../utils/formatFileSize";
 import { getFileIcon } from "../utils/getFileIcon";
 
 const FileItem = ({
@@ -31,9 +33,12 @@ const FileItem = ({
       <td className="px-4 py-3">
         <div className="flex items-center">
           <span className="material-icons mr-2 text-gray-500">
-            {getFileIcon(file.type)}
+            {getFileIcon(file.extension)}
           </span>
-          <span>{file.name}</span>
+          <span>
+            {file.name}
+            {file.extension}
+          </span>
           {file.starred && (
             <span className="material-icons ml-2 text-yellow-400 text-sm">
               star
@@ -42,8 +47,10 @@ const FileItem = ({
         </div>
       </td>
       <td className="px-4 py-3 text-gray-600">{file.owner}</td>
-      <td className="px-4 py-3 text-gray-600">{file.modified}</td>
-      <td className="px-4 py-3 text-gray-600">{file.size}</td>
+      <td className="px-4 py-3 text-gray-600">
+        {formatDate(file.lastModified)}
+      </td>
+      <td className="px-4 py-3 text-gray-600">{formatFileSize(file.size)}</td>
     </tr>
   );
 };

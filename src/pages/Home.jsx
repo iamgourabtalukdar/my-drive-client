@@ -3,7 +3,6 @@ import Toolbar from "../components/Toolbar";
 import FileTable from "../components/FileTable";
 import PreviewPanel from "../components/PreviewPanel";
 import { useEffect, useState } from "react";
-import files from "../../data.json";
 import { useNavigate, useParams } from "react-router";
 import FileUpload from "../components/FileUpload";
 
@@ -12,6 +11,7 @@ const Home = () => {
   const folderId = params.folderId || "";
   const navigate = useNavigate();
   const [folders, setFolders] = useState([]);
+  const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
@@ -71,11 +71,13 @@ const Home = () => {
       const data = await response.json();
       if (response.status === 200) {
         setFolders(data.folders);
+        setFiles(data.files);
       } else {
         navigate("/signin");
       }
     } catch (error) {
-      console.error("Error fetching folder data:", error);
+      console.log(error);
+      navigate("/signin");
     }
   }
 

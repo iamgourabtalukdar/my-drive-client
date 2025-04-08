@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router";
 
 const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
   useEffect(() => {
@@ -25,19 +26,51 @@ const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
         top: `${contextMenu.y}px`,
         zIndex: 1000,
       }}
-      onClick={(e) => e.stopPropagation()}
+      // onClick={(e) => e.stopPropagation()}
     >
+      {contextMenu.type === "file" ? (
+        <>
+          <Link
+            to={`${import.meta.env.VITE_API_BASE_URL}/files/${
+              contextMenu.file.id
+            }`}
+            target="_blank"
+            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+          >
+            <span className="material-icons text-gray-600 mr-2 text-sm">
+              open_in_new
+            </span>
+            <span>Open</span>
+          </Link>
+          <Link
+            to={`${import.meta.env.VITE_API_BASE_URL}/files/${
+              contextMenu.file.id
+            }?action=download`}
+            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+          >
+            <span className="material-icons text-gray-600 mr-2 text-sm">
+              download
+            </span>
+            <span>Download</span>
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link
+            to={`/drive/folder/${contextMenu.folder.id}`}
+            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+          >
+            <span className="material-icons text-gray-600 mr-2 text-sm">
+              folder_open
+            </span>
+            <span>Open</span>
+          </Link>
+        </>
+      )}
+
       <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-        <span className="material-icons text-gray-600 mr-2 text-sm">
-          open_in_new
-        </span>
-        <span>Open</span>
-      </div>
-      <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-        <span className="material-icons text-gray-600 mr-2 text-sm">
-          download
-        </span>
-        <span>Download</span>
+        <span className="material-icons text-gray-600 mr-2 text-sm">edit</span>
+        <span>Rename</span>
       </div>
       <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
         <span className="material-icons text-gray-600 mr-2 text-sm">share</span>

@@ -1,6 +1,8 @@
 export const getFileIcon = (extension) => {
   // if (item.type === "folder") return "folder";
 
+  if (!extension) return "insert_drive_file";
+
   const ext = extension.toLowerCase();
 
   const extensionToType = {

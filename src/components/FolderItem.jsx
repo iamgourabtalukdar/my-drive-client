@@ -22,7 +22,8 @@ const FolderItem = ({
       visible: true,
       x: e.clientX,
       y: e.clientY,
-      file: folder,
+      type: "folder",
+      folder: folder,
     });
   };
 

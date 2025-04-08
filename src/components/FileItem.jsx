@@ -9,10 +9,11 @@ const FileItem = ({
   setContextMenu,
   fileSelectClass,
 }) => {
-  const handleClick = () => {
-    setSelectedFile(file);
-    setShowPreview(true);
-  };
+  // const handleClick = () => {
+
+  //   setSelectedFile(file);
+  //   setShowPreview(true);
+  // };
 
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -20,6 +21,7 @@ const FileItem = ({
       visible: true,
       x: e.clientX,
       y: e.clientY,
+      type: "file",
       file: file,
     });
   };
@@ -27,7 +29,12 @@ const FileItem = ({
   return (
     <tr
       className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass}`}
-      onClick={handleClick}
+      onDoubleClick={() =>
+        window.open(
+          `${import.meta.env.VITE_API_BASE_URL}/files/${file.id}`,
+          "_blank"
+        )
+      }
       onContextMenu={handleContextMenu}
     >
       <td className="px-4 py-3">

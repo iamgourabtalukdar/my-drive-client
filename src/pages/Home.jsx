@@ -5,16 +5,18 @@ import PreviewPanel from "../components/PreviewPanel";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import FileUpload from "../components/FileUpload";
+import FilePreview from "../components/FilePreview";
 
 const Home = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const folderId = params.folderId || "";
-  const navigate = useNavigate();
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
+  // const [showFilePreview, setShowFilePreview] = useState(true);
 
   // Handle file upload
   const handleFilesUpload = async (files) => {
@@ -154,12 +156,14 @@ const Home = () => {
           />
         </main>
 
-        <PreviewPanel
+        {/* <PreviewPanel
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
           showPreview={showPreview}
           setShowPreview={setShowPreview}
-        />
+        /> */}
+        {/* File Preview Modal */}
+        {/* {showFilePreview && <FilePreview />} */}
 
         {/* File Upload Modal */}
         {showFileUpload && (

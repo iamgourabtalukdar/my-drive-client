@@ -1,10 +1,4 @@
-import { createPortal } from "react-dom";
-import FolderCreationModal from "./modelPopUp/FolderCreationModal";
-import { useState } from "react";
-
-const Sidebar = ({ fetchFolderData, onUploadClick }) => {
-  const [isShowNewFolderModel, setIsShowNewFolderModel] = useState(false);
-
+const Sidebar = ({ onUploadClick, setNewFolderModel }) => {
   return (
     <>
       <aside className="w-64 border-r border-gray-200 p-4 hidden md:block">
@@ -24,7 +18,13 @@ const Sidebar = ({ fetchFolderData, onUploadClick }) => {
           </button>
           <button
             className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
-            onClick={() => setIsShowNewFolderModel(true)}
+            onClick={() =>
+              setNewFolderModel({
+                isVisible: true,
+                action: "create new",
+                type: "folder",
+              })
+            }
           >
             <span className="material-icons text-blue-500">
               create_new_folder
@@ -65,16 +65,6 @@ const Sidebar = ({ fetchFolderData, onUploadClick }) => {
           <div className="text-sm text-gray-600 mt-1">7.5 GB of 15 GB used</div>
         </div>
       </aside>
-      {/* Folder creation Model */}
-      {isShowNewFolderModel &&
-        createPortal(
-          <FolderCreationModal
-            isOpen={isShowNewFolderModel}
-            onCloseHandler={() => setIsShowNewFolderModel(false)}
-            fetchFolderData={fetchFolderData}
-          />,
-          document.getElementById("portal")
-        )}
     </>
   );
 };

@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useNavigate, useParams } from "react-router";
 import Sidebar from "../components/Sidebar";
 import Toolbar from "../components/Toolbar";
 import FileTable from "../components/FileTable";
 import PreviewPanel from "../components/PreviewPanel";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
 import FileUpload from "../components/FileUpload";
 import FilePreview from "../components/FilePreview";
+import FileFolderCreateRenameModel from "../components/modelPopUp/FileFolderCreateRenameModel";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,6 +18,13 @@ const Home = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
+  const [newFolderModel, setNewFolderModel] = useState(false);
+  const [contextMenu, setContextMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    file: null,
+  });
   // const [showFilePreview, setShowFilePreview] = useState(true);
 
   // Handle file upload
@@ -31,7 +40,7 @@ const Home = () => {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/files/upload`,
+        `${import.meta.env.VITE_API_BASE_URL}/file/upload`,
         {
           method: "POST",
           credentials: "include",
@@ -45,8 +54,7 @@ const Home = () => {
 
       const data = await response.json();
 
-      if (response.status === 200) {
-        console.log("Files uploaded successfully:", data);
+      if (data.status) {
         // Refresh the folder data to show new files
         fetchFolderData();
       } else {
@@ -71,7 +79,7 @@ const Home = () => {
       );
 
       const data = await response.json();
-      if (response.status === 200) {
+      if (data.status) {
         setFolders(data.folders);
         setFiles(data.files);
       } else {
@@ -88,92 +96,109 @@ const Home = () => {
   }, [folderId]);
 
   return (
-    <div className="bg-white font-sans text-gray-800 h-screen flex flex-col">
-      {/* Header */}
-      <header className="border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="text-blue-500 font-bold text-xl mr-4">Drive</div>
-            <nav className="flex space-x-6">
-              <a
-                href="#"
-                className="text-blue-500 font-medium border-b-2 border-blue-500 pb-1"
-              >
-                My Drive
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500">
-                Shared with me
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500">
-                Recent
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500">
-                Starred
-              </a>
-            </nav>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search in Drive"
-                className="bg-gray-100 rounded-md py-2 px-4 pl-10 w-64 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              />
-              <span className="material-icons absolute left-3 top-2 text-gray-500">
-                search
-              </span>
+    <>
+      <div className="bg-white font-sans text-gray-800 h-screen flex flex-col">
+        {/* Header */}
+        <header className="border-b border-gray-200 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="text-blue-500 font-bold text-xl mr-4">Drive</div>
+              <nav className="flex space-x-6">
+                <a
+                  href="#"
+                  className="text-blue-500 font-medium border-b-2 border-blue-500 pb-1"
+                >
+                  My Drive
+                </a>
+                <a href="#" className="text-gray-600 hover:text-blue-500">
+                  Shared with me
+                </a>
+                <a href="#" className="text-gray-600 hover:text-blue-500">
+                  Recent
+                </a>
+                <a href="#" className="text-gray-600 hover:text-blue-500">
+                  Starred
+                </a>
+              </nav>
             </div>
-            <button className="p-2 rounded-full hover:bg-gray-100">
-              <span className="material-icons text-gray-600">settings</span>
-            </button>
-            <button className="p-2 rounded-full hover:bg-gray-100">
-              <span className="material-icons text-gray-600">apps</span>
-            </button>
-            <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
-              U
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search in Drive"
+                  className="bg-gray-100 rounded-md py-2 px-4 pl-10 w-64 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                />
+                <span className="material-icons absolute left-3 top-2 text-gray-500">
+                  search
+                </span>
+              </div>
+              <button className="p-2 rounded-full hover:bg-gray-100">
+                <span className="material-icons text-gray-600">settings</span>
+              </button>
+              <button className="p-2 rounded-full hover:bg-gray-100">
+                <span className="material-icons text-gray-600">apps</span>
+              </button>
+              <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                U
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar
-          fetchFolderData={fetchFolderData}
-          onUploadClick={() => setShowFileUpload(true)}
-        />
-
-        {/* File Browser */}
-        <main className="flex-1 overflow-auto p-4">
-          <Toolbar onUploadClick={() => setShowFileUpload(true)} />
-
-          <FileTable
-            files={files}
-            folders={folders}
-            setShowPreview={setShowPreview}
-            selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
+        {/* Main Content */}
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar
+            onUploadClick={() => setShowFileUpload(true)}
+            setNewFolderModel={setNewFolderModel}
           />
-        </main>
 
-        {/* <PreviewPanel
+          {/* File Browser */}
+          <main className="flex-1 overflow-auto p-4">
+            <Toolbar onUploadClick={() => setShowFileUpload(true)} />
+
+            <FileTable
+              files={files}
+              folders={folders}
+              setShowPreview={setShowPreview}
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+              setNewFolderModel={setNewFolderModel}
+              contextMenu={contextMenu}
+              setContextMenu={setContextMenu}
+            />
+          </main>
+
+          {/* <PreviewPanel
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
           showPreview={showPreview}
           setShowPreview={setShowPreview}
         /> */}
-        {/* File Preview Modal */}
-        {/* {showFilePreview && <FilePreview />} */}
+          {/* File Preview Modal */}
+          {/* {showFilePreview && <FilePreview />} */}
 
-        {/* File Upload Modal */}
-        {showFileUpload && (
-          <FileUpload
-            onFilesUpload={handleFilesUpload}
-            onClose={() => setShowFileUpload(false)}
-          />
-        )}
+          {/* File Upload Modal */}
+          {showFileUpload && (
+            <FileUpload
+              onFilesUpload={handleFilesUpload}
+              onClose={() => setShowFileUpload(false)}
+            />
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* Folder creation Model */}
+      {newFolderModel.isVisible &&
+        createPortal(
+          <FileFolderCreateRenameModel
+            newFolderModel={newFolderModel}
+            isOpen={newFolderModel}
+            onCloseHandler={() => setNewFolderModel({ isVisible: false })}
+            fetchFolderData={fetchFolderData}
+          />,
+          document.getElementById("portal")
+        )}
+    </>
   );
 };
 

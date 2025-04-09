@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
 
-const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
+const FileFolderContextMenu = ({
+  contextMenu,
+  setContextMenu,
+  setNewFolderModel,
+}) => {
   useEffect(() => {
     const handleClickOutside = () => {
       if (contextMenu.visible) {
@@ -32,7 +36,7 @@ const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
         <>
           <Link
             to={`${import.meta.env.VITE_API_BASE_URL}/files/${
-              contextMenu.file.id
+              contextMenu.item.id
             }`}
             target="_blank"
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
@@ -44,7 +48,7 @@ const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
           </Link>
           <Link
             to={`${import.meta.env.VITE_API_BASE_URL}/files/${
-              contextMenu.file.id
+              contextMenu.item.id
             }?action=download`}
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
           >
@@ -57,7 +61,7 @@ const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
       ) : (
         <>
           <Link
-            to={`/drive/folder/${contextMenu.folder.id}`}
+            to={`/drive/folder/${contextMenu.item.id}`}
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
           >
             <span className="material-icons text-gray-600 mr-2 text-sm">
@@ -68,10 +72,20 @@ const FileFolderContextMenu = ({ contextMenu, setContextMenu }) => {
         </>
       )}
 
-      <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
+      <button
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+        onClick={() =>
+          setNewFolderModel({
+            isVisible: true,
+            action: "rename",
+            type: contextMenu.type,
+            item: contextMenu.item,
+          })
+        }
+      >
         <span className="material-icons text-gray-600 mr-2 text-sm">edit</span>
         <span>Rename</span>
-      </div>
+      </button>
       <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
         <span className="material-icons text-gray-600 mr-2 text-sm">share</span>
         <span>Share</span>

@@ -23,7 +23,7 @@ const FolderItem = ({
       x: e.clientX,
       y: e.clientY,
       type: "folder",
-      folder: folder,
+      item: folder,
     });
   };
 

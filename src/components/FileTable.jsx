@@ -1,4 +1,3 @@
-import { useState } from "react";
 import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
@@ -10,20 +9,17 @@ const FileTable = ({
   selectedFile,
   setSelectedFile,
   setShowPreview,
+  setNewFolderModel,
+  contextMenu,
+  setContextMenu,
 }) => {
-  const [contextMenu, setContextMenu] = useState({
-    visible: false,
-    x: 0,
-    y: 0,
-    file: null,
-  });
-
   return (
     <>
       {contextMenu.visible && (
         <FileFolderContextMenu
           contextMenu={contextMenu}
           setContextMenu={setContextMenu}
+          setNewFolderModel={setNewFolderModel}
         />
       )}
       <motion.table
@@ -49,7 +45,7 @@ const FileTable = ({
               Last modified
             </th>
             <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tr">
-              File size
+              Size
             </th>
           </tr>
         </thead>

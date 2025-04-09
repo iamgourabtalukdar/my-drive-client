@@ -22,7 +22,7 @@ const FileItem = ({
       x: e.clientX,
       y: e.clientY,
       type: "file",
-      file: file,
+      item: file,
     });
   };
 

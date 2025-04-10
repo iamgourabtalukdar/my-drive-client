@@ -67,6 +67,28 @@ const Home = () => {
     }
   };
 
+  async function handleMoveFileToTrash(fileId) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/file/${fileId}/trash`,
+        {
+          method: "PATCH",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+      if (data.status) {
+        fetchFolderData();
+      } else {
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.log(error);
+      navigate("/signin");
+    }
+  }
+
   // fetch folder data
   async function fetchFolderData() {
     try {
@@ -83,11 +105,11 @@ const Home = () => {
         setFolders(data.folders);
         setFiles(data.files);
       } else {
-        navigate("/signin");
+        // navigate("/signin");
       }
     } catch (error) {
       console.log(error);
-      navigate("/signin");
+      // navigate("/signin");
     }
   }
 
@@ -165,6 +187,7 @@ const Home = () => {
               setNewFolderModel={setNewFolderModel}
               contextMenu={contextMenu}
               setContextMenu={setContextMenu}
+              handleMoveFileToTrash={handleMoveFileToTrash}
             />
           </main>
 

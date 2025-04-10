@@ -31,7 +31,7 @@ const FileItem = ({
       className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass}`}
       onDoubleClick={() =>
         window.open(
-          `${import.meta.env.VITE_API_BASE_URL}/files/${file.id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,
           "_blank"
         )
       }

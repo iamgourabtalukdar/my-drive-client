@@ -12,6 +12,7 @@ const FileTable = ({
   setNewFolderModel,
   contextMenu,
   setContextMenu,
+  handleMoveFileToTrash,
 }) => {
   return (
     <>
@@ -20,6 +21,7 @@ const FileTable = ({
           contextMenu={contextMenu}
           setContextMenu={setContextMenu}
           setNewFolderModel={setNewFolderModel}
+          handleMoveFileToTrash={handleMoveFileToTrash}
         />
       )}
       <motion.table

@@ -5,6 +5,7 @@ const FileFolderContextMenu = ({
   contextMenu,
   setContextMenu,
   setNewFolderModel,
+  handleMoveFileToTrash,
 }) => {
   useEffect(() => {
     const handleClickOutside = () => {
@@ -35,7 +36,7 @@ const FileFolderContextMenu = ({
       {contextMenu.type === "file" ? (
         <>
           <Link
-            to={`${import.meta.env.VITE_API_BASE_URL}/files/${
+            to={`${import.meta.env.VITE_API_BASE_URL}/file/${
               contextMenu.item.id
             }`}
             target="_blank"
@@ -47,7 +48,7 @@ const FileFolderContextMenu = ({
             <span>Open</span>
           </Link>
           <Link
-            to={`${import.meta.env.VITE_API_BASE_URL}/files/${
+            to={`${import.meta.env.VITE_API_BASE_URL}/file/${
               contextMenu.item.id
             }?action=download`}
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
@@ -91,12 +92,15 @@ const FileFolderContextMenu = ({
         <span>Share</span>
       </div>
       <div className="border-t border-gray-200 my-1"></div>
-      <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
+      <button
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+        onClick={() => handleMoveFileToTrash(contextMenu.item.id)}
+      >
         <span className="material-icons text-gray-600 mr-2 text-sm">
           delete
         </span>
         <span>Remove</span>
-      </div>
+      </button>
       <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
         <span className="material-icons text-gray-600 mr-2 text-sm">info</span>
         <span>Details</span>

@@ -5,7 +5,7 @@ const FileFolderContextMenu = ({
   contextMenu,
   setContextMenu,
   setNewFolderModel,
-  handleMoveFileToTrash,
+  handleMoveToTrash,
 }) => {
   useEffect(() => {
     const handleClickOutside = () => {
@@ -94,7 +94,7 @@ const FileFolderContextMenu = ({
       <div className="border-t border-gray-200 my-1"></div>
       <button
         className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
-        onClick={() => handleMoveFileToTrash(contextMenu.item.id)}
+        onClick={() => handleMoveToTrash(contextMenu.type, contextMenu.item.id)}
       >
         <span className="material-icons text-gray-600 mr-2 text-sm">
           delete

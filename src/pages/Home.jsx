@@ -67,10 +67,10 @@ const Home = () => {
     }
   };
 
-  async function handleMoveFileToTrash(fileId) {
+  async function handleMoveToTrash(type, id) {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/file/${fileId}/trash`,
+        `${import.meta.env.VITE_API_BASE_URL}/${type}/${id}/trash`,
         {
           method: "PATCH",
           credentials: "include",
@@ -187,7 +187,7 @@ const Home = () => {
               setNewFolderModel={setNewFolderModel}
               contextMenu={contextMenu}
               setContextMenu={setContextMenu}
-              handleMoveFileToTrash={handleMoveFileToTrash}
+              handleMoveToTrash={handleMoveToTrash}
             />
           </main>
 

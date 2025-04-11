@@ -1,4 +1,6 @@
-const Sidebar = ({ onUploadClick, setNewFolderModel }) => {
+import { Link } from "react-router";
+
+const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
   return (
     <>
       <aside className="w-64 border-r border-gray-200 p-4 hidden md:block">
@@ -19,7 +21,7 @@ const Sidebar = ({ onUploadClick, setNewFolderModel }) => {
           <button
             className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
             onClick={() =>
-              setNewFolderModel({
+              setFileFolderModel({
                 isVisible: true,
                 action: "create new",
                 type: "folder",
@@ -33,10 +35,13 @@ const Sidebar = ({ onUploadClick, setNewFolderModel }) => {
           </button>
         </div>
         <div className="mt-8 space-y-1">
-          <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
+          <Link
+            to="/drive/folder"
+            className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          >
             <span className="material-icons text-gray-600">storage</span>
             <span>My Drive</span>
-          </button>
+          </Link>
           <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
             <span className="material-icons text-gray-600">people</span>
             <span>Shared with me</span>
@@ -49,10 +54,13 @@ const Sidebar = ({ onUploadClick, setNewFolderModel }) => {
             <span className="material-icons text-gray-600">star</span>
             <span>Starred</span>
           </button>
-          <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
+          <Link
+            to="/drive/trash"
+            className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          >
             <span className="material-icons text-gray-600">delete</span>
             <span>Trash</span>
-          </button>
+          </Link>
         </div>
         <div className="mt-8">
           <div className="text-xs text-gray-500 mb-2">Storage</div>

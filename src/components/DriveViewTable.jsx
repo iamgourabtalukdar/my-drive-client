@@ -2,25 +2,29 @@ import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
 import FolderItem from "./FolderItem";
+import { DriveContext } from "../contexts/DriveContext";
+import { useContext } from "react";
 
-const FileTable = ({
-  files,
-  folders,
-  selectedFile,
-  setSelectedFile,
-  setShowPreview,
-  setNewFolderModel,
-  contextMenu,
-  setContextMenu,
-  handleMoveToTrash,
-}) => {
+const DriveViewTable = () => {
+  const {
+    files,
+    folders,
+    selectedFile,
+    setSelectedFile,
+    setShowPreview,
+    setFileFolderModel,
+    contextMenu,
+    setContextMenu,
+    handleMoveToTrash,
+  } = useContext(DriveContext);
+
   return (
     <>
       {contextMenu.visible && (
         <FileFolderContextMenu
           contextMenu={contextMenu}
           setContextMenu={setContextMenu}
-          setNewFolderModel={setNewFolderModel}
+          setFileFolderModel={setFileFolderModel}
           handleMoveToTrash={handleMoveToTrash}
         />
       )}
@@ -78,4 +82,4 @@ const FileTable = ({
   );
 };
 
-export default FileTable;
+export default DriveViewTable;

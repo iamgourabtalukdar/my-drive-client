@@ -4,7 +4,7 @@ import { Link } from "react-router";
 const FileFolderContextMenu = ({
   contextMenu,
   setContextMenu,
-  setNewFolderModel,
+  setFileFolderModel,
   handleMoveToTrash,
 }) => {
   useEffect(() => {
@@ -76,7 +76,7 @@ const FileFolderContextMenu = ({
       <button
         className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
         onClick={() =>
-          setNewFolderModel({
+          setFileFolderModel({
             isVisible: true,
             action: "rename",
             type: contextMenu.type,

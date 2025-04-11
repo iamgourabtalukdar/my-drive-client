@@ -1,7 +1,7 @@
 import DriveLayoutContainer from "../components/DriveLayoutContainer";
 import DriveViewTable from "../components/DriveViewTable";
 
-const Home = () => {
+const Trash = () => {
   return (
     <DriveLayoutContainer>
       <DriveViewTable />
@@ -9,4 +9,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Trash;

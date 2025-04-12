@@ -15,7 +15,8 @@ export const useDriveData = () => {
     visible: false,
     x: 0,
     y: 0,
-    file: null,
+    item: null,
+    type: "",
   });
   const [fileFolderModel, setFileFolderModel] = useState({ isVisible: false });
 
@@ -243,6 +244,25 @@ export const useDriveData = () => {
       setError(error.message);
     }
   };
+  // #### RESTORE FROM TRASH
+  const handleRestoreFromTrash = async (type, id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/${type}/${id}/restore`,
+        {
+          method: "PATCH",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      if (!data.status) {
+        throw new Error(data.errors.message || `${type} restore failed`);
+      }
+      fetchTrashData();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return {
     folderId,
@@ -265,5 +285,6 @@ export const useDriveData = () => {
     handleMoveToTrash,
     handleFilesUpload,
     renameFile,
+    handleRestoreFromTrash,
   };
 };

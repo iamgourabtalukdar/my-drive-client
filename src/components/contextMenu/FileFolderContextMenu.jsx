@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { Link } from "react-router";
 
 const FileFolderContextMenu = ({
+  isTrashedContext,
   contextMenu,
   setContextMenu,
   setFileFolderModel,
   handleMoveToTrash,
+  handleRestoreFromTrash,
 }) => {
   useEffect(() => {
     const handleClickOutside = () => {
@@ -21,6 +23,38 @@ const FileFolderContextMenu = ({
   }, []);
 
   if (!contextMenu.visible) return null;
+
+  if (isTrashedContext)
+    return (
+      <div
+        className="context-menu bg-white shadow-lg rounded-md py-1 w-48 border border-gray-200"
+        style={{
+          position: "fixed",
+          left: `${contextMenu.x}px`,
+          top: `${contextMenu.y}px`,
+          zIndex: 1000,
+        }}
+        // onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+          onClick={() =>
+            handleRestoreFromTrash(contextMenu.type, contextMenu.item.id)
+          }
+        >
+          <span className="material-icons text-gray-600 mr-2 text-sm">
+            restore
+          </span>
+          <span>Restore</span>
+        </button>
+        <button className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full">
+          <span className="material-icons text-gray-600 mr-2 text-sm">
+            delete
+          </span>
+          <span>Delete Forever</span>
+        </button>
+      </div>
+    );
 
   return (
     <div

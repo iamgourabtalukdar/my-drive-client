@@ -8,8 +8,7 @@ import { useContext, useEffect } from "react";
 const DriveViewTable = () => {
   const {
     folderId,
-    files,
-    folders,
+    filesFolders,
     selectedFile,
     setSelectedFile,
     setShowPreview,
@@ -36,7 +35,7 @@ const DriveViewTable = () => {
       <motion.table
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
+        // transition={{ delay: 0.3 }}
         className="file-table w-full"
       >
         <thead>
@@ -61,7 +60,7 @@ const DriveViewTable = () => {
           </tr>
         </thead>
         <tbody>
-          {folders.map((folder) => (
+          {filesFolders.folders?.map((folder) => (
             <FolderItem
               key={folder.id}
               folder={folder}
@@ -71,7 +70,7 @@ const DriveViewTable = () => {
               fileSelectClass={selectedFile?.id === folder.id ? "selected" : ""}
             />
           ))}
-          {files.map((file) => (
+          {filesFolders.files?.map((file) => (
             <FileItem
               key={file.id}
               file={file}

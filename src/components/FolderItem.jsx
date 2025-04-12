@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router";
 import { formatDate } from "../utils/formatDate";
-import { getFileIcon } from "../utils/getFileIcon";
 
 const FolderItem = ({
   folder,
@@ -11,6 +10,10 @@ const FolderItem = ({
   isTrash,
 }) => {
   const navigate = useNavigate();
+
+  const openFolder = () => {
+    navigate(`/drive/folder/${folder.id}`);
+  };
   const handleDoubleClick = () => {
     // setSelectedFile(folder);
     // setShowPreview(true);
@@ -32,6 +35,7 @@ const FolderItem = ({
       className={`border-b   hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
+      onClick={isTrash ? () => {} : openFolder}
       onDoubleClick={handleDoubleClick}
       onContextMenu={handleContextMenu}
     >

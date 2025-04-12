@@ -7,8 +7,7 @@ import { useContext, useEffect } from "react";
 
 const TrashViewTable = () => {
   const {
-    files,
-    folders,
+    trashFilesFolders,
     selectedFile,
     setSelectedFile,
     setShowPreview,
@@ -36,7 +35,7 @@ const TrashViewTable = () => {
       <motion.table
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
+        // transition={{ delay: 0.3 }}
         className="file-table w-full"
       >
         <thead>
@@ -61,7 +60,7 @@ const TrashViewTable = () => {
           </tr>
         </thead>
         <tbody className="bg-red-50">
-          {folders.map((folder) => (
+          {trashFilesFolders.folders?.map((folder) => (
             <FolderItem
               key={folder.id}
               folder={folder}
@@ -72,7 +71,7 @@ const TrashViewTable = () => {
               isTrash={true}
             />
           ))}
-          {files.map((file) => (
+          {trashFilesFolders.files?.map((file) => (
             <FileItem
               key={file.id}
               file={file}

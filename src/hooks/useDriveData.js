@@ -6,8 +6,8 @@ export const useDriveData = () => {
   const navigate = useNavigate();
   const params = useParams();
   const folderId = params.folderId || "";
-  const [folders, setFolders] = useState([]);
-  const [files, setFiles] = useState([]);
+  const [filesFolders, setFilesFolders] = useState({});
+  const [trashFilesFolders, setTrashFilesFolders] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,12 +34,10 @@ export const useDriveData = () => {
       });
 
       const data = await response.json();
-      if (data.status) {
-        setFolders(data.folders || []);
-        setFiles(data.files || []);
-      } else {
-        navigate("/signin");
+      if (!data.status) {
+        throw new Error(data.errors.message);
       }
+      setFilesFolders(data);
     } catch (error) {
       setError(error.message);
       navigate("/signin");
@@ -102,10 +100,6 @@ export const useDriveData = () => {
       if (fileFolderModel.type === "folder" && folderName.length > 30) {
         throw new Error("Folder Name cannot exceed 30 characters");
       }
-      // if (fileFolderModel.type === "file" && folderName.length > 50) {
-      //   setError("Name cannot exceed 50 characters");
-      //   return;
-      // }
 
       const endpoint = `${import.meta.env.VITE_API_BASE_URL}/folder/${
         fileFolderModel.item.id
@@ -221,8 +215,7 @@ export const useDriveData = () => {
       if (!data.status) {
         throw new Error(data.errors.message);
       } else {
-        setFolders(data.folders || []);
-        setFiles(data.files || []);
+        setTrashFilesFolders(data);
       }
     } catch (error) {
       setError(error.message);
@@ -253,8 +246,8 @@ export const useDriveData = () => {
 
   return {
     folderId,
-    folders,
-    files,
+    filesFolders,
+    trashFilesFolders,
     selectedFile,
     loading,
     setLoading,

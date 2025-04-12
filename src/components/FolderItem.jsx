@@ -8,10 +8,10 @@ const FolderItem = ({
   setShowPreview,
   setContextMenu,
   fileSelectClass,
+  isTrash,
 }) => {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/drive/folder/${folder.id}`);
+  const handleDoubleClick = () => {
     // setSelectedFile(folder);
     // setShowPreview(true);
   };
@@ -29,8 +29,10 @@ const FolderItem = ({
 
   return (
     <tr
-      className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass}`}
-      onClick={handleClick}
+      className={`border-b   hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass} ${
+        isTrash ? "border-white" : "border-gray-100"
+      }`}
+      onDoubleClick={handleDoubleClick}
       onContextMenu={handleContextMenu}
     >
       <td className="px-4 py-3">

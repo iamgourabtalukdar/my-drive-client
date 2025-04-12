@@ -211,22 +211,21 @@ export const useDriveData = () => {
   const fetchTrashData = async () => {
     try {
       setLoading(true);
-      const endpoint = `${import.meta.env.VITE_API_BASE_URL}/trash/${folderId}`;
+      const endpoint = `${import.meta.env.VITE_API_BASE_URL}/trash`;
       const response = await fetch(endpoint, {
         method: "GET",
         credentials: "include",
       });
 
       const data = await response.json();
-      if (data.status) {
+      if (!data.status) {
+        throw new Error(data.errors.message);
+      } else {
         setFolders(data.folders || []);
         setFiles(data.files || []);
-      } else {
-        navigate("/signin");
       }
     } catch (error) {
       setError(error.message);
-      navigate("/signin");
     } finally {
       setLoading(false);
     }
@@ -252,11 +251,8 @@ export const useDriveData = () => {
     }
   };
 
-  useEffect(() => {
-    fetchFolderData();
-  }, [params.folderId]);
-
   return {
+    folderId,
     folders,
     files,
     selectedFile,

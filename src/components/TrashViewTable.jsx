@@ -5,9 +5,8 @@ import FolderItem from "./FolderItem";
 import { DriveContext } from "../contexts/DriveContext";
 import { useContext, useEffect } from "react";
 
-const DriveViewTable = () => {
+const TrashViewTable = () => {
   const {
-    folderId,
     files,
     folders,
     selectedFile,
@@ -16,13 +15,14 @@ const DriveViewTable = () => {
     setFileFolderModel,
     contextMenu,
     setContextMenu,
-    fetchFolderData,
     handleMoveToTrash,
+    fetchTrashData,
   } = useContext(DriveContext);
 
   useEffect(() => {
-    fetchFolderData();
-  }, [folderId]);
+    fetchTrashData();
+  }, []);
+
   return (
     <>
       {contextMenu.visible && (
@@ -40,7 +40,7 @@ const DriveViewTable = () => {
         className="file-table w-full"
       >
         <thead>
-          <tr className="border-b border-gray-200 text-left text-gray-600">
+          <tr className="border-y border-gray-200 text-left text-gray-600">
             <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tl">
               <div className="flex items-center">
                 <span>Name</span>
@@ -60,7 +60,7 @@ const DriveViewTable = () => {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-red-50">
           {folders.map((folder) => (
             <FolderItem
               key={folder.id}
@@ -69,6 +69,7 @@ const DriveViewTable = () => {
               setShowPreview={setShowPreview}
               setContextMenu={setContextMenu}
               fileSelectClass={selectedFile?.id === folder.id ? "selected" : ""}
+              isTrash={true}
             />
           ))}
           {files.map((file) => (
@@ -87,4 +88,4 @@ const DriveViewTable = () => {
   );
 };
 
-export default DriveViewTable;
+export default TrashViewTable;

@@ -92,7 +92,7 @@ const DriveViewTable = () => {
         <div className="flex justify-center items-center flex-col  mt-16">
           <FaFolderOpen className="text-9xl text-gray-100" />
           <h1 className="text-gray-200 font-medium text-2xl mt-4">
-            Your Drive is empty
+            Folder is empty
           </h1>
         </div>
       )}

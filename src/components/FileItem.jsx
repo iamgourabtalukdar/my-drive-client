@@ -8,6 +8,7 @@ const FileItem = ({
   setShowPreview,
   setContextMenu,
   fileSelectClass,
+  isTrash,
 }) => {
   // const handleClick = () => {
 
@@ -28,7 +29,9 @@ const FileItem = ({
 
   return (
     <tr
-      className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass}`}
+      className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass} ${
+        isTrash ? "border-white" : "border-gray-100"
+      }`}
       onDoubleClick={() =>
         window.open(
           `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,

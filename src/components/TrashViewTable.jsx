@@ -18,6 +18,7 @@ const TrashViewTable = () => {
     handleMoveToTrash,
     fetchTrashData,
     handleRestoreFromTrash,
+    handleDeleteFromTrash,
   } = useContext(DriveContext);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const TrashViewTable = () => {
           setFileFolderModel={setFileFolderModel}
           handleMoveToTrash={handleMoveToTrash}
           handleRestoreFromTrash={handleRestoreFromTrash}
+          handleDeleteFromTrash={handleDeleteFromTrash}
         />
       )}
 
@@ -87,6 +89,7 @@ const TrashViewTable = () => {
                 setShowPreview={setShowPreview}
                 setContextMenu={setContextMenu}
                 fileSelectClass={selectedFile?.id === file.id ? "selected" : ""}
+                isTrash={true}
               />
             ))}
           </tbody>

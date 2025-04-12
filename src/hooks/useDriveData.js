@@ -1,5 +1,5 @@
 // hooks/useDriveData.js
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 export const useDriveData = () => {
@@ -244,6 +244,7 @@ export const useDriveData = () => {
       setError(error.message);
     }
   };
+
   // #### RESTORE FROM TRASH
   const handleRestoreFromTrash = async (type, id) => {
     try {
@@ -259,6 +260,28 @@ export const useDriveData = () => {
         throw new Error(data.errors.message || `${type} restore failed`);
       }
       fetchTrashData();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  // #### RESTORE FROM TRASH
+  const handleDeleteFromTrash = async (type, id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/${type}/${id}/trash`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+      if (!data.status) {
+        throw new Error(data.errors.message || `${type} Deletion failed`);
+      }
+
+      await fetchTrashData();
     } catch (error) {
       setError(error.message);
     }
@@ -286,5 +309,6 @@ export const useDriveData = () => {
     handleFilesUpload,
     renameFile,
     handleRestoreFromTrash,
+    handleDeleteFromTrash,
   };
 };

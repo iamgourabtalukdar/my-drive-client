@@ -8,6 +8,7 @@ const FileFolderContextMenu = ({
   setFileFolderModel,
   handleMoveToTrash,
   handleRestoreFromTrash,
+  handleDeleteFromTrash,
 }) => {
   useEffect(() => {
     const handleClickOutside = () => {
@@ -24,6 +25,7 @@ const FileFolderContextMenu = ({
 
   if (!contextMenu.visible) return null;
 
+  // if trash page
   if (isTrashedContext)
     return (
       <div
@@ -47,7 +49,12 @@ const FileFolderContextMenu = ({
           </span>
           <span>Restore</span>
         </button>
-        <button className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full">
+        <button
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+          onClick={() => {
+            handleDeleteFromTrash(contextMenu.type, contextMenu.item.id);
+          }}
+        >
           <span className="material-icons text-gray-600 mr-2 text-sm">
             delete
           </span>
@@ -56,6 +63,7 @@ const FileFolderContextMenu = ({
       </div>
     );
 
+  //if drive page
   return (
     <div
       className="context-menu bg-white shadow-lg rounded-md py-1 w-48 border border-gray-200"

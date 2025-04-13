@@ -7,6 +7,7 @@ export const useDriveData = () => {
   const params = useParams();
   const folderId = params.folderId || "";
   const [filesFolders, setFilesFolders] = useState({});
+  const [recentFiles, setRecentFiles] = useState([]);
   const [trashFilesFolders, setTrashFilesFolders] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -200,6 +201,30 @@ export const useDriveData = () => {
     }
   };
 
+  // #### GET RECENT FILES
+  const fetchRecentFiles = async () => {
+    try {
+      setLoading(true);
+      const endpoint = `${import.meta.env.VITE_API_BASE_URL}/file/recent`;
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      const data = await response.json();
+      if (!data.status) {
+        throw new Error(data.errors.message);
+      } else {
+        setRecentFiles(data.files);
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // ########################## TRASH #########################
 
   // #### GET TRASH CONTENT
@@ -290,6 +315,7 @@ export const useDriveData = () => {
   return {
     folderId,
     filesFolders,
+    recentFiles,
     trashFilesFolders,
     selectedFile,
     loading,
@@ -307,6 +333,7 @@ export const useDriveData = () => {
     fetchTrashData,
     handleMoveToTrash,
     handleFilesUpload,
+    fetchRecentFiles,
     renameFile,
     handleRestoreFromTrash,
     handleDeleteFromTrash,

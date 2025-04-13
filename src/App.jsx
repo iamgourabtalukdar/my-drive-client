@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import Trash from "./pages/Trash";
+import Recent from "./pages/Recent";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Route path="drive">
         <Route index element={<Home />} />
         <Route path="folder/:folderId?" element={<Home />} />
+        <Route path="recent" element={<Recent />} />
         <Route path="trash" element={<Trash />} />
       </Route>
       {/* <Route path="drive/:folderId?" element={<Home />} /> */}

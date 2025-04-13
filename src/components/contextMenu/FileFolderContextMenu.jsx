@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router";
 
 const FileFolderContextMenu = ({
-  isTrashedContext,
+  isTrashedContext = false,
   contextMenu,
   setContextMenu,
   setFileFolderModel,

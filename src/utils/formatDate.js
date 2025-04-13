@@ -1,4 +1,4 @@
-export function formatDate(inputDate) {
+export function formatDate(inputDate, isTimeOutput = true) {
   const now = new Date();
   const date = new Date(inputDate);
 
@@ -12,14 +12,14 @@ export function formatDate(inputDate) {
 
   // Check if date is today
   if (date.toDateString() === now.toDateString()) {
-    return `Today, ${formattedTime}`;
+    return isTimeOutput ? `Today, ${formattedTime}` : "Today";
   }
 
   // Check if date was yesterday
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   if (date.toDateString() === yesterday.toDateString()) {
-    return `Yesterday, ${formattedTime}`;
+    return isTimeOutput ? `Yesterday, ${formattedTime}` : "Yesterday";
   }
 
   // Format for other dates

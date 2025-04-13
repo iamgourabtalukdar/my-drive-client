@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Dropdown = ({ label, menuItems }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const Dropdown = ({ label, menuItems }) => {
           className="pe-2 ps-3 py-2 border border-gray-300 flex items-center rounded-md"
         >
           <span>{label}</span>
-          <span className="material-icons text-sm ">arrow_drop_down</span>
+          <IoMdArrowDropdown />
         </button>
       </div>
 

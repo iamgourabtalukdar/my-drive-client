@@ -5,6 +5,7 @@ import FolderItem from "./FolderItem";
 import { DriveContext } from "../contexts/DriveContext";
 import { useContext, useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { MdArrowDropUp } from "react-icons/md";
 
 const TrashViewTable = () => {
   const {
@@ -51,9 +52,7 @@ const TrashViewTable = () => {
               <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tl">
                 <div className="flex items-center">
                   <span>Name</span>
-                  <span className="material-icons text-sm ml-1">
-                    arrow_drop_up
-                  </span>
+                  <MdArrowDropUp className="text-2xl" />
                 </div>
               </th>
               <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2">

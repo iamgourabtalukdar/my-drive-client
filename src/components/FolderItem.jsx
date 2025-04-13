@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { formatDate } from "../utils/formatDate";
+import { BsFolderFill, BsStarFill } from "react-icons/bs";
 
 const FolderItem = ({
   folder,
@@ -41,12 +42,11 @@ const FolderItem = ({
     >
       <td className="px-4 py-3">
         <div className="flex items-center">
-          <span className="material-icons mr-2 text-gray-500">folder</span>
+          <BsFolderFill className="text-xl  mr-2 text-gray-500" />
+
           <span>{folder.name}</span>
           {folder.starred && (
-            <span className="material-icons ml-2 text-yellow-400 text-sm">
-              star
-            </span>
+            <BsStarFill className="ml-2 text-yellow-400 text-sm" />
           )}
         </div>
       </td>

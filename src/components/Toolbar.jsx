@@ -1,3 +1,4 @@
+import { MdInfoOutline, MdOutlineViewAgenda, MdRefresh } from "react-icons/md";
 import Dropdown from "./Dropdown";
 
 const dropDownTypeItems = [
@@ -26,15 +27,15 @@ const Toolbar = () => {
       </div>
       <div className="flex space-x-2">
         <button className="p-2 rounded hover:bg-gray-100 flex items-center">
-          <span className="material-icons text-gray-600 mr-1">refresh</span>
+          <MdRefresh className="text-gray-600 mr-1 text-2xl" />
           <span className="text-sm">Refresh</span>
         </button>
         <button className="p-2 rounded hover:bg-gray-100 flex items-center">
-          <span className="material-icons text-gray-600 mr-1">view_agenda</span>
+          <MdOutlineViewAgenda className="text-gray-600 mr-1 text-2xl" />
           <span className="text-sm">View</span>
         </button>
         <button className="p-2 rounded hover:bg-gray-100 flex items-center">
-          <span className="material-icons text-gray-600 mr-1">info</span>
+          <MdInfoOutline className="text-gray-600 mr-1 text-2xl" />
           <span className="text-sm">Details</span>
         </button>
       </div>

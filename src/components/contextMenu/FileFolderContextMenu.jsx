@@ -1,4 +1,15 @@
 import { useEffect } from "react";
+import {
+  MdDelete,
+  MdDeleteForever,
+  MdDownload,
+  MdEdit,
+  MdFolderOpen,
+  MdInfoOutline,
+  MdOpenInNew,
+  MdOutlineShare,
+  MdRestore,
+} from "react-icons/md";
 import { Link } from "react-router";
 
 const FileFolderContextMenu = ({
@@ -44,9 +55,7 @@ const FileFolderContextMenu = ({
             handleRestoreFromTrash(contextMenu.type, contextMenu.item.id)
           }
         >
-          <span className="material-icons text-gray-600 mr-2 text-sm">
-            restore
-          </span>
+          <MdRestore className=" text-gray-600 mr-2 text-2xl" />
           <span>Restore</span>
         </button>
         <button
@@ -55,9 +64,7 @@ const FileFolderContextMenu = ({
             handleDeleteFromTrash(contextMenu.type, contextMenu.item.id);
           }}
         >
-          <span className="material-icons text-gray-600 mr-2 text-sm">
-            delete
-          </span>
+          <MdDeleteForever className=" text-gray-600 mr-2 text-2xl" />
           <span>Delete Forever</span>
         </button>
       </div>
@@ -84,9 +91,7 @@ const FileFolderContextMenu = ({
             target="_blank"
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
           >
-            <span className="material-icons text-gray-600 mr-2 text-sm">
-              open_in_new
-            </span>
+            <MdOpenInNew className=" text-gray-600 mr-2 text-2xl" />
             <span>Open</span>
           </Link>
           <Link
@@ -95,9 +100,7 @@ const FileFolderContextMenu = ({
             }?action=download`}
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
           >
-            <span className="material-icons text-gray-600 mr-2 text-sm">
-              download
-            </span>
+            <MdDownload className=" text-gray-600 mr-2 text-2xl" />
             <span>Download</span>
           </Link>
         </>
@@ -107,9 +110,7 @@ const FileFolderContextMenu = ({
             to={`/drive/folder/${contextMenu.item.id}`}
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
           >
-            <span className="material-icons text-gray-600 mr-2 text-sm">
-              folder_open
-            </span>
+            <MdFolderOpen className=" text-gray-600 mr-2 text-2xl" />
             <span>Open</span>
           </Link>
         </>
@@ -126,11 +127,11 @@ const FileFolderContextMenu = ({
           })
         }
       >
-        <span className="material-icons text-gray-600 mr-2 text-sm">edit</span>
+        <MdEdit className=" text-gray-600 mr-2 text-2xl" />
         <span>Rename</span>
       </button>
       <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-        <span className="material-icons text-gray-600 mr-2 text-sm">share</span>
+        <MdOutlineShare className=" text-gray-600 mr-2 text-2xl" />
         <span>Share</span>
       </div>
       <div className="border-t border-gray-200 my-1"></div>
@@ -138,13 +139,12 @@ const FileFolderContextMenu = ({
         className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
         onClick={() => handleMoveToTrash(contextMenu.type, contextMenu.item.id)}
       >
-        <span className="material-icons text-gray-600 mr-2 text-sm">
-          delete
-        </span>
+        <MdDelete className=" text-gray-600 mr-2 text-2xl" />
+
         <span>Remove</span>
       </button>
       <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-        <span className="material-icons text-gray-600 mr-2 text-sm">info</span>
+        <MdInfoOutline className=" text-gray-600 mr-2 text-2xl" />
         <span>Details</span>
       </div>
     </div>

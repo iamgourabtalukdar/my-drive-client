@@ -1,3 +1,13 @@
+import {
+  MdCreateNewFolder,
+  MdDelete,
+  MdFileUpload,
+  MdOutlineDriveFolderUpload,
+  MdOutlineStorage,
+  MdPeople,
+  MdSchedule,
+  MdStar,
+} from "react-icons/md";
 import { Link } from "react-router";
 
 const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
@@ -6,16 +16,14 @@ const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
       <aside className="w-64 border-r border-gray-200 p-4 hidden md:block">
         <div className="space-y-1">
           <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
-            <span className="material-icons text-blue-500">
-              drive_folder_upload
-            </span>
+            <MdOutlineDriveFolderUpload className=" text-2xl text-blue-500" />
             <span>New</span>
           </button>
           <button
             className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
             onClick={onUploadClick}
           >
-            <span className="material-icons text-blue-500">upload</span>
+            <MdFileUpload className=" text-2xl text-blue-500" />
             <span>Upload File</span>
           </button>
           <button
@@ -28,9 +36,8 @@ const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
               })
             }
           >
-            <span className="material-icons text-blue-500">
-              create_new_folder
-            </span>
+            <MdCreateNewFolder className=" text-2xl text-blue-500" />
+
             <span>New Folder</span>
           </button>
         </div>
@@ -39,26 +46,26 @@ const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
             to="/drive/folder"
             className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
           >
-            <span className="material-icons text-gray-600">storage</span>
+            <MdOutlineStorage className=" text-2xl text-gray-600" />
             <span>My Drive</span>
           </Link>
           <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
-            <span className="material-icons text-gray-600">people</span>
+            <MdPeople className=" text-2xl text-gray-600" />
             <span>Shared with me</span>
           </button>
           <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
-            <span className="material-icons text-gray-600">schedule</span>
+            <MdSchedule className=" text-2xl text-gray-600" />
             <span>Recent</span>
           </button>
           <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
-            <span className="material-icons text-gray-600">star</span>
+            <MdStar className=" text-2xl text-gray-600" />
             <span>Starred</span>
           </button>
           <Link
             to="/drive/trash"
             className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
           >
-            <span className="material-icons text-gray-600">delete</span>
+            <MdDelete className=" text-2xl text-gray-600" />
             <span>Trash</span>
           </Link>
         </div>

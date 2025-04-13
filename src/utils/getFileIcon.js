@@ -1,54 +1,53 @@
-export const getFileIcon = (extension) => {
-  // if (item.type === "folder") return "folder";
+import React from "react";
+import {
+  BsFileEarmarkFill, // Default document (solid)
+  BsFileWordFill, // .doc, .docx (solid)
+  BsFileTextFill, // .txt (solid)
+  BsMarkdownFill, // .md (solid)
+  BsFileExcelFill, // .xls, .xlsx (solid)
+  BsFileBarGraphFill, // .csv (solid)
+  BsFileImageFill, // Image files (solid)
+  BsFilePdfFill, // .pdf (solid)
+  BsFilePlayFill, // Video files (solid)
+} from "react-icons/bs";
 
-  if (!extension) return "insert_drive_file";
+export const getFileIcon = (extension) => {
+  if (!extension) return React.createElement(BsFileEarmarkFill);
 
   const ext = extension.toLowerCase();
 
-  const extensionToType = {
-    // documents
-    ".doc": "document",
-    ".docx": "document",
-    ".txt": "document",
-    ".md": "document",
+  const extensionToIcon = {
+    // Documents
+    ".doc": React.createElement(BsFileWordFill),
+    ".docx": React.createElement(BsFileWordFill),
+    ".txt": React.createElement(BsFileTextFill),
+    ".md": React.createElement(BsMarkdownFill),
 
-    // spreadsheets
-    ".xls": "spreadsheet",
-    ".xlsx": "spreadsheet",
-    ".csv": "spreadsheet",
+    // Spreadsheets
+    ".xls": React.createElement(BsFileExcelFill),
+    ".xlsx": React.createElement(BsFileExcelFill),
+    ".csv": React.createElement(BsFileBarGraphFill),
 
-    // images
-    ".jpg": "image",
-    ".jpeg": "image",
-    ".png": "image",
-    ".gif": "image",
-    ".bmp": "image",
-    ".svg": "image",
-    ".webp": "image",
+    // Images
+    ".jpg": React.createElement(BsFileImageFill),
+    ".jpeg": React.createElement(BsFileImageFill),
+    ".png": React.createElement(BsFileImageFill),
+    ".gif": React.createElement(BsFileImageFill),
+    ".bmp": React.createElement(BsFileImageFill),
+    ".svg": React.createElement(BsFileImageFill),
+    ".webp": React.createElement(BsFileImageFill),
 
-    // pdf
-    ".pdf": "pdf",
+    // PDF
+    ".pdf": React.createElement(BsFilePdfFill),
 
-    // videos
-    ".mp4": "video",
-    ".mkv": "video",
-    ".mov": "video",
-    ".avi": "video",
-    ".webm": "video",
-    ".flv": "video",
+    // Videos
+    ".mp4": React.createElement(BsFilePlayFill),
+    ".mkv": React.createElement(BsFilePlayFill),
+    ".mov": React.createElement(BsFilePlayFill),
+    ".avi": React.createElement(BsFilePlayFill),
+    ".webm": React.createElement(BsFilePlayFill),
+    ".flv": React.createElement(BsFilePlayFill),
   };
 
-  const type = extensionToType[ext] || "default";
-
-  const icons = {
-    document: "description",
-    spreadsheet: "grid_on",
-    image: "image",
-    pdf: "picture_as_pdf",
-    video: "movie",
-    folder: "folder",
-    default: "insert_drive_file",
-  };
-
-  return icons[type];
+  return extensionToIcon[ext] || React.createElement(BsFileEarmarkFill);
 };

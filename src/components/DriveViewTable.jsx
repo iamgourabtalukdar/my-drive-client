@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import FolderItem from "./FolderItem";
 import { DriveContext } from "../contexts/DriveContext";
 import { useContext, useEffect } from "react";
-import { FaFolderOpen } from "react-icons/fa";
+import { MdArrowDropUp } from "react-icons/md";
+import { FaRegFolderOpen } from "react-icons/fa";
 
 const DriveViewTable = () => {
   const {
@@ -47,9 +48,8 @@ const DriveViewTable = () => {
               <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tl">
                 <div className="flex items-center">
                   <span>Name</span>
-                  <span className="material-icons text-sm ml-1">
-                    arrow_drop_up
-                  </span>
+
+                  <MdArrowDropUp className="text-2xl" />
                 </div>
               </th>
               <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2">
@@ -90,7 +90,7 @@ const DriveViewTable = () => {
         </motion.table>
       ) : (
         <div className="flex justify-center items-center flex-col  mt-16">
-          <FaFolderOpen className="text-9xl text-gray-100" />
+          <FaRegFolderOpen className="text-gray-100 text-9xl" />
           <h1 className="text-gray-200 font-medium text-2xl mt-4">
             Folder is empty
           </h1>

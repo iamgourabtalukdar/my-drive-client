@@ -1,3 +1,4 @@
+import { BsStarFill } from "react-icons/bs";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
 import { getFileIcon } from "../utils/getFileIcon";
@@ -42,7 +43,7 @@ const FileItem = ({
     >
       <td className="px-4 py-3">
         <div className="flex items-center">
-          <span className="material-icons mr-2 text-gray-500">
+          <span className=" mr-2 text-xl text-gray-500">
             {getFileIcon(file.extension)}
           </span>
           <span>
@@ -50,9 +51,7 @@ const FileItem = ({
             {file.extension}
           </span>
           {file.starred && (
-            <span className="material-icons ml-2 text-yellow-400 text-sm">
-              star
-            </span>
+            <BsStarFill className="ml-2 text-yellow-400 text-sm" />
           )}
         </div>
       </td>

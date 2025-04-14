@@ -1,12 +1,26 @@
-import { createContext } from "react";
-
-import { useDriveData } from "../hooks/useDriveData";
-
+import { createContext, useState } from "react";
 export const DriveContext = createContext();
 
 export function DriveProvider({ children }) {
-  const driveData = useDriveData();
+  const [contextMenu, setContextMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    item: null,
+    type: "",
+  });
+  const [fileFolderModel, setFileFolderModel] = useState({ isVisible: false });
+
   return (
-    <DriveContext.Provider value={driveData}>{children}</DriveContext.Provider>
+    <DriveContext.Provider
+      value={{
+        contextMenu,
+        setContextMenu,
+        fileFolderModel,
+        setFileFolderModel,
+      }}
+    >
+      {children}
+    </DriveContext.Provider>
   );
 }

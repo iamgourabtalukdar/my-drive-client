@@ -1,46 +1,19 @@
-import React, { useContext, useState } from "react";
-import { useParams } from "react-router";
+import React, { useState } from "react";
 import { capitalize } from "../../utils/stringOperations";
-import { DriveContext } from "../../contexts/DriveContext";
-// import { useDriveData } from "../../hooks/useDriveData";
 
-// const reqObjList = {
-//   "create new": {
-//     folder: {
-//       method: "POST",
-//       url: () => `${import.meta.env.VITE_API_BASE_URL}/folder`,
-//       body: (folderName) => JSON.stringify({ name: folderName.trim() }),
-//     },
-//   },
-//   rename: {
-//     folder: {
-//       method: "PATCH",
-//       url: (item) => `${import.meta.env.VITE_API_BASE_URL}/folder/${item.id}`,
-//       body: (newName) => JSON.stringify({ newName: newName.trim() }),
-//     },
-//     file: {
-//       method: "PATCH",
-//       url: (item) => `${import.meta.env.VITE_API_BASE_URL}/file/${item.id}`,
-//       body: (newName) => JSON.stringify({ newName: newName.trim() }),
-//     },
-//   },
-// };
-const FileFolderCreateRenameModel = ({ fileFolderModel }) => {
+const FileFolderCreateRenameModel = ({
+  fileFolderModel,
+  setFileFolderModel,
+  onAddFolder,
+  onRenameItem,
+}) => {
   if (!fileFolderModel.isVisible) return null;
-
-  const {
-    createNewFolder,
-    renameFolder,
-    renameFile,
-    setFileFolderModel,
-    loading,
-    error,
-    setError,
-  } = useContext(DriveContext);
 
   const [itemName, setItemName] = useState(
     fileFolderModel.item ? fileFolderModel.item.name : ""
   );
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const closeHandler = () => {
     setFileFolderModel({ isVisible: false });
@@ -52,21 +25,24 @@ const FileFolderCreateRenameModel = ({ fileFolderModel }) => {
     //sending request to server
 
     try {
+      setLoading(true);
       if (fileFolderModel.action === "create new") {
         if (fileFolderModel.type === "folder") {
-          await createNewFolder(itemName);
+          await onAddFolder(itemName);
         }
       } else if (fileFolderModel.action === "rename") {
-        if (fileFolderModel.type === "folder") {
-          await renameFolder(itemName);
-        } else if (fileFolderModel.type === "file") {
-          await renameFile(itemName);
-        }
+        await onRenameItem(
+          fileFolderModel.type,
+          fileFolderModel.item.id,
+          itemName
+        );
       }
       setItemName("");
       closeHandler();
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 

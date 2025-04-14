@@ -1,25 +1,20 @@
 import { useEffect } from "react";
+import { Link } from "react-router";
 import {
   MdDelete,
-  MdDeleteForever,
   MdDownload,
   MdEdit,
   MdFolderOpen,
   MdInfoOutline,
   MdOpenInNew,
   MdOutlineShare,
-  MdRestore,
 } from "react-icons/md";
-import { Link } from "react-router";
 
-const FileFolderContextMenu = ({
-  isTrashedContext = false,
+const DriveContextMenu = ({
   contextMenu,
   setContextMenu,
   setFileFolderModel,
-  handleMoveToTrash,
-  handleRestoreFromTrash,
-  handleDeleteFromTrash,
+  onTrashItem,
 }) => {
   useEffect(() => {
     const handleClickOutside = () => {
@@ -36,41 +31,6 @@ const FileFolderContextMenu = ({
 
   if (!contextMenu.visible) return null;
 
-  // if trash page
-  if (isTrashedContext)
-    return (
-      <div
-        className="context-menu bg-white shadow-lg rounded-md py-1 w-48 border border-gray-200"
-        style={{
-          position: "fixed",
-          left: `${contextMenu.x}px`,
-          top: `${contextMenu.y}px`,
-          zIndex: 1000,
-        }}
-        // onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
-          onClick={() =>
-            handleRestoreFromTrash(contextMenu.type, contextMenu.item.id)
-          }
-        >
-          <MdRestore className=" text-gray-600 mr-2 text-2xl" />
-          <span>Restore</span>
-        </button>
-        <button
-          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
-          onClick={() => {
-            handleDeleteFromTrash(contextMenu.type, contextMenu.item.id);
-          }}
-        >
-          <MdDeleteForever className=" text-gray-600 mr-2 text-2xl" />
-          <span>Delete Forever</span>
-        </button>
-      </div>
-    );
-
-  //if drive page
   return (
     <div
       className="context-menu bg-white shadow-lg rounded-md py-1 w-48 border border-gray-200"
@@ -80,7 +40,10 @@ const FileFolderContextMenu = ({
         top: `${contextMenu.y}px`,
         zIndex: 1000,
       }}
-      // onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+        setContextMenu((prev) => ({ ...prev, visible: false }));
+      }}
     >
       {contextMenu.type === "file" ? (
         <>
@@ -137,7 +100,7 @@ const FileFolderContextMenu = ({
       <div className="border-t border-gray-200 my-1"></div>
       <button
         className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
-        onClick={() => handleMoveToTrash(contextMenu.type, contextMenu.item.id)}
+        onClick={() => onTrashItem(contextMenu.type, contextMenu.item.id)}
       >
         <MdDelete className=" text-gray-600 mr-2 text-2xl" />
 
@@ -150,5 +113,4 @@ const FileFolderContextMenu = ({
     </div>
   );
 };
-
-export default FileFolderContextMenu;
+export default DriveContextMenu;

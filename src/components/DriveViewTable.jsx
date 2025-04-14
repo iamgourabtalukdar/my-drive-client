@@ -1,42 +1,34 @@
-import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
 import FolderItem from "./FolderItem";
 import { DriveContext } from "../contexts/DriveContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MdArrowDropUp } from "react-icons/md";
 import { FaRegFolderOpen } from "react-icons/fa";
+import DriveContextMenu from "./contextMenu/DriveContextMenu";
 
-const DriveViewTable = () => {
+const DriveViewTable = ({ folders, files, onTrashItem }) => {
   const {
-    folderId,
-    filesFolders,
     selectedFile,
     setSelectedFile,
-    setShowPreview,
     setFileFolderModel,
     contextMenu,
     setContextMenu,
-    fetchFolderData,
-    handleMoveToTrash,
+    setShowPreview,
   } = useContext(DriveContext);
-
-  useEffect(() => {
-    fetchFolderData();
-  }, [folderId]);
 
   return (
     <>
       {contextMenu.visible && (
-        <FileFolderContextMenu
+        <DriveContextMenu
           contextMenu={contextMenu}
           setContextMenu={setContextMenu}
           setFileFolderModel={setFileFolderModel}
-          handleMoveToTrash={handleMoveToTrash}
+          onTrashItem={onTrashItem}
         />
       )}
 
-      {filesFolders.folders?.length || filesFolders.files?.length ? (
+      {folders.length || files.length ? (
         <motion.table
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -64,7 +56,7 @@ const DriveViewTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filesFolders.folders?.map((folder) => (
+            {folders.map((folder) => (
               <FolderItem
                 key={folder.id}
                 folder={folder}
@@ -76,7 +68,7 @@ const DriveViewTable = () => {
                 }
               />
             ))}
-            {filesFolders.files?.map((file) => (
+            {files.map((file) => (
               <FileItem
                 key={file.id}
                 file={file}

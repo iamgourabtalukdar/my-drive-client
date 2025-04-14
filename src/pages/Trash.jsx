@@ -1,17 +1,57 @@
-import DriveLayoutContainer from "../components/DriveLayoutContainer";
+import { useEffect } from "react";
+import DriveLayout from "../components/DriveLayout";
 import TrashViewTable from "../components/TrashViewTable";
+import { DriveProvider } from "../contexts/DriveContext";
+import useTrash from "../hooks/useTrash";
+import useFolder from "../hooks/useFolder";
 
 const Trash = () => {
+  const { files, folders, loading, error, loadTrash, restoreItem, deleteItem } =
+    useTrash();
+  const { addFolder, renameItem, addFiles } = useFolder();
+
+  useEffect(() => {
+    loadTrash();
+  }, []);
+
+  // Handle loading state
+  if (loading) {
+    return (
+      <DriveProvider>
+        <DriveLayout>
+          <h1>LOADING...</h1>
+        </DriveLayout>
+      </DriveProvider>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    return (
+      <DriveProvider>
+        <DriveLayout>
+          <p>{error}</p>
+        </DriveLayout>
+      </DriveProvider>
+    );
+  }
+
+  // Render table with folders and files
   return (
-    <DriveLayoutContainer>
-      <div className="py-1 ps-4 bg-gray-200 my-2 rounded flex justify-between items-center">
-        <p>Items in the bin will be deleted forever after 30 days</p>
-        <button className="font-medium text-gray-600 text-sm hover:bg-gray-300 px-4 me-1 py-2 rounded">
-          Empty Bin
-        </button>
-      </div>
-      <TrashViewTable />
-    </DriveLayoutContainer>
+    <DriveProvider>
+      <DriveLayout
+        onAddFolder={addFolder}
+        onAddFiles={addFiles}
+        onRenameItem={renameItem}
+      >
+        <TrashViewTable
+          files={files}
+          folders={folders}
+          onRestoreItem={restoreItem}
+          onDeleteItem={deleteItem}
+        />
+      </DriveLayout>
+    </DriveProvider>
   );
 };
 

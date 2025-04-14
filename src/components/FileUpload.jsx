@@ -1,15 +1,13 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiUpload, FiX, FiFile, FiCheck, FiAlertCircle } from "react-icons/fi";
 import { formatFileSize } from "../utils/formatFileSize";
-import { DriveContext } from "../contexts/DriveContext";
 
-const FileUpload = ({ onClose }) => {
+const FileUpload = ({ onAddFiles, onClose }) => {
   const [files, setFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
-  const { handleFilesUpload } = useContext(DriveContext);
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     setError(null);
@@ -50,7 +48,7 @@ const FileUpload = ({ onClose }) => {
 
     try {
       // Call the parent component's upload handler
-      await handleFilesUpload(files);
+      await onAddFiles(files);
       onClose();
     } catch (error) {
       console.error("Upload error:", error);

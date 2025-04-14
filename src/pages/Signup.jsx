@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FiUser,
@@ -7,60 +7,79 @@ import {
   FiEye,
   FiEyeOff,
   FiLogIn,
-  FiGithub,
-  FiTwitter,
-  FiFacebook,
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+import { toast, ToastContainer } from "react-toastify";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("gourab talukdar");
-  const [email, setEmail] = useState("hello@gmail.com");
-  const [password, setPassword] = useState("abcd@123");
+  const { loading, error, serverErrors, setError, makeSignUp } = useAuth();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  // Clear errors when user starts typing
+  useEffect(() => {
+    if (name && validationErrors.name) {
+      setValidationErrors((prev) => ({ ...prev, name: undefined }));
+    }
+  }, [name]);
+
+  useEffect(() => {
+    if (email && validationErrors.email) {
+      setValidationErrors((prev) => ({ ...prev, email: undefined }));
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password && validationErrors.password) {
+      setValidationErrors((prev) => ({ ...prev, password: undefined }));
+    }
+  }, [password]);
 
   const validateForm = () => {
     const newErrors = {};
-    if (!name) newErrors.name = "Name is required";
-    if (!email) newErrors.email = "Email is required";
-    if (!password) newErrors.password = "Password is required";
-    if (password && password.length < 4)
-      newErrors.password = "Password must be at least 4 characters";
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      newErrors.email = "Invalid email format";
+    if (!name.trim()) newErrors.name = "Name is required";
+    else if (name.length < 3)
+      newErrors.name = "Name must be at least 3 characters";
 
-    setErrors(newErrors);
+    if (!email.trim()) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      newErrors.email = "Please enter a valid email";
+
+    if (!password) newErrors.password = "Password is required";
+    else if (password.length < 4)
+      newErrors.password = "Password must be at least 4 characters";
+
+    setValidationErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  // Combine client and server errors
+  const getFieldError = (field) => {
+    return validationErrors[field] || serverErrors[field];
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/user/signup`,
-        {
-          method: "POST",
-          body: JSON.stringify({ name, email, password }),
-          headers: {
-            "content-type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+    setError(null);
 
-      const data = await response.json();
-      console.log(data);
-      if (response.status === 201 && data.status) {
-        setTimeout(() => {
-          navigate("/signin");
-        }, 2000);
-      } else {
-        setErrors(data.errors);
-        setIsLoading(false);
+    // if (!validateForm()) return;
+
+    try {
+      const result = await makeSignUp(name, email, password);
+
+      if (result?.status) {
+        toast.success(result.message || "Registration successful!");
+        setTimeout(() => navigate("/signin"), 2000);
+      }
+    } catch (err) {
+      // Errors are handled in useAuth
+      if (error) {
+        toast.error(error);
       }
     }
   };
@@ -95,13 +114,23 @@ const SignUp = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-50 text-red-600 p-3 rounded-lg text-sm"
+              >
+                {error}
+              </motion.div>
+            )}
+
             {/* Name Field */}
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
-              className="relative "
+              className="relative mb-5"
             >
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Full Name
@@ -115,15 +144,23 @@ const SignUp = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className={`block w-full pl-10 pr-3 py-2 border ${
-                    errors.name ? "border-red-300" : "border-gray-300"
+                    getFieldError("name") ? "border-red-300" : "border-gray-300"
                   } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.name ? "focus:ring-red-500" : "focus:ring-indigo-500"
+                    getFieldError("name")
+                      ? "focus:ring-red-500"
+                      : "focus:ring-indigo-500"
                   } focus:border-transparent transition`}
                   placeholder="John Doe"
                 />
               </div>
-              {errors.name && (
-                <p className="text-sm text-red-600 absolute">{errors.name}</p>
+              {getFieldError("name") && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-0 text-sm absolute text-red-600"
+                >
+                  {getFieldError("name")}
+                </motion.p>
               )}
             </motion.div>
 
@@ -132,7 +169,7 @@ const SignUp = () => {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5 }}
-              className="relative"
+              className="relative mb-5"
             >
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
@@ -146,17 +183,25 @@ const SignUp = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={`block w-full pl-10 pr-3 py-2 border ${
-                    errors.email ? "border-red-300" : "border-gray-300"
+                    getFieldError("email")
+                      ? "border-red-300"
+                      : "border-gray-300"
                   } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.email
+                    getFieldError("email")
                       ? "focus:ring-red-500"
                       : "focus:ring-indigo-500"
                   } focus:border-transparent transition`}
                   placeholder="you@example.com"
                 />
               </div>
-              {errors.email && (
-                <p className="text-sm text-red-600 absolute">{errors.email}</p>
+              {getFieldError("email") && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute text-sm text-red-600"
+                >
+                  {getFieldError("email")}
+                </motion.p>
               )}
             </motion.div>
 
@@ -165,7 +210,7 @@ const SignUp = () => {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="relative"
+              className="relative mb-5"
             >
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password
@@ -179,9 +224,11 @@ const SignUp = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={`block w-full pl-10 pr-10 py-2 border ${
-                    errors.password ? "border-red-300" : "border-gray-300"
+                    getFieldError("password")
+                      ? "border-red-300"
+                      : "border-gray-300"
                   } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.password
+                    getFieldError("password")
                       ? "focus:ring-red-500"
                       : "focus:ring-indigo-500"
                   } focus:border-transparent transition`}
@@ -189,7 +236,7 @@ const SignUp = () => {
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-gray-600 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -199,30 +246,34 @@ const SignUp = () => {
                   )}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-sm text-red-600 absolute">
-                  {errors.password}
-                </p>
+              {getFieldError("password") && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute text-sm text-red-600"
+                >
+                  {getFieldError("password")}
+                </motion.p>
               )}
             </motion.div>
 
-            {/* Submit button with loading state */}
+            {/* Submit button */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="relative"
+              className="mt-8"
             >
               <button
                 type="submit"
-                disabled={isLoading}
-                className={`w-full mt-8 flex justify-center items-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${
-                  isLoading
-                    ? "bg-indigo-400"
+                disabled={loading}
+                className={`w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${
+                  loading
+                    ? "bg-indigo-400 cursor-not-allowed"
                     : "bg-indigo-600 hover:bg-indigo-700"
                 } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition`}
               >
-                {isLoading ? (
+                {loading ? (
                   <>
                     <svg
                       className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
@@ -253,11 +304,9 @@ const SignUp = () => {
                   </>
                 )}
               </button>
-              <p className="text-center text-red-500 text-sm absolute left-1/2 transform -translate-x-1/2">
-                {errors.message}
-              </p>
             </motion.div>
           </form>
+
           {/* Footer with login link */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -277,6 +326,7 @@ const SignUp = () => {
           </motion.div>
         </div>
       </motion.div>
+      <ToastContainer />
     </div>
   );
 };

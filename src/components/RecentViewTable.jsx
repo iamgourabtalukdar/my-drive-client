@@ -1,42 +1,28 @@
-import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
-import FolderItem from "./FolderItem";
 import { DriveContext } from "../contexts/DriveContext";
 import React, { useContext, useEffect } from "react";
 import { MdArrowDropUp, MdOutlineRestorePage } from "react-icons/md";
 import { formatDate } from "../utils/formatDate";
+import DriveContextMenu from "./contextMenu/DriveContextMenu";
 
-const RecentViewTable = () => {
+const RecentViewTable = ({ recentFiles, onTrashItem }) => {
   const {
-    recentFiles,
     selectedFile,
     setSelectedFile,
-    setShowPreview,
     setFileFolderModel,
     contextMenu,
     setContextMenu,
-    handleMoveToTrash,
-    fetchRecentFiles,
-    handleRestoreFromTrash,
-    handleDeleteFromTrash,
   } = useContext(DriveContext);
-
-  useEffect(() => {
-    fetchRecentFiles();
-  }, []);
 
   return (
     <>
       {contextMenu.visible && (
-        <FileFolderContextMenu
-          isTrashedContext={false}
+        <DriveContextMenu
           contextMenu={contextMenu}
           setContextMenu={setContextMenu}
           setFileFolderModel={setFileFolderModel}
-          handleMoveToTrash={handleMoveToTrash}
-          handleRestoreFromTrash={handleRestoreFromTrash}
-          handleDeleteFromTrash={handleDeleteFromTrash}
+          onTrashItem={onTrashItem}
         />
       )}
 
@@ -82,7 +68,6 @@ const RecentViewTable = () => {
                     key={file.id}
                     file={file}
                     setSelectedFile={setSelectedFile}
-                    setShowPreview={setShowPreview}
                     setContextMenu={setContextMenu}
                     fileSelectClass={
                       selectedFile?.id === file.id ? "selected" : ""

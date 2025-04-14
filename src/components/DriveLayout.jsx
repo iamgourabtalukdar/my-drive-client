@@ -8,8 +8,8 @@ import Sidebar from "./Sidebar";
 import Toolbar from "./Toolbar";
 import { DriveContext } from "../contexts/DriveContext";
 
-const DriveLayout = ({ children }) => {
-  const [showFileUpload, setShowFileUpload] = useState(false);
+const DriveLayout = ({ children, onAddFolder, onAddFiles, onRenameItem }) => {
+  const [isFileUpload, setIsFileUpload] = useState(false);
   const { fileFolderModel, setFileFolderModel } = useContext(DriveContext);
 
   return (
@@ -18,23 +18,31 @@ const DriveLayout = ({ children }) => {
         <Header />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar
-            onUploadClick={() => setShowFileUpload(true)}
+            onUploadClick={() => setIsFileUpload(true)}
             setFileFolderModel={setFileFolderModel}
           />
           <main className="flex-1 overflow-auto p-4">
-            <Toolbar onUploadClick={() => setShowFileUpload(true)} />
+            <Toolbar />
             {children}
           </main>
         </div>
       </div>
 
       {/* Modals */}
-      {showFileUpload && (
-        <FileUpload onClose={() => setShowFileUpload(false)} />
+      {isFileUpload && (
+        <FileUpload
+          onAddFiles={onAddFiles}
+          onClose={() => setIsFileUpload(false)}
+        />
       )}
 
       {fileFolderModel.isVisible && (
-        <FileFolderCreateRenameModel fileFolderModel={fileFolderModel} />
+        <FileFolderCreateRenameModel
+          fileFolderModel={fileFolderModel}
+          setFileFolderModel={setFileFolderModel}
+          onAddFolder={onAddFolder}
+          onRenameItem={onRenameItem}
+        />
       )}
     </>
   );

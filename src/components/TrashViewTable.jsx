@@ -1,46 +1,28 @@
-import FileFolderContextMenu from "./contextMenu/FileFolderContextMenu";
 import FileItem from "./FileItem";
 import { motion } from "framer-motion";
 import FolderItem from "./FolderItem";
 import { DriveContext } from "../contexts/DriveContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdArrowDropUp } from "react-icons/md";
+import TrashContextMenu from "./contextMenu/TrashContextMenu";
 
-const TrashViewTable = () => {
-  const {
-    trashFilesFolders,
-    selectedFile,
-    setSelectedFile,
-    setShowPreview,
-    setFileFolderModel,
-    contextMenu,
-    setContextMenu,
-    handleMoveToTrash,
-    fetchTrashData,
-    handleRestoreFromTrash,
-    handleDeleteFromTrash,
-  } = useContext(DriveContext);
-
-  useEffect(() => {
-    fetchTrashData();
-  }, []);
+const TrashViewTable = ({ files, folders, onRestoreItem, onDeleteItem }) => {
+  const { selectedFile, setSelectedFile, contextMenu, setContextMenu } =
+    useContext(DriveContext);
 
   return (
     <>
       {contextMenu.visible && (
-        <FileFolderContextMenu
-          isTrashedContext={true}
+        <TrashContextMenu
           contextMenu={contextMenu}
           setContextMenu={setContextMenu}
-          setFileFolderModel={setFileFolderModel}
-          handleMoveToTrash={handleMoveToTrash}
-          handleRestoreFromTrash={handleRestoreFromTrash}
-          handleDeleteFromTrash={handleDeleteFromTrash}
+          onRestoreItem={onRestoreItem}
+          onDeleteItem={onDeleteItem}
         />
       )}
 
-      {trashFilesFolders.folders?.length || trashFilesFolders.files?.length ? (
+      {folders.length || files.length ? (
         <motion.table
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -67,12 +49,11 @@ const TrashViewTable = () => {
             </tr>
           </thead>
           <tbody className="bg-red-50">
-            {trashFilesFolders.folders?.map((folder) => (
+            {folders.map((folder) => (
               <FolderItem
                 key={folder.id}
                 folder={folder}
                 setSelectedFile={setSelectedFile}
-                setShowPreview={setShowPreview}
                 setContextMenu={setContextMenu}
                 fileSelectClass={
                   selectedFile?.id === folder.id ? "selected" : ""
@@ -80,12 +61,11 @@ const TrashViewTable = () => {
                 isTrash={true}
               />
             ))}
-            {trashFilesFolders.files?.map((file) => (
+            {files.map((file) => (
               <FileItem
                 key={file.id}
                 file={file}
                 setSelectedFile={setSelectedFile}
-                setShowPreview={setShowPreview}
                 setContextMenu={setContextMenu}
                 fileSelectClass={selectedFile?.id === file.id ? "selected" : ""}
                 isTrash={true}

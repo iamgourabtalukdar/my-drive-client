@@ -8,6 +8,8 @@ import {
   MdInfoOutline,
   MdOpenInNew,
   MdOutlineShare,
+  MdStar,
+  MdStarOutline,
 } from "react-icons/md";
 
 const DriveContextMenu = ({
@@ -15,6 +17,7 @@ const DriveContextMenu = ({
   setContextMenu,
   setFileFolderModel,
   onTrashItem,
+  onStarredItem,
 }) => {
   useEffect(() => {
     const handleClickOutside = () => {
@@ -33,7 +36,7 @@ const DriveContextMenu = ({
 
   return (
     <div
-      className="context-menu bg-white shadow-lg rounded-md py-1 w-48 border border-gray-200"
+      className="context-menu bg-white shadow-lg rounded-md py-1 min-w-60 border border-gray-200"
       style={{
         position: "fixed",
         left: `${contextMenu.x}px`,
@@ -97,7 +100,33 @@ const DriveContextMenu = ({
         <MdOutlineShare className=" text-gray-600 mr-2 text-2xl" />
         <span>Share</span>
       </div>
+
       <div className="border-t border-gray-200 my-1"></div>
+
+      {contextMenu.item.starred ? (
+        <button
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+          onClick={() =>
+            onStarredItem(contextMenu.type, contextMenu.item.id, false)
+          }
+        >
+          <MdStar className="text-gray-600 mr-2 text-2xl" />
+          <span>Remove from Starred</span>
+        </button>
+      ) : (
+        <button
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+          onClick={() =>
+            onStarredItem(contextMenu.type, contextMenu.item.id, true)
+          }
+        >
+          <MdStarOutline className=" text-gray-600 mr-2 text-2xl" />
+          <span>Add to Starred</span>
+        </button>
+      )}
+
+      <div className="border-t border-gray-200 my-1"></div>
+
       <button
         className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
         onClick={() => onTrashItem(contextMenu.type, contextMenu.item.id)}

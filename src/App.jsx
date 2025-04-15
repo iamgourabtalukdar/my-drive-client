@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import Trash from "./pages/Trash";
 import Recent from "./pages/Recent";
+import Starred from "./pages/Starred";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="folder/:folderId?" element={<Home />} />
         <Route path="recent" element={<Recent />} />
+        <Route path="starred" element={<Starred />} />
         <Route path="trash" element={<Trash />} />
       </Route>
       <Route index element={<Login />} />

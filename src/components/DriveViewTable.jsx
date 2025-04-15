@@ -7,7 +7,7 @@ import { MdArrowDropUp } from "react-icons/md";
 import { FaRegFolderOpen } from "react-icons/fa";
 import DriveContextMenu from "./contextMenu/DriveContextMenu";
 
-const DriveViewTable = ({ folders, files, onTrashItem }) => {
+const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
   const {
     selectedFile,
     setSelectedFile,
@@ -25,6 +25,7 @@ const DriveViewTable = ({ folders, files, onTrashItem }) => {
           setContextMenu={setContextMenu}
           setFileFolderModel={setFileFolderModel}
           onTrashItem={onTrashItem}
+          onStarredItem={onStarredItem}
         />
       )}
 

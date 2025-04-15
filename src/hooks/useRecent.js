@@ -1,5 +1,5 @@
 // src/hooks/useFolder.js
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import { fetchRecentFiles } from "../api/driveApi";
 

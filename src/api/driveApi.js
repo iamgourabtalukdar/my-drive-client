@@ -84,6 +84,28 @@ export const fetchRecentFiles = async () => {
   return response.json();
 };
 
+// #### GET STARRED FILES + FOLDERS
+export const fetchStarredItems = async () => {
+  const response = await fetch(`${API_BASE}/starred`, {
+    method: "GET",
+    credentials: "include",
+  });
+  return response.json();
+};
+
+// #### UPDATE STARRED FILES + FOLDERS
+export const starredItem = async (type, id, isStarred) => {
+  const response = await fetch(`${API_BASE}/${type}/${id}/starred`, {
+    method: "PATCH",
+    credentials: "include",
+    body: JSON.stringify({ isStarred }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.json();
+};
+
 // ########################## TRASH #########################
 
 // #### GET TRASH CONTENT

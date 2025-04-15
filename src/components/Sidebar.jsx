@@ -60,10 +60,13 @@ const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
             <MdSchedule className=" text-2xl text-gray-600" />
             <span>Recent</span>
           </Link>
-          <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
+          <Link
+            to="/drive/starred"
+            className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          >
             <MdStar className=" text-2xl text-gray-600" />
             <span>Starred</span>
-          </button>
+          </Link>
           <Link
             to="/drive/trash"
             className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"

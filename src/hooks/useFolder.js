@@ -44,7 +44,6 @@ const useFolder = () => {
       setLoading(true);
       const data = await createFolder(folderName, folderId);
       if (!data.status) throw new Error(data.errors?.message);
-      await loadFolder();
     } catch (err) {
       setError(err.message);
       throw err; // Re-throw to let the calling component handle it
@@ -59,7 +58,6 @@ const useFolder = () => {
       const renameFn = type === "folder" ? renameFolder : renameFile;
       const data = await renameFn(itemId, newName);
       if (!data.status) throw new Error(data.errors?.message);
-      await loadFolder();
     } catch (err) {
       setError(err.message);
       throw err;
@@ -73,7 +71,6 @@ const useFolder = () => {
       setLoading(true);
       const data = await uploadFiles(files, folderId);
       if (!data.status) throw new Error(data.errors?.message);
-      await loadFolder();
     } catch (err) {
       setError(err.message);
       throw err;
@@ -87,7 +84,6 @@ const useFolder = () => {
       setLoading(true);
       const data = await moveToTrash(type, itemId);
       if (!data.status) throw new Error(data.errors?.message);
-      await loadFolder();
     } catch (err) {
       setError(err.message);
       throw err;

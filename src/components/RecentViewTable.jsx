@@ -6,7 +6,7 @@ import { MdArrowDropUp, MdOutlineRestorePage } from "react-icons/md";
 import { formatDate } from "../utils/formatDate";
 import DriveContextMenu from "./contextMenu/DriveContextMenu";
 
-const RecentViewTable = ({ recentFiles, onTrashItem }) => {
+const RecentViewTable = ({ recentFiles, onTrashItem, onStarredItem }) => {
   const {
     selectedFile,
     setSelectedFile,
@@ -23,6 +23,7 @@ const RecentViewTable = ({ recentFiles, onTrashItem }) => {
           setContextMenu={setContextMenu}
           setFileFolderModel={setFileFolderModel}
           onTrashItem={onTrashItem}
+          onStarredItem={onStarredItem}
         />
       )}
 

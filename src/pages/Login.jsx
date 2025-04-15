@@ -58,7 +58,7 @@ const Login = () => {
     e.preventDefault();
     setError(null);
 
-    // if (!validateForm()) return;
+    if (!validateForm()) return;
 
     try {
       const result = await makeSignIn(email, password);

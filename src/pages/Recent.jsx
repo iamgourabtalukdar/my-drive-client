@@ -5,22 +5,29 @@ import { DriveProvider } from "../contexts/DriveContext";
 import useFolder from "../hooks/useFolder";
 import useRecent from "../hooks/useRecent";
 import SpinLoader from "../components/SpinLoader";
+import useStarred from "../hooks/useStarred";
 
 const Recent = () => {
   const { recentFiles, loading, error, loadRecent } = useRecent();
   const { addFolder, renameItem, addFiles, trashItem } = useFolder();
+  const { updateStarredItem } = useStarred();
 
-  const addFilesFromRecentPage = async (files) => {
+  const onAddFiles = async (files) => {
     await addFiles(files);
     await loadRecent();
   };
 
-  const renameItemFromRecentPage = async (type, GiTeamIdea, newName) => {
-    await renameItem(type, GiTeamIdea, newName);
+  const onRenameItem = async (type, itemId, newName) => {
+    await renameItem(type, itemId, newName);
     await loadRecent();
   };
-  const trashItemFromRecentPage = async (type, itemId) => {
+  const onTrashItem = async (type, itemId) => {
     await trashItem(type, itemId);
+    await loadRecent();
+  };
+
+  const onStarredItem = async (type, itemId, isStarred) => {
+    await updateStarredItem(type, itemId, isStarred);
     await loadRecent();
   };
 
@@ -54,12 +61,13 @@ const Recent = () => {
     <DriveProvider>
       <DriveLayout
         onAddFolder={addFolder}
-        onAddFiles={addFilesFromRecentPage}
-        onRenameItem={renameItemFromRecentPage}
+        onAddFiles={onAddFiles}
+        onRenameItem={onRenameItem}
       >
         <RecentViewTable
           recentFiles={recentFiles}
-          onTrashItem={trashItemFromRecentPage}
+          onTrashItem={onTrashItem}
+          onStarredItem={onStarredItem}
         />
       </DriveLayout>
     </DriveProvider>

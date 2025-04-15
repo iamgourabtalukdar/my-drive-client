@@ -9,8 +9,16 @@ import SpinLoader from "../components/SpinLoader";
 const Trash = () => {
   const { files, folders, loading, error, loadTrash, restoreItem, deleteItem } =
     useTrash();
-  const { addFolder, renameItem, addFiles } = useFolder();
+  const { addFolder, addFiles } = useFolder();
 
+  const onRestoreItem = async (type, itemId, newName) => {
+    await restoreItem(type, itemId, newName);
+    await loadTrash();
+  };
+  const onDeleteItem = async (type, id) => {
+    await deleteItem(type, id);
+    await loadTrash();
+  };
   useEffect(() => {
     loadTrash();
   }, []);
@@ -40,16 +48,12 @@ const Trash = () => {
   // Render table with folders and files
   return (
     <DriveProvider>
-      <DriveLayout
-        onAddFolder={addFolder}
-        onAddFiles={addFiles}
-        onRenameItem={renameItem}
-      >
+      <DriveLayout onAddFolder={addFolder} onAddFiles={addFiles}>
         <TrashViewTable
           files={files}
           folders={folders}
-          onRestoreItem={restoreItem}
-          onDeleteItem={deleteItem}
+          onRestoreItem={onRestoreItem}
+          onDeleteItem={onDeleteItem}
         />
       </DriveLayout>
     </DriveProvider>

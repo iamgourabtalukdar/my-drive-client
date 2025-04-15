@@ -29,7 +29,6 @@ const useTrash = () => {
       setLoading(true);
       const data = await restoreFromTrash(type, id);
       if (!data.status) throw new Error(data.errors?.message);
-      await loadTrash();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -42,7 +41,6 @@ const useTrash = () => {
       setLoading(true);
       const data = await deletePermanently(type, id);
       if (!data.status) throw new Error(data.errors?.message);
-      await loadTrash();
     } catch (err) {
       setError(err.message);
     } finally {

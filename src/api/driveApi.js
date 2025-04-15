@@ -95,10 +95,10 @@ export const fetchStarredItems = async () => {
 
 // #### UPDATE STARRED FILES + FOLDERS
 export const starredItem = async (type, id, isStarred) => {
-  const response = await fetch(`${API_BASE}/${type}/${id}/starred`, {
+  const response = await fetch(`${API_BASE}/starred/${type}/${id}`, {
     method: "PATCH",
     credentials: "include",
-    body: JSON.stringify({ isStarred }),
+    body: JSON.stringify({ starred: isStarred }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -129,7 +129,7 @@ export const moveToTrash = async (type, id) => {
 
 // #### RESTORE FROM TRASH
 export const restoreFromTrash = async (type, id) => {
-  const response = await fetch(`${API_BASE}/${type}/${id}/restore`, {
+  const response = await fetch(`${API_BASE}/trash/${type}/${id}`, {
     method: "PATCH",
     credentials: "include",
   });
@@ -138,7 +138,7 @@ export const restoreFromTrash = async (type, id) => {
 
 // #### DELETE PERMANENTLY FROM TRASH
 export const deletePermanently = async (type, id) => {
-  const response = await fetch(`${API_BASE}/${type}/${id}/trash`, {
+  const response = await fetch(`${API_BASE}/trash/${type}/${id}`, {
     method: "DELETE",
     credentials: "include",
   });

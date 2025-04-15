@@ -3,6 +3,7 @@ import DriveLayout from "../components/DriveLayout";
 import DriveViewTable from "../components/DriveViewTable";
 import { DriveProvider } from "../contexts/DriveContext";
 import useFolder from "../hooks/useFolder";
+import SpinLoader from "../components/SpinLoader";
 
 const Home = () => {
   const {
@@ -27,7 +28,7 @@ const Home = () => {
     return (
       <DriveProvider>
         <DriveLayout>
-          <h1>LOADING...</h1>
+          <SpinLoader classes="mt-16" />
         </DriveLayout>
       </DriveProvider>
     );

@@ -4,6 +4,7 @@ import RecentViewTable from "../components/RecentViewTable";
 import { DriveProvider } from "../contexts/DriveContext";
 import useFolder from "../hooks/useFolder";
 import useRecent from "../hooks/useRecent";
+import SpinLoader from "../components/SpinLoader";
 
 const Recent = () => {
   const { recentFiles, loading, error, loadRecent } = useRecent();
@@ -31,7 +32,7 @@ const Recent = () => {
     return (
       <DriveProvider>
         <DriveLayout>
-          <h1>LOADING...</h1>
+          <SpinLoader classes="mt-16" />
         </DriveLayout>
       </DriveProvider>
     );

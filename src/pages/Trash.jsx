@@ -4,6 +4,7 @@ import TrashViewTable from "../components/TrashViewTable";
 import { DriveProvider } from "../contexts/DriveContext";
 import useTrash from "../hooks/useTrash";
 import useFolder from "../hooks/useFolder";
+import SpinLoader from "../components/SpinLoader";
 
 const Trash = () => {
   const { files, folders, loading, error, loadTrash, restoreItem, deleteItem } =
@@ -19,7 +20,7 @@ const Trash = () => {
     return (
       <DriveProvider>
         <DriveLayout>
-          <h1>LOADING...</h1>
+          <SpinLoader classes="mt-16" />
         </DriveLayout>
       </DriveProvider>
     );

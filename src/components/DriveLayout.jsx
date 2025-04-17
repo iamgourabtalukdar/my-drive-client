@@ -1,5 +1,3 @@
-// components/DriveLayout.js
-
 import { useContext, useState } from "react";
 import FileUpload from "./FileUpload";
 import Header from "./Header";
@@ -21,22 +19,21 @@ const DriveLayout = ({
 
   return (
     <>
-      <div className="bg-white font-sans text-gray-800 max-h-screen min-h-screen overflow-hidden flex flex-col">
+      <div className="grid h-screen min-h-screen grid-cols-[256px_1fr] grid-rows-[64px_64px_1fr] overflow-hidden font-sans text-gray-800">
         <Header />
-        <div className="flex ">
-          <Sidebar
-            onUploadClick={() => setIsFileUpload(true)}
-            setFileFolderModel={setFileFolderModel}
-          />
-          <main className="w-full p-4">
-            <Toolbar
-              onRefresh={onRefresh}
-              isListView={isListView}
-              setIsListView={setIsListView}
-            />
-            {children}
-          </main>
-        </div>
+
+        <Sidebar
+          onUploadClick={() => setIsFileUpload(true)}
+          setFileFolderModel={setFileFolderModel}
+        />
+        <Toolbar
+          onRefresh={onRefresh}
+          isListView={isListView}
+          setIsListView={setIsListView}
+        />
+        <main className="col-span-3 col-start-2 row-start-3 row-end-4 overflow-y-scroll p-4">
+          {children}
+        </main>
       </div>
 
       {/* Modals */}

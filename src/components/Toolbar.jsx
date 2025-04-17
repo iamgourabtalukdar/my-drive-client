@@ -27,39 +27,39 @@ const dropDownTypeItems = [
 
 const Toolbar = ({ onRefresh, isListView, setIsListView }) => {
   return (
-    <div className="border-b border-gray-200 px-4 pb-4 flex items-center justify-between">
+    <div className="col-span-3 col-start-2 row-start-2 row-end-3 flex items-center justify-between border-b border-gray-200 px-4">
       <div className="flex space-x-2">
         <Dropdown label="Type" menuItems={dropDownTypeItems} />
         <Dropdown label="People" menuItems={dropDownTypeItems} />
       </div>
       <div className="flex space-x-2">
         <button
-          className="p-2 rounded hover:bg-gray-100 flex items-center"
+          className="flex items-center rounded p-2 hover:bg-gray-100"
           onClick={onRefresh}
         >
-          <MdRefresh className="text-gray-600 mr-1 text-2xl" />
+          <MdRefresh className="mr-1 text-2xl text-gray-600" />
           <span className="text-sm">Refresh</span>
         </button>
         {isListView ? (
           <button
-            className="p-2 rounded hover:bg-gray-100 flex items-center"
+            className="flex items-center rounded p-2 hover:bg-gray-100"
             onClick={() => setIsListView(false)}
           >
-            <MdOutlineGridView className="text-gray-600 mr-1 text-2xl" />
+            <MdOutlineGridView className="mr-1 text-2xl text-gray-600" />
             <span className="text-sm">Grid</span>
           </button>
         ) : (
           <button
-            className="p-2 rounded hover:bg-gray-100 flex items-center"
+            className="flex items-center rounded p-2 hover:bg-gray-100"
             onClick={() => setIsListView(true)}
           >
-            <MdOutlineFormatListBulleted className="text-gray-600 mr-1 text-2xl" />
+            <MdOutlineFormatListBulleted className="mr-1 text-2xl text-gray-600" />
             <span className="text-sm">List</span>
           </button>
         )}
 
-        <button className="p-2 rounded hover:bg-gray-100 flex items-center">
-          <MdInfoOutline className="text-gray-600 mr-1 text-2xl" />
+        <button className="flex items-center rounded p-2 hover:bg-gray-100">
+          <MdInfoOutline className="mr-1 text-2xl text-gray-600" />
           <span className="text-sm">Details</span>
         </button>
       </div>

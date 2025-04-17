@@ -14,24 +14,24 @@ const ListView = ({ folders, files }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       // transition={{ delay: 0.3 }}
-      className="file-table w-full"
+      className="w-full"
     >
       <thead>
         <tr className="border-b border-gray-200 text-left text-gray-600">
-          <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tl">
+          <th className="cursor-pointer rounded-tl px-4 py-2 pb-2 font-medium hover:bg-gray-100">
             <div className="flex items-center">
               <span>Name</span>
 
               <MdArrowDropUp className="text-2xl" />
             </div>
           </th>
-          <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2">
+          <th className="cursor-pointer px-4 py-2 pb-2 font-medium hover:bg-gray-100">
             Owner
           </th>
-          <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2">
+          <th className="cursor-pointer px-4 py-2 pb-2 font-medium hover:bg-gray-100">
             Last modified
           </th>
-          <th className="pb-2 font-medium cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-tr">
+          <th className="cursor-pointer rounded-tr px-4 py-2 pb-2 font-medium hover:bg-gray-100">
             Size
           </th>
         </tr>

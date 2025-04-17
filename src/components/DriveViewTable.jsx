@@ -10,7 +10,7 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
     useContext(DriveContext);
 
   return (
-    <>
+    <div>
       {contextMenu.visible && (
         <DriveContextMenu
           contextMenu={contextMenu}
@@ -21,23 +21,21 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
         />
       )}
 
-      <div className=" h-[calc(100vh-150px)] overflow-y-scroll">
-        {folders.length || files.length ? (
-          isListView ? (
-            <ListView folders={folders} files={files} />
-          ) : (
-            <GridView folders={folders} files={files} />
-          )
+      {folders.length || files.length ? (
+        isListView ? (
+          <ListView folders={folders} files={files} />
         ) : (
-          <div className="flex justify-center items-center flex-col  mt-16">
-            <FaRegFolderOpen className="text-gray-100 text-9xl" />
-            <h1 className="text-gray-200 font-medium text-2xl mt-4">
-              Folder is empty
-            </h1>
-          </div>
-        )}
-      </div>
-    </>
+          <GridView folders={folders} files={files} />
+        )
+      ) : (
+        <div className="mt-16 flex flex-col items-center justify-center">
+          <FaRegFolderOpen className="text-9xl text-gray-100" />
+          <h1 className="mt-4 text-2xl font-medium text-gray-200">
+            Folder is empty
+          </h1>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -12,21 +12,21 @@ import { Link } from "react-router";
 
 const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
   return (
-    <aside className="max-w-64 w-full  border-r border-gray-200 p-4 h-[calc(100vh-65px)] overflow-y-scroll hidden md:block">
+    <aside className="col-start-1 col-end-2 row-start-2 row-end-4 hidden overflow-y-scroll border-r border-gray-200 p-4 md:block">
       <div className="space-y-1">
-        <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
-          <MdOutlineDriveFolderUpload className=" text-2xl text-blue-500" />
+        <button className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100">
+          <MdOutlineDriveFolderUpload className="text-2xl text-blue-500" />
           <span>New</span>
         </button>
         <button
-          className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
           onClick={onUploadClick}
         >
-          <MdFileUpload className=" text-2xl text-blue-500" />
+          <MdFileUpload className="text-2xl text-blue-500" />
           <span>Upload File</span>
         </button>
         <button
-          className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
           onClick={() =>
             setFileFolderModel({
               isVisible: true,
@@ -35,7 +35,7 @@ const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
             })
           }
         >
-          <MdCreateNewFolder className=" text-2xl text-blue-500" />
+          <MdCreateNewFolder className="text-2xl text-blue-500" />
 
           <span>New Folder</span>
         </button>
@@ -43,46 +43,46 @@ const Sidebar = ({ onUploadClick, setFileFolderModel }) => {
       <div className="mt-8 space-y-1">
         <Link
           to="/drive/folder"
-          className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
         >
-          <MdOutlineStorage className=" text-2xl text-gray-600" />
+          <MdOutlineStorage className="text-2xl text-gray-600" />
           <span>My Drive</span>
         </Link>
-        <button className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left">
-          <MdPeople className=" text-2xl text-gray-600" />
+        <button className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100">
+          <MdPeople className="text-2xl text-gray-600" />
           <span>Shared with me</span>
         </button>
         <Link
           to="/drive/recent"
-          className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
         >
-          <MdSchedule className=" text-2xl text-gray-600" />
+          <MdSchedule className="text-2xl text-gray-600" />
           <span>Recent</span>
         </Link>
         <Link
           to="/drive/starred"
-          className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
         >
-          <MdStar className=" text-2xl text-gray-600" />
+          <MdStar className="text-2xl text-gray-600" />
           <span>Starred</span>
         </Link>
         <Link
           to="/drive/trash"
-          className="w-full flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-left"
+          className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
         >
-          <MdDelete className=" text-2xl text-gray-600" />
+          <MdDelete className="text-2xl text-gray-600" />
           <span>Trash</span>
         </Link>
       </div>
       <div className="mt-8">
-        <div className="text-xs text-gray-500 mb-2">Storage</div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className="mb-2 text-xs text-gray-500">Storage</div>
+        <div className="h-2.5 w-full rounded-full bg-gray-200">
           <div
-            className="bg-blue-600 h-2.5 rounded-full"
+            className="h-2.5 rounded-full bg-blue-600"
             style={{ width: "45%" }}
           ></div>
         </div>
-        <div className="text-sm text-gray-600 mt-1">7.5 GB of 15 GB used</div>
+        <div className="mt-1 text-sm text-gray-600">7.5 GB of 15 GB used</div>
       </div>
     </aside>
   );

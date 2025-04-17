@@ -1,4 +1,4 @@
-import FileItem from "./FileItem";
+import ListViewFileItem from "./ListViewFileItem";
 import { motion } from "framer-motion";
 import { DriveContext } from "../contexts/DriveContext";
 import React, { useContext, useEffect } from "react";
@@ -65,7 +65,7 @@ const RecentViewTable = ({ recentFiles, onTrashItem, onStarredItem }) => {
                   </td>
                 </tr>
                 {files.map((file) => (
-                  <FileItem
+                  <ListViewFileItem
                     key={file.id}
                     file={file}
                     setSelectedFile={setSelectedFile}

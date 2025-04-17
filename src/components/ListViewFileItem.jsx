@@ -3,7 +3,7 @@ import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
 import { getFileIcon } from "../utils/getFileIcon";
 
-const FileItem = ({
+const ListViewFileItem = ({
   file,
   setSelectedFile,
   setShowPreview,
@@ -64,4 +64,4 @@ const FileItem = ({
   );
 };
 
-export default FileItem;
+export default ListViewFileItem;

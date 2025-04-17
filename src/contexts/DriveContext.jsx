@@ -10,6 +10,7 @@ export function DriveProvider({ children }) {
     type: "",
   });
   const [fileFolderModel, setFileFolderModel] = useState({ isVisible: false });
+  const [isListView, setIsListView] = useState(false);
 
   return (
     <DriveContext.Provider
@@ -18,6 +19,8 @@ export function DriveProvider({ children }) {
         setContextMenu,
         fileFolderModel,
         setFileFolderModel,
+        isListView,
+        setIsListView,
       }}
     >
       {children}

@@ -16,7 +16,8 @@ const DriveLayout = ({
   onRefresh,
 }) => {
   const [isFileUpload, setIsFileUpload] = useState(false);
-  const { fileFolderModel, setFileFolderModel } = useContext(DriveContext);
+  const { fileFolderModel, setFileFolderModel, isListView, setIsListView } =
+    useContext(DriveContext);
 
   return (
     <>
@@ -28,7 +29,11 @@ const DriveLayout = ({
             setFileFolderModel={setFileFolderModel}
           />
           <main className="flex-1 overflow-auto p-4">
-            <Toolbar onRefresh={onRefresh} />
+            <Toolbar
+              onRefresh={onRefresh}
+              isListView={isListView}
+              setIsListView={setIsListView}
+            />
             {children}
           </main>
         </div>

@@ -1,6 +1,6 @@
-import FileItem from "./FileItem";
+import ListViewFileItem from "./ListViewFileItem";
 import { motion } from "framer-motion";
-import FolderItem from "./FolderItem";
+import ListViewFolderItem from "./ListViewFolderItem";
 import { DriveContext } from "../contexts/DriveContext";
 import { useContext } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -50,7 +50,7 @@ const TrashViewTable = ({ files, folders, onRestoreItem, onDeleteItem }) => {
           </thead>
           <tbody className="bg-red-50">
             {folders.map((folder) => (
-              <FolderItem
+              <ListViewFolderItem
                 key={folder.id}
                 folder={folder}
                 setSelectedFile={setSelectedFile}
@@ -62,7 +62,7 @@ const TrashViewTable = ({ files, folders, onRestoreItem, onDeleteItem }) => {
               />
             ))}
             {files.map((file) => (
-              <FileItem
+              <ListViewFileItem
                 key={file.id}
                 file={file}
                 setSelectedFile={setSelectedFile}

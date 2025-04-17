@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { formatDate } from "../utils/formatDate";
 import { BsFolderFill, BsStarFill } from "react-icons/bs";
 
-const FolderItem = ({
+const ListViewFolderItem = ({
   folder,
   setSelectedFile,
   setShowPreview,
@@ -59,4 +59,4 @@ const FolderItem = ({
   );
 };
 
-export default FolderItem;
+export default ListViewFolderItem;

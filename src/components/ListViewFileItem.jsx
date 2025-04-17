@@ -7,9 +7,9 @@ const ListViewFileItem = ({
   file,
   setSelectedFile,
   setShowPreview,
-  setContextMenu,
+  handleContextMenu,
   fileSelectClass,
-  isTrash,
+  isTrash = false,
 }) => {
   // const handleClick = () => {
 
@@ -17,33 +17,22 @@ const ListViewFileItem = ({
   //   setShowPreview(true);
   // };
 
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-    setContextMenu({
-      visible: true,
-      x: e.clientX,
-      y: e.clientY,
-      type: "file",
-      item: file,
-    });
-  };
-
   return (
     <tr
-      className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-default ${fileSelectClass} ${
+      className={`cursor-default border-b border-gray-100 hover:bg-[#f1f3f4] ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
       onDoubleClick={() =>
         window.open(
           `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,
-          "_blank"
+          "_blank",
         )
       }
-      onContextMenu={handleContextMenu}
+      onContextMenu={(e) => handleContextMenu(e, file, "file")}
     >
       <td className="px-4 py-3">
         <div className="flex items-center">
-          <span className=" mr-2 text-xl text-gray-500">
+          <span className="mr-2 text-xl text-gray-500">
             {getFileIcon(file.extension)}
           </span>
           <span>
@@ -51,7 +40,7 @@ const ListViewFileItem = ({
             {file.extension}
           </span>
           {file.starred && (
-            <BsStarFill className="ml-2 text-yellow-400 text-sm" />
+            <BsStarFill className="ml-2 text-sm text-yellow-400" />
           )}
         </div>
       </td>

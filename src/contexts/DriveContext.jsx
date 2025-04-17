@@ -3,7 +3,7 @@ export const DriveContext = createContext();
 
 export function DriveProvider({ children }) {
   const [contextMenu, setContextMenu] = useState({
-    visible: false,
+    visible: "",
     x: 0,
     y: 0,
     item: null,

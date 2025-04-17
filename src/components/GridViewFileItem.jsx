@@ -3,30 +3,39 @@ import { getFileIcon } from "../utils/getFileIcon";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
 
-const GridViewFileItem = ({ file }) => {
+const GridViewFileItem = ({ file, handleContextMenu }) => {
   return (
-    <div className="group bg-white rounded-xl shadow-sm hover:shadow-md transition p-4 border border-gray-100">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex items-center gap-3 ">
-          <div className="bg-gray-100 p-2 text-xl rounded">
+    <div
+      className="group rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md"
+      onContextMenu={(e) => handleContextMenu(e, file, "file")}
+    >
+      <div className="mb-4 flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <div className="rounded bg-gray-100 p-2 text-xl">
             {getFileIcon(file.extension)}
           </div>
           <div className="flex-1">
-            <p className="font-semibold text-gray-800 truncate">{file.name}</p>
+            <p className="truncate font-semibold text-gray-800">{file.name}</p>
             <p className="text-xs text-gray-500">{file.extension}</p>
           </div>
         </div>
         <div className="flex gap-2">
           {file.starred ? (
-            <BsStarFill className="ml-2 text-yellow-400" />
+            <button>
+              <BsStarFill className="ml-2 text-yellow-400" />
+            </button>
           ) : (
-            <BsStar className="ml-2 " />
+            <button>
+              <BsStar className="ml-2" />
+            </button>
           )}
-          <BsThreeDotsVertical />
+          <button onClick={(e) => handleContextMenu(e, file, "file")}>
+            <BsThreeDotsVertical />
+          </button>
         </div>
       </div>
 
-      <div className="text-sm text-gray-600 space-y-1">
+      <div className="space-y-1 text-sm text-gray-600">
         <div>
           <span className="font-medium">Size: </span>
           {formatFileSize(file.size)}

@@ -36,7 +36,7 @@ const DriveContextMenu = ({
 
   return (
     <div
-      className="context-menu bg-white shadow-lg rounded-md py-1 min-w-60 border border-gray-200"
+      className="context-menu min-w-60 rounded-md border border-gray-200 bg-white py-1 shadow-lg"
       style={{
         position: "fixed",
         left: `${contextMenu.x}px`,
@@ -55,18 +55,18 @@ const DriveContextMenu = ({
               contextMenu.item.id
             }`}
             target="_blank"
-            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+            className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
           >
-            <MdOpenInNew className=" text-gray-600 mr-2 text-2xl" />
+            <MdOpenInNew className="mr-2 text-2xl text-gray-600" />
             <span>Open</span>
           </Link>
           <Link
             to={`${import.meta.env.VITE_API_BASE_URL}/file/${
               contextMenu.item.id
             }?action=download`}
-            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+            className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
           >
-            <MdDownload className=" text-gray-600 mr-2 text-2xl" />
+            <MdDownload className="mr-2 text-2xl text-gray-600" />
             <span>Download</span>
           </Link>
         </>
@@ -74,16 +74,16 @@ const DriveContextMenu = ({
         <>
           <Link
             to={`/drive/folder/${contextMenu.item.id}`}
-            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+            className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
           >
-            <MdFolderOpen className=" text-gray-600 mr-2 text-2xl" />
+            <MdFolderOpen className="mr-2 text-2xl text-gray-600" />
             <span>Open</span>
           </Link>
         </>
       )}
 
       <button
-        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+        className="flex w-full cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
         onClick={() =>
           setFileFolderModel({
             isVisible: true,
@@ -93,50 +93,50 @@ const DriveContextMenu = ({
           })
         }
       >
-        <MdEdit className=" text-gray-600 mr-2 text-2xl" />
+        <MdEdit className="mr-2 text-2xl text-gray-600" />
         <span>Rename</span>
       </button>
-      <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-        <MdOutlineShare className=" text-gray-600 mr-2 text-2xl" />
+      <div className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100">
+        <MdOutlineShare className="mr-2 text-2xl text-gray-600" />
         <span>Share</span>
       </div>
 
-      <div className="border-t border-gray-200 my-1"></div>
+      <div className="my-1 border-t border-gray-200"></div>
 
       {contextMenu.item.starred ? (
         <button
-          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+          className="flex w-full cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
           onClick={() =>
             onStarredItem(contextMenu.type, contextMenu.item.id, false)
           }
         >
-          <MdStar className="text-gray-600 mr-2 text-2xl" />
+          <MdStar className="mr-2 text-2xl text-gray-600" />
           <span>Remove from Starred</span>
         </button>
       ) : (
         <button
-          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+          className="flex w-full cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
           onClick={() =>
             onStarredItem(contextMenu.type, contextMenu.item.id, true)
           }
         >
-          <MdStarOutline className=" text-gray-600 mr-2 text-2xl" />
+          <MdStarOutline className="mr-2 text-2xl text-gray-600" />
           <span>Add to Starred</span>
         </button>
       )}
 
-      <div className="border-t border-gray-200 my-1"></div>
+      <div className="my-1 border-t border-gray-200"></div>
 
       <button
-        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center w-full"
+        className="flex w-full cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
         onClick={() => onTrashItem(contextMenu.type, contextMenu.item.id)}
       >
-        <MdDelete className=" text-gray-600 mr-2 text-2xl" />
+        <MdDelete className="mr-2 text-2xl text-gray-600" />
 
         <span>Remove</span>
       </button>
-      <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-        <MdInfoOutline className=" text-gray-600 mr-2 text-2xl" />
+      <div className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100">
+        <MdInfoOutline className="mr-2 text-2xl text-gray-600" />
         <span>Details</span>
       </div>
     </div>

@@ -10,7 +10,7 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
     useContext(DriveContext);
 
   return (
-    <div>
+    <>
       {contextMenu.visible && (
         <DriveContextMenu
           contextMenu={contextMenu}
@@ -35,7 +35,7 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
           </h1>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

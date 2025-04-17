@@ -6,9 +6,9 @@ const ListViewFolderItem = ({
   folder,
   setSelectedFile,
   setShowPreview,
-  setContextMenu,
+  handleContextMenu,
   fileSelectClass,
-  isTrash,
+  isTrash = false,
 }) => {
   const navigate = useNavigate();
 
@@ -20,32 +20,21 @@ const ListViewFolderItem = ({
   //   // setShowPreview(true);
   // };
 
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-    setContextMenu({
-      visible: true,
-      x: e.clientX,
-      y: e.clientY,
-      type: "folder",
-      item: folder,
-    });
-  };
-
   return (
     <tr
-      className={`border-b   hover:bg-[#f1f3f4] cursor-default ${fileSelectClass} ${
+      className={`cursor-default border-b hover:bg-[#f1f3f4] ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
       onDoubleClick={isTrash ? () => {} : openFolder}
-      onContextMenu={handleContextMenu}
+      onContextMenu={(e) => handleContextMenu(e, folder, "folder")}
     >
       <td className="px-4 py-3">
         <div className="flex items-center">
-          <BsFolderFill className="text-xl  mr-2 text-gray-500" />
+          <BsFolderFill className="mr-2 text-xl text-gray-500" />
 
           <span>{folder.name}</span>
           {folder.starred && (
-            <BsStarFill className="ml-2 text-yellow-400 text-sm" />
+            <BsStarFill className="ml-2 text-sm text-yellow-400" />
           )}
         </div>
       </td>

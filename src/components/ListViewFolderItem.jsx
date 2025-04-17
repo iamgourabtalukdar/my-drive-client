@@ -15,10 +15,10 @@ const ListViewFolderItem = ({
   const openFolder = () => {
     navigate(`/drive/folder/${folder.id}`);
   };
-  const handleDoubleClick = () => {
-    // setSelectedFile(folder);
-    // setShowPreview(true);
-  };
+  // const handleClick = () => {
+  //   // setSelectedFile(folder);
+  //   // setShowPreview(true);
+  // };
 
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -33,11 +33,10 @@ const ListViewFolderItem = ({
 
   return (
     <tr
-      className={`border-b   hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass} ${
+      className={`border-b   hover:bg-[#f1f3f4] cursor-default ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
-      onClick={isTrash ? () => {} : openFolder}
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={isTrash ? () => {} : openFolder}
       onContextMenu={handleContextMenu}
     >
       <td className="px-4 py-3">

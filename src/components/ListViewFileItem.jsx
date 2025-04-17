@@ -30,7 +30,7 @@ const ListViewFileItem = ({
 
   return (
     <tr
-      className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-pointer ${fileSelectClass} ${
+      className={`border-b border-gray-100 hover:bg-[#f1f3f4] cursor-default ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
       onDoubleClick={() =>

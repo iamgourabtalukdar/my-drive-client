@@ -1,4 +1,9 @@
-import { BsFolderFill, BsThreeDotsVertical } from "react-icons/bs";
+import {
+  BsFolderFill,
+  BsStar,
+  BsStarFill,
+  BsThreeDotsVertical,
+} from "react-icons/bs";
 import { useNavigate } from "react-router";
 
 const GridViewFolderItem = ({ folder }) => {
@@ -9,16 +14,23 @@ const GridViewFolderItem = ({ folder }) => {
   };
   return (
     <div
-      className="flex items-center justify-between gap-2 px-4 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 cursor-pointer"
-      onClick={openFolder}
+      className="flex items-center justify-between gap-2 px-4 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 cursor-default"
+      onDoubleClick={openFolder}
     >
       <div className="flex items-center">
         <BsFolderFill className="text-xl  mr-2 text-gray-500" />
         <span className="text-sm font-medium text-gray-800">{folder.name}</span>
       </div>
-      <button className="cursor-pointer">
-        <BsThreeDotsVertical />
-      </button>
+      <div className="flex items-center gap-2">
+        {folder.starred ? (
+          <BsStarFill className="ml-2 text-yellow-400" />
+        ) : (
+          <BsStar className="ml-2 " />
+        )}
+        <button className="cursor-pointer">
+          <BsThreeDotsVertical />
+        </button>
+      </div>
     </div>
   );
 };

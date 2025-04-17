@@ -21,20 +21,22 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
         />
       )}
 
-      {folders.length || files.length ? (
-        isListView ? (
-          <ListView folders={folders} files={files} />
+      <div className=" h-[calc(100vh-150px)] overflow-y-scroll">
+        {folders.length || files.length ? (
+          isListView ? (
+            <ListView folders={folders} files={files} />
+          ) : (
+            <GridView folders={folders} files={files} />
+          )
         ) : (
-          <GridView folders={folders} files={files} />
-        )
-      ) : (
-        <div className="flex justify-center items-center flex-col  mt-16">
-          <FaRegFolderOpen className="text-gray-100 text-9xl" />
-          <h1 className="text-gray-200 font-medium text-2xl mt-4">
-            Folder is empty
-          </h1>
-        </div>
-      )}
+          <div className="flex justify-center items-center flex-col  mt-16">
+            <FaRegFolderOpen className="text-gray-100 text-9xl" />
+            <h1 className="text-gray-200 font-medium text-2xl mt-4">
+              Folder is empty
+            </h1>
+          </div>
+        )}
+      </div>
     </>
   );
 };

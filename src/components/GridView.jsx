@@ -13,6 +13,48 @@ const GridView = ({ folders, files }) => {
             {folders.map((folder) => (
               <GridViewFolderItem folder={folder} key={folder.id} />
             ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
+            {folders.map((folder) => (
+              <GridViewFolderItem folder={folder} key={folder.id} />
+            ))}
           </div>
         </div>
       )}

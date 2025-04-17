@@ -21,14 +21,14 @@ const DriveLayout = ({
 
   return (
     <>
-      <div className="bg-white font-sans text-gray-800 h-screen flex flex-col">
+      <div className="bg-white font-sans text-gray-800 max-h-screen min-h-screen overflow-hidden flex flex-col">
         <Header />
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex ">
           <Sidebar
             onUploadClick={() => setIsFileUpload(true)}
             setFileFolderModel={setFileFolderModel}
           />
-          <main className="flex-1 overflow-auto p-4">
+          <main className="w-full p-4">
             <Toolbar
               onRefresh={onRefresh}
               isListView={isListView}

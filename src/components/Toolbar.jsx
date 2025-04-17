@@ -18,7 +18,7 @@ const dropDownTypeItems = [
   { label: "Shortcuts", icon: "🔗" },
 ];
 
-const Toolbar = () => {
+const Toolbar = ({ onRefresh }) => {
   return (
     <div className="border-b border-gray-200 px-4 pb-4 flex items-center justify-between">
       <div className="flex space-x-2">
@@ -26,7 +26,10 @@ const Toolbar = () => {
         <Dropdown label="People" menuItems={dropDownTypeItems} />
       </div>
       <div className="flex space-x-2">
-        <button className="p-2 rounded hover:bg-gray-100 flex items-center">
+        <button
+          className="p-2 rounded hover:bg-gray-100 flex items-center"
+          onClick={onRefresh}
+        >
           <MdRefresh className="text-gray-600 mr-1 text-2xl" />
           <span className="text-sm">Refresh</span>
         </button>

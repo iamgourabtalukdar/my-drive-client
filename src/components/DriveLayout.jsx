@@ -8,7 +8,13 @@ import Sidebar from "./Sidebar";
 import Toolbar from "./Toolbar";
 import { DriveContext } from "../contexts/DriveContext";
 
-const DriveLayout = ({ children, onAddFolder, onAddFiles, onRenameItem }) => {
+const DriveLayout = ({
+  children,
+  onAddFolder,
+  onAddFiles,
+  onRenameItem,
+  onRefresh,
+}) => {
   const [isFileUpload, setIsFileUpload] = useState(false);
   const { fileFolderModel, setFileFolderModel } = useContext(DriveContext);
 
@@ -22,7 +28,7 @@ const DriveLayout = ({ children, onAddFolder, onAddFiles, onRenameItem }) => {
             setFileFolderModel={setFileFolderModel}
           />
           <main className="flex-1 overflow-auto p-4">
-            <Toolbar />
+            <Toolbar onRefresh={onRefresh} />
             {children}
           </main>
         </div>

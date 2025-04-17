@@ -15,10 +15,16 @@ const Trash = () => {
     await restoreItem(type, itemId, newName);
     await loadTrash();
   };
+
   const onDeleteItem = async (type, id) => {
     await deleteItem(type, id);
     await loadTrash();
   };
+
+  const onRefresh = async () => {
+    await loadTrash();
+  };
+
   useEffect(() => {
     loadTrash();
   }, []);
@@ -48,7 +54,11 @@ const Trash = () => {
   // Render table with folders and files
   return (
     <DriveProvider>
-      <DriveLayout onAddFolder={addFolder} onAddFiles={addFiles}>
+      <DriveLayout
+        onAddFolder={addFolder}
+        onAddFiles={addFiles}
+        onRefresh={onRefresh}
+      >
         <TrashViewTable
           files={files}
           folders={folders}

@@ -50,6 +50,10 @@ const Home = () => {
     await loadFolder();
   };
 
+  const onRefresh = async () => {
+    await loadFolder();
+  };
+
   // Handle loading state
   if (loading) {
     return (
@@ -79,6 +83,7 @@ const Home = () => {
         onAddFolder={onAddFolder}
         onAddFiles={onAddFiles}
         onRenameItem={onRenameItem}
+        onRefresh={onRefresh}
       >
         <DriveViewTable
           folders={folders}

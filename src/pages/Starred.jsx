@@ -18,21 +18,25 @@ const Starred = () => {
 
   const { addFolder, renameItem, addFiles, trashItem } = useFolder();
 
-  const addFilesFromStarredPage = async (files) => {
+  const onAddFiles = async (files) => {
     await addFiles(files);
     await loadStarred();
   };
 
-  const renameItemFromStarredPage = async (type, GiTeamIdea, newName) => {
+  const onRenameItem = async (type, GiTeamIdea, newName) => {
     await renameItem(type, GiTeamIdea, newName);
     await loadStarred();
   };
-  const trashItemFromStarredPage = async (type, itemId) => {
+  const onTrashItem = async (type, itemId) => {
     await trashItem(type, itemId);
     await loadStarred();
   };
-  const starItemFromStarredPage = async (type, itemId, isStarred) => {
+  const onStarredItem = async (type, itemId, isStarred) => {
     await updateStarredItem(type, itemId, isStarred);
+    await loadStarred();
+  };
+
+  const onRefresh = async () => {
     await loadStarred();
   };
 
@@ -67,14 +71,15 @@ const Starred = () => {
     <DriveProvider>
       <DriveLayout
         onAddFolder={addFolder}
-        onAddFiles={addFilesFromStarredPage}
-        onRenameItem={renameItemFromStarredPage}
+        onAddFiles={onAddFiles}
+        onRenameItem={onRenameItem}
+        onRefresh={onRefresh}
       >
         <DriveViewTable
           folders={starredFolders}
           files={starredFiles}
-          onTrashItem={trashItemFromStarredPage}
-          onStarredItem={starItemFromStarredPage}
+          onTrashItem={onTrashItem}
+          onStarredItem={onStarredItem}
         />
       </DriveLayout>
     </DriveProvider>

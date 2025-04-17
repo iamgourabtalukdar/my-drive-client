@@ -31,6 +31,10 @@ const Recent = () => {
     await loadRecent();
   };
 
+  const onRefresh = async () => {
+    await loadRecent();
+  };
+
   useEffect(() => {
     loadRecent();
   }, []);
@@ -63,6 +67,7 @@ const Recent = () => {
         onAddFolder={addFolder}
         onAddFiles={onAddFiles}
         onRenameItem={onRenameItem}
+        onRefresh={onRefresh}
       >
         <RecentViewTable
           recentFiles={recentFiles}

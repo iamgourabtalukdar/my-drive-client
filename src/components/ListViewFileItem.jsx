@@ -35,7 +35,7 @@ const ListViewFileItem = ({
           <span className="mr-2 text-xl text-gray-500">
             {getFileIcon(file.extension)}
           </span>
-          <span>
+          <span className="max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap">
             {file.name}
             {file.extension}
           </span>

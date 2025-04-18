@@ -22,9 +22,11 @@ const GridViewFolderItem = ({
       }
       onContextMenu={(e) => handleContextMenu(e, folder, "folder")}
     >
-      <div className="flex items-center">
-        <BsFolderFill className="mr-2 text-xl text-gray-500" />
-        <span className="text-sm font-medium text-gray-800">{folder.name}</span>
+      <div className="flex min-w-0 items-center">
+        <BsFolderFill className="mr-2 min-w-5 text-xl text-gray-500" />
+        <span className="max-w-[90%] min-w-0 truncate text-sm font-medium text-gray-800">
+          {folder.name}
+        </span>
       </div>
       <div className="ml-2 flex items-center gap-2">
         {folder.starred ? (

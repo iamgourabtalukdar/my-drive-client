@@ -11,7 +11,7 @@ const GridViewFileItem = ({
 }) => {
   return (
     <div
-      className={`group rounded-xl border p-4 shadow-sm transition hover:shadow-md ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-100 bg-white hover:bg-gray-100"}`}
+      className={`rounded-xl border p-4 shadow-sm transition hover:shadow-md ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-100 bg-white hover:bg-gray-100"}`}
       onContextMenu={(e) => handleContextMenu(e, file, "file")}
       onDoubleClick={() =>
         window.open(
@@ -20,19 +20,19 @@ const GridViewFileItem = ({
         )
       }
     >
-      <div className="mb-4 flex items-start justify-between">
-        <div className="flex items-center gap-3">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex max-w-4/5 items-center gap-3">
           <div
-            className={`rounded ${isTrash ? "bg-red-100" : "bg-gray-100"} p-2 text-xl text-gray-500`}
+            className={`flex-shrink-0 rounded ${isTrash ? "bg-red-100" : "bg-gray-100"} p-2 text-xl text-gray-500`}
           >
             {getFileIcon(file.extension)}
           </div>
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <p className="truncate font-semibold text-gray-800">{file.name}</p>
             <p className="text-xs text-gray-500">{file.extension}</p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex justify-end gap-2 sm:justify-start">
           {file.starred ? (
             <button
               className="transform text-yellow-400 duration-100 hover:scale-[1.4]"

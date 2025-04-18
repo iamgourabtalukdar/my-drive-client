@@ -5,19 +5,17 @@ import FileFolderCreateRenameModel from "./modelPopUp/FileFolderCreateRenameMode
 import Sidebar from "./Sidebar";
 import Toolbar from "./Toolbar";
 import { DriveContext } from "../contexts/DriveContext";
+import { Outlet } from "react-router";
 
-const DriveLayout = ({
-  children,
-  onAddFolder,
-  onAddFiles,
-  onRenameItem,
-  onRefresh,
-}) => {
+const DriveLayout = () => {
   const [isFileUpload, setIsFileUpload] = useState(false);
   const { fileFolderModel, setFileFolderModel, isListView, setIsListView } =
     useContext(DriveContext);
 
-  console.log(isListView);
+  const [onAddFolder, setOnAddFolder] = useState(() => {});
+  const [onAddFiles, setOnAddFiles] = useState(() => {});
+  const [onRenameItem, setOnRenameItem] = useState(() => {});
+  const [onRefresh, setOnRefresh] = useState(() => {});
 
   return (
     <>
@@ -34,7 +32,14 @@ const DriveLayout = ({
           setIsListView={setIsListView}
         />
         <main className="col-span-3 col-start-2 row-start-3 row-end-4 overflow-y-scroll p-4">
-          {children}
+          <Outlet
+            context={{
+              setOnAddFiles,
+              setOnAddFolder,
+              setOnRefresh,
+              setOnRenameItem,
+            }}
+          />
         </main>
       </div>
 

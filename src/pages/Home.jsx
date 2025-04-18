@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import DriveLayout from "../components/DriveLayout";
 import DriveView from "../components/DriveView";
-import { DriveProvider } from "../contexts/DriveContext";
+
 import useFolder from "../hooks/useFolder";
 import SpinLoader from "../components/SpinLoader";
 import useStarred from "../hooks/useStarred";
+import { useOutletContext } from "react-router";
 
 const Home = () => {
+  const { setOnAddFiles, setOnAddFolder, setOnRefresh, setOnRenameItem } =
+    useOutletContext();
   const {
     folderId,
     folders,
@@ -22,23 +25,28 @@ const Home = () => {
   const { updateStarredItem } = useStarred();
 
   useEffect(() => {
+    setOnAddFiles(() => async (files) => {
+      await addFiles(files);
+      await loadFolder();
+    });
+    setOnAddFolder(() => async (folderName) => {
+      await addFolder(folderName);
+      await loadFolder();
+    });
+
+    setOnRenameItem(() => async (type, itemId, newName) => {
+      await renameItem(type, itemId, newName);
+      await loadFolder();
+    });
+
+    setOnRefresh(() => async () => {
+      await loadFolder();
+    });
+  }, []);
+
+  useEffect(() => {
     loadFolder();
   }, [folderId]);
-
-  const onAddFolder = async (folderName) => {
-    await addFolder(folderName);
-    await loadFolder();
-  };
-
-  const onAddFiles = async (files) => {
-    await addFiles(files);
-    await loadFolder();
-  };
-
-  const onRenameItem = async (type, itemId, newName) => {
-    await renameItem(type, itemId, newName);
-    await loadFolder();
-  };
 
   const onTrashItem = async (type, itemId) => {
     await trashItem(type, itemId);
@@ -50,49 +58,24 @@ const Home = () => {
     await loadFolder();
   };
 
-  const onRefresh = async () => {
-    await loadFolder();
-  };
-
   // Handle loading state
   if (loading) {
-    return (
-      <DriveProvider>
-        <DriveLayout>
-          <SpinLoader classes="mt-16" />
-        </DriveLayout>
-      </DriveProvider>
-    );
+    return <SpinLoader classes="mt-16" />;
   }
 
   // Handle error state
   if (error) {
-    return (
-      <DriveProvider>
-        <DriveLayout>
-          <p>{error}</p>
-        </DriveLayout>
-      </DriveProvider>
-    );
+    return <p>{error}</p>;
   }
 
   // Render table with folders and files
   return (
-    <DriveProvider>
-      <DriveLayout
-        onAddFolder={onAddFolder}
-        onAddFiles={onAddFiles}
-        onRenameItem={onRenameItem}
-        onRefresh={onRefresh}
-      >
-        <DriveView
-          folders={folders}
-          files={files}
-          onTrashItem={onTrashItem}
-          onStarredItem={onStarredItem}
-        />
-      </DriveLayout>
-    </DriveProvider>
+    <DriveView
+      folders={folders}
+      files={files}
+      onTrashItem={onTrashItem}
+      onStarredItem={onStarredItem}
+    />
   );
 };
 

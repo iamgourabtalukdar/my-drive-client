@@ -1,15 +1,27 @@
 import { useEffect } from "react";
-import DriveLayout from "../components/DriveLayout";
 import TrashView from "../components/TrashView";
-import { DriveProvider } from "../contexts/DriveContext";
 import useTrash from "../hooks/useTrash";
 import useFolder from "../hooks/useFolder";
 import SpinLoader from "../components/SpinLoader";
+import { useOutletContext } from "react-router";
 
 const Trash = () => {
+  const { setOnAddFiles, setOnAddFolder, setOnRefresh } = useOutletContext();
   const { files, folders, loading, error, loadTrash, restoreItem, deleteItem } =
     useTrash();
   const { addFolder, addFiles } = useFolder();
+
+  useEffect(() => {
+    setOnAddFiles(() => async (files) => {
+      await addFiles(files);
+    });
+    setOnAddFolder(() => async (folderName) => {
+      await addFolder(folderName);
+    });
+    setOnRefresh(() => async () => {
+      await loadTrash();
+    });
+  }, []);
 
   const onRestoreItem = async (type, itemId, newName) => {
     await restoreItem(type, itemId, newName);
@@ -21,52 +33,28 @@ const Trash = () => {
     await loadTrash();
   };
 
-  const onRefresh = async () => {
-    await loadTrash();
-  };
-
   useEffect(() => {
     loadTrash();
   }, []);
 
   // Handle loading state
   if (loading) {
-    return (
-      <DriveProvider>
-        <DriveLayout>
-          <SpinLoader classes="mt-16" />
-        </DriveLayout>
-      </DriveProvider>
-    );
+    return <SpinLoader classes="mt-16" />;
   }
 
   // Handle error state
   if (error) {
-    return (
-      <DriveProvider>
-        <DriveLayout>
-          <p>{error}</p>
-        </DriveLayout>
-      </DriveProvider>
-    );
+    return <p>{error}</p>;
   }
 
   // Render table with folders and files
   return (
-    <DriveProvider>
-      <DriveLayout
-        onAddFolder={addFolder}
-        onAddFiles={addFiles}
-        onRefresh={onRefresh}
-      >
-        <TrashView
-          files={files}
-          folders={folders}
-          onRestoreItem={onRestoreItem}
-          onDeleteItem={onDeleteItem}
-        />
-      </DriveLayout>
-    </DriveProvider>
+    <TrashView
+      files={files}
+      folders={folders}
+      onRestoreItem={onRestoreItem}
+      onDeleteItem={onDeleteItem}
+    />
   );
 };
 

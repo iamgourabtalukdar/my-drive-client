@@ -26,7 +26,6 @@ const dropDownTypeItems = [
 ];
 
 const Toolbar = ({ onRefresh, isListView, setIsListView }) => {
-  console.log(isListView);
   return (
     <div className="col-span-3 col-start-2 row-start-2 row-end-3 flex items-center justify-between border-b border-gray-200 px-4">
       <div className="flex space-x-2">

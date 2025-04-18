@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import DriveLayout from "../components/DriveLayout";
-import TrashViewTable from "../components/TrashViewTable";
+import TrashView from "../components/TrashView";
 import { DriveProvider } from "../contexts/DriveContext";
 import useTrash from "../hooks/useTrash";
 import useFolder from "../hooks/useFolder";
@@ -59,7 +59,7 @@ const Trash = () => {
         onAddFiles={addFiles}
         onRefresh={onRefresh}
       >
-        <TrashViewTable
+        <TrashView
           files={files}
           folders={folders}
           onRestoreItem={onRestoreItem}

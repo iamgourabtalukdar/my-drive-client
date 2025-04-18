@@ -10,13 +10,13 @@ const GridViewFolderItem = ({
   folder,
   handleContextMenu,
   onStarredItem,
-  isTrash = false,
+  isTrash,
 }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      className="flex cursor-default items-center justify-between gap-2 rounded-lg bg-gray-200 px-4 py-3 hover:bg-gray-300"
+      className={`flex cursor-default items-center justify-between gap-2 rounded-lg border px-4 py-3 ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-100 bg-gray-200 hover:bg-gray-300"}`}
       onDoubleClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
       }

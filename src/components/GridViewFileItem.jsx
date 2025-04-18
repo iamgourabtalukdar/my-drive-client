@@ -7,16 +7,24 @@ const GridViewFileItem = ({
   file,
   handleContextMenu,
   onStarredItem,
-  isTrash = false,
+  isTrash,
 }) => {
   return (
     <div
-      className="group rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md"
+      className={`group rounded-xl border p-4 shadow-sm transition hover:shadow-md ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-100 bg-white hover:bg-gray-100"}`}
       onContextMenu={(e) => handleContextMenu(e, file, "file")}
+      onDoubleClick={() =>
+        window.open(
+          `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,
+          "_blank",
+        )
+      }
     >
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="rounded bg-gray-100 p-2 text-xl">
+          <div
+            className={`rounded ${isTrash ? "bg-red-100" : "bg-gray-100"} p-2 text-xl text-gray-500`}
+          >
             {getFileIcon(file.extension)}
           </div>
           <div className="flex-1">
@@ -42,7 +50,10 @@ const GridViewFileItem = ({
               <BsStar />
             </button>
           )}
-          <button onClick={(e) => handleContextMenu(e, file, "file")}>
+          <button
+            onClick={(e) => handleContextMenu(e, file, "file")}
+            className="rounded-full p-1 transition duration-100 hover:bg-gray-200"
+          >
             <BsThreeDotsVertical />
           </button>
         </div>

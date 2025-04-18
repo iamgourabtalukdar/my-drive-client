@@ -10,7 +10,7 @@ export function DriveProvider({ children }) {
     type: "",
   });
   const [fileFolderModel, setFileFolderModel] = useState({ isVisible: false });
-  const [isListView, setIsListView] = useState(false);
+  const [isListView, setIsListView] = useState(true);
 
   return (
     <DriveContext.Provider

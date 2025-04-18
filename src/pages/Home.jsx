@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import DriveLayout from "../components/DriveLayout";
-import DriveViewTable from "../components/DriveViewTable";
+import DriveView from "../components/DriveView";
 import { DriveProvider } from "../contexts/DriveContext";
 import useFolder from "../hooks/useFolder";
 import SpinLoader from "../components/SpinLoader";
@@ -85,7 +85,7 @@ const Home = () => {
         onRenameItem={onRenameItem}
         onRefresh={onRefresh}
       >
-        <DriveViewTable
+        <DriveView
           folders={folders}
           files={files}
           onTrashItem={onTrashItem}

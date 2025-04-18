@@ -17,6 +17,8 @@ const DriveLayout = ({
   const { fileFolderModel, setFileFolderModel, isListView, setIsListView } =
     useContext(DriveContext);
 
+  console.log(isListView);
+
   return (
     <>
       <div className="grid h-screen min-h-screen grid-cols-[256px_1fr] grid-rows-[64px_64px_1fr] overflow-hidden font-sans text-gray-800">

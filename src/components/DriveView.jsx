@@ -5,9 +5,11 @@ import DriveContextMenu from "./contextMenu/DriveContextMenu";
 import GridView from "./GridView";
 import ListView from "./ListView";
 
-const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
+const DriveView = ({ folders, files, onTrashItem, onStarredItem }) => {
   const { isListView, setFileFolderModel, contextMenu, setContextMenu } =
     useContext(DriveContext);
+
+  // console.log(isListView);
 
   return (
     <>
@@ -43,4 +45,4 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
   );
 };
 
-export default DriveViewTable;
+export default DriveView;

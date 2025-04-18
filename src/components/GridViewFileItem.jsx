@@ -3,7 +3,12 @@ import { getFileIcon } from "../utils/getFileIcon";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
 
-const GridViewFileItem = ({ file, handleContextMenu }) => {
+const GridViewFileItem = ({
+  file,
+  handleContextMenu,
+  onStarredItem,
+  isTrash = false,
+}) => {
   return (
     <div
       className="group rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md"
@@ -21,12 +26,20 @@ const GridViewFileItem = ({ file, handleContextMenu }) => {
         </div>
         <div className="flex gap-2">
           {file.starred ? (
-            <button>
-              <BsStarFill className="ml-2 text-yellow-400" />
+            <button
+              className="transform text-yellow-400 duration-100 hover:scale-[1.4]"
+              title="Remove from starred"
+              onClick={() => onStarredItem("file", file.id, false)}
+            >
+              <BsStarFill />
             </button>
           ) : (
-            <button>
-              <BsStar className="ml-2" />
+            <button
+              className="transform transition duration-100 hover:scale-[1.3]"
+              title="Add to starred"
+              onClick={() => onStarredItem("file", file.id, true)}
+            >
+              <BsStar />
             </button>
           )}
           <button onClick={(e) => handleContextMenu(e, file, "file")}>

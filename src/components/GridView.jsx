@@ -3,7 +3,7 @@ import GridViewFolderItem from "./GridViewFolderItem";
 import GridViewFileItem from "./GridViewFileItem";
 import { DriveContext } from "../contexts/DriveContext";
 
-const GridView = ({ folders, files }) => {
+const GridView = ({ folders, files, onStarredItem }) => {
   const {
     selectedFile,
     setSelectedFile,
@@ -36,6 +36,7 @@ const GridView = ({ folders, files }) => {
                 key={folder.id}
                 folder={folder}
                 handleContextMenu={handleContextMenu}
+                onStarredItem={onStarredItem}
               />
             ))}
           </div>
@@ -52,6 +53,7 @@ const GridView = ({ folders, files }) => {
                 key={file.id}
                 file={file}
                 handleContextMenu={handleContextMenu}
+                onStarredItem={onStarredItem}
               />
             ))}
           </div>

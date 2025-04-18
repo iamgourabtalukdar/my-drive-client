@@ -12,9 +12,6 @@ const ListViewFolderItem = ({
 }) => {
   const navigate = useNavigate();
 
-  const openFolder = () => {
-    navigate(`/drive/folder/${folder.id}`);
-  };
   // const handleClick = () => {
   //   // setSelectedFile(folder);
   //   // setShowPreview(true);
@@ -25,7 +22,9 @@ const ListViewFolderItem = ({
       className={`cursor-default border-b hover:bg-[#f1f3f4] ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
-      onDoubleClick={isTrash ? () => {} : openFolder}
+      onDoubleClick={
+        isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
+      }
       onContextMenu={(e) => handleContextMenu(e, folder, "folder")}
     >
       <td className="px-4 py-3">

@@ -25,7 +25,11 @@ const DriveViewTable = ({ folders, files, onTrashItem, onStarredItem }) => {
         isListView ? (
           <ListView folders={folders} files={files} />
         ) : (
-          <GridView folders={folders} files={files} />
+          <GridView
+            folders={folders}
+            files={files}
+            onStarredItem={onStarredItem}
+          />
         )
       ) : (
         <div className="mt-16 flex flex-col items-center justify-center">

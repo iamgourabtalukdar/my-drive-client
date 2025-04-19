@@ -8,7 +8,7 @@ import {
   MdSchedule,
   MdStar,
 } from "react-icons/md";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 const Sidebar = ({ classes, onUploadClick, setFileFolderModel }) => {
   return (
@@ -44,38 +44,54 @@ const Sidebar = ({ classes, onUploadClick, setFileFolderModel }) => {
           </button>
         </div>
         <div className="mt-8 space-y-1">
-          <Link
+          <NavLink
             to="/drive/folder"
-            className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
+            className={({ isActive }) =>
+              `flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 ${
+                isActive ? "bg-gray-100" : ""
+              }`
+            }
           >
             <MdOutlineStorage className="text-2xl text-gray-600" />
             <span>My Drive</span>
-          </Link>
+          </NavLink>
           <button className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100">
             <MdPeople className="text-2xl text-gray-600" />
             <span>Shared with me</span>
           </button>
-          <Link
+          <NavLink
             to="/drive/recent"
-            className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
+            className={({ isActive }) =>
+              `flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 ${
+                isActive ? "bg-gray-100" : ""
+              }`
+            }
           >
             <MdSchedule className="text-2xl text-gray-600" />
             <span>Recent</span>
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/drive/starred"
-            className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
+            className={({ isActive }) =>
+              `flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 ${
+                isActive ? "bg-gray-100" : ""
+              }`
+            }
           >
             <MdStar className="text-2xl text-gray-600" />
             <span>Starred</span>
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/drive/trash"
-            className="flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100"
+            className={({ isActive }) =>
+              `flex w-full items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 ${
+                isActive ? "bg-gray-100" : ""
+              }`
+            }
           >
             <MdDelete className="text-2xl text-gray-600" />
             <span>Trash</span>
-          </Link>
+          </NavLink>
         </div>
       </div>
       <div className="mt-8 mb-6">

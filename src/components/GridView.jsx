@@ -30,7 +30,7 @@ const GridView = ({ folders, files, onStarredItem, isTrash = false }) => {
       {folders.length > 0 && (
         <div className="mb-6">
           <h2 className="mb-4 font-medium">Folders</h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 2xl:grid-cols-4">
             {folders.map((folder) => (
               <GridViewFolderItem
                 key={folder.id}
@@ -48,7 +48,7 @@ const GridView = ({ folders, files, onStarredItem, isTrash = false }) => {
       {files.length > 0 && (
         <div>
           <h2 className="mb-4 font-medium">Files</h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {files.map((file) => (
               <GridViewFileItem
                 key={file.id}

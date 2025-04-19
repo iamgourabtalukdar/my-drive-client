@@ -4,9 +4,11 @@ import useFolder from "../hooks/useFolder";
 import useRecent from "../hooks/useRecent";
 import SpinLoader from "../components/SpinLoader";
 import useStarred from "../hooks/useStarred";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
+import { toast } from "react-toastify";
 
 const Recent = () => {
+  const navigate = useNavigate();
   const { recentFiles, loading, error, loadRecent } = useRecent();
   const { addFolder, renameItem, addFiles, trashItem } = useFolder();
   const { updateStarredItem } = useStarred();
@@ -43,14 +45,17 @@ const Recent = () => {
   useEffect(() => {
     loadRecent();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/signin");
+      toast.error(error);
+    }
+  }, [error]);
+
   // Handle loading state
   if (loading) {
     return <SpinLoader classes="mt-16" />;
-  }
-
-  // Handle error state
-  if (error) {
-    return <p>{error}</p>;
   }
 
   // Render table with folders and files

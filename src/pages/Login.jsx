@@ -1,22 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  FiUser,
-  FiMail,
-  FiLock,
-  FiEye,
-  FiEyeOff,
-  FiLogIn,
-} from "react-icons/fi";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
   const { loading, error, serverErrors, setError, makeSignIn } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("hello@gmail.com");
+  const [password, setPassword] = useState("abcd@123");
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -64,8 +57,7 @@ const Login = () => {
       const result = await makeSignIn(email, password);
 
       if (result?.status) {
-        toast.success(result.message || "Login Successful");
-        setTimeout(() => navigate("/drive/folder"), 800);
+        navigate("/drive/folder");
       }
     } catch (err) {
       // Errors are handled in useAuth
@@ -76,14 +68,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-blue-500 p-6 text-center">
             <motion.h1
@@ -98,19 +90,19 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-green-100 mt-1"
+              className="mt-1 text-green-100"
             >
               Sign in to your account
             </motion.p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 p-6">
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-red-50 text-red-600 p-3 rounded-lg text-sm"
+                className="rounded-lg bg-red-50 p-3 text-sm text-red-600"
               >
                 {error}
               </motion.div>
@@ -119,7 +111,7 @@ const Login = () => {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-red-50 text-red-600 p-3 text-center rounded-lg text-sm"
+                className="rounded-lg bg-red-50 p-3 text-center text-sm text-red-600"
               >
                 {serverErrors.message}
               </motion.div>
@@ -132,26 +124,26 @@ const Login = () => {
               transition={{ delay: 0.5 }}
               className="relative mb-5"
             >
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="mb-1 block text-sm font-medium text-gray-700">
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiMail className="text-gray-400" />
                 </div>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-2 border ${
+                  className={`block w-full border py-2 pr-3 pl-10 ${
                     getFieldError("email")
                       ? "border-red-300"
                       : "border-gray-300"
-                  } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
+                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
                     getFieldError("email")
                       ? "focus:ring-red-500"
                       : "focus:ring-indigo-500"
-                  } focus:border-transparent transition`}
+                  } transition focus:border-transparent`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -173,31 +165,31 @@ const Login = () => {
               transition={{ delay: 0.6 }}
               className="relative mb-5"
             >
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="mb-1 block text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiLock className="text-gray-400" />
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full pl-10 pr-10 py-2 border ${
+                  className={`block w-full border py-2 pr-10 pl-10 ${
                     getFieldError("password")
                       ? "border-red-300"
                       : "border-gray-300"
-                  } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
+                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
                     getFieldError("password")
                       ? "focus:ring-red-500"
                       : "focus:ring-indigo-500"
-                  } focus:border-transparent transition`}
+                  } transition focus:border-transparent`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-gray-600 transition-colors"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 transition-colors hover:text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -222,14 +214,14 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="flex items-center justify-between mt-6"
+              className="mt-6 flex items-center justify-between"
             >
               <div className="flex items-center">
                 <input
                   id="remember"
                   name="remember"
                   type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
                 <label
                   htmlFor="remember"
@@ -258,16 +250,16 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${
+                className={`flex w-full items-center justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm ${
                   loading
-                    ? "bg-indigo-400 cursor-not-allowed"
+                    ? "cursor-not-allowed bg-indigo-400"
                     : "bg-indigo-600 hover:bg-indigo-700"
-                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition`}
+                } transition focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none`}
               >
                 {loading ? (
                   <>
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                      className="mr-2 -ml-1 h-4 w-4 animate-spin text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -303,7 +295,7 @@ const Login = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="px-6 py-4 bg-gray-50 text-center"
+            className="bg-gray-50 px-6 py-4 text-center"
           >
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
@@ -317,7 +309,6 @@ const Login = () => {
           </motion.div>
         </div>
       </motion.div>
-      <ToastContainer />
     </div>
   );
 };

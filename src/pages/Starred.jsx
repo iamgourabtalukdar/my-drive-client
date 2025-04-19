@@ -3,9 +3,11 @@ import DriveView from "../components/DriveView";
 import SpinLoader from "../components/SpinLoader";
 import useStarred from "../hooks/useStarred";
 import useFolder from "../hooks/useFolder";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
+import { toast } from "react-toastify";
 
 const Starred = () => {
+  const navigate = useNavigate();
   const {
     starredFiles,
     starredFolders,
@@ -43,6 +45,13 @@ const Starred = () => {
     loadStarred();
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      navigate("/signin");
+      toast.error(error);
+    }
+  }, [error]);
+
   const onTrashItem = async (type, itemId) => {
     await trashItem(type, itemId);
     await loadStarred();
@@ -55,11 +64,6 @@ const Starred = () => {
   // Handle loading state
   if (loading) {
     return <SpinLoader classes="mt-16" />;
-  }
-
-  // Handle error state
-  if (error) {
-    return <p>{error}</p>;
   }
 
   // Render table with folders and files

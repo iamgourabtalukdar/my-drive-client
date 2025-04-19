@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { ToastContainer } from "react-toastify";
 export const DriveContext = createContext();
 
 export function DriveProvider({ children }) {
@@ -24,6 +25,7 @@ export function DriveProvider({ children }) {
       }}
     >
       {children}
+      <ToastContainer />
     </DriveContext.Provider>
   );
 }

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import DriveLayout from "../components/DriveLayout";
 import DriveView from "../components/DriveView";
-
 import useFolder from "../hooks/useFolder";
 import SpinLoader from "../components/SpinLoader";
 import useStarred from "../hooks/useStarred";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
+import { toast } from "react-toastify";
 
 const Home = () => {
+  const navigate = useNavigate();
   const { setOnAddFiles, setOnAddFolder, setOnRefresh, setOnRenameItem } =
     useOutletContext();
   const {
@@ -58,14 +58,16 @@ const Home = () => {
     await loadFolder();
   };
 
+  useEffect(() => {
+    if (error) {
+      navigate("/signin");
+      toast.error(error);
+    }
+  }, [error]);
+
   // Handle loading state
   if (loading) {
     return <SpinLoader classes="mt-16" />;
-  }
-
-  // Handle error state
-  if (error) {
-    return <p>{error}</p>;
   }
 
   // Render table with folders and files

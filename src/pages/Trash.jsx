@@ -3,9 +3,11 @@ import TrashView from "../components/TrashView";
 import useTrash from "../hooks/useTrash";
 import useFolder from "../hooks/useFolder";
 import SpinLoader from "../components/SpinLoader";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
+import { toast } from "react-toastify";
 
 const Trash = () => {
+  const navigate = useNavigate();
   const { setOnAddFiles, setOnAddFolder, setOnRefresh } = useOutletContext();
   const { files, folders, loading, error, loadTrash, restoreItem, deleteItem } =
     useTrash();
@@ -37,14 +39,16 @@ const Trash = () => {
     loadTrash();
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      navigate("/signin");
+      toast.error(error);
+    }
+  }, [error]);
+
   // Handle loading state
   if (loading) {
     return <SpinLoader classes="mt-16" />;
-  }
-
-  // Handle error state
-  if (error) {
-    return <p>{error}</p>;
   }
 
   // Render table with folders and files

@@ -28,7 +28,7 @@ const Dropdown = ({ label, menuItems }) => {
       <div className="flex gap-2">
         <button
           onClick={toggleDropdown}
-          className="pe-2 ps-3 py-2 border border-gray-300 flex items-center rounded-md"
+          className="flex items-center rounded-md border border-gray-300 py-1 ps-3 pe-2 md:py-2"
         >
           <span>{label}</span>
           <IoMdArrowDropdown />
@@ -37,12 +37,12 @@ const Dropdown = ({ label, menuItems }) => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-md">
+        <div className="absolute mt-2 w-48 rounded-md bg-white shadow-lg">
           <ul className="py-2 text-gray-700">
             {menuItems.map((item, index) => (
               <li
                 key={index}
-                className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
               >
                 <span className="mr-2">{item.icon}</span> {item.label}
               </li>

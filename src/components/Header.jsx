@@ -7,7 +7,7 @@ const Header = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="mr-4 text-xl font-bold text-blue-500">Drive</div>
-          <nav className="flex space-x-6">
+          <nav className="hidden space-x-6 md:flex">
             <a
               href="#"
               className="border-b-2 border-blue-500 pb-1 font-medium text-blue-500"
@@ -26,7 +26,7 @@ const Header = () => {
           </nav>
         </div>
         <div className="flex items-center space-x-4">
-          <div className="relative">
+          <div className="relative hidden lg:block">
             <input
               type="text"
               id="search-input"

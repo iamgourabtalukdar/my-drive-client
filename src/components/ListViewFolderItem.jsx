@@ -38,7 +38,7 @@ const ListViewFolderItem = ({
         </div>
       </td>
       <td className="px-4 py-3 text-gray-600">{folder.owner}</td>
-      <td className="px-4 py-3 text-gray-600">
+      <td className="px-4 py-3 text-nowrap text-gray-600">
         {formatDate(folder.lastModified)}
       </td>
       <td className="px-4 py-3 text-gray-600">-</td>

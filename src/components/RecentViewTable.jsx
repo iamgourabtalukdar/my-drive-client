@@ -44,10 +44,10 @@ const RecentViewTable = ({ recentFiles, onTrashItem, onStarredItem }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           // transition={{ delay: 0.3 }}
-          className="file-table w-full"
+          className="w-full"
         >
           <thead>
-            <tr className="border-y border-gray-200 text-left text-gray-600">
+            <tr className="border-b border-gray-200 text-left text-gray-600">
               <th className="cursor-pointer rounded-tl px-4 py-2 pb-2 font-medium hover:bg-gray-100">
                 <div className="flex items-center">
                   <span>Name</span>

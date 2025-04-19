@@ -40,7 +40,7 @@ const ListView = ({ folders, files }) => {
           <th className="cursor-pointer px-4 py-2 pb-2 font-medium hover:bg-gray-100">
             Owner
           </th>
-          <th className="cursor-pointer px-4 py-2 pb-2 font-medium hover:bg-gray-100">
+          <th className="cursor-pointer px-4 py-2 pb-2 font-medium text-nowrap hover:bg-gray-100">
             Last modified
           </th>
           <th className="cursor-pointer rounded-tr px-4 py-2 pb-2 font-medium hover:bg-gray-100">

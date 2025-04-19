@@ -30,25 +30,25 @@ const ListViewFileItem = ({
       }
       onContextMenu={(e) => handleContextMenu(e, file, "file")}
     >
-      <td className="px-4 py-3">
-        <div className="flex items-center">
-          <span className="mr-2 text-xl text-gray-500">
-            {getFileIcon(file.extension)}
-          </span>
-          <span className="max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap">
-            {file.name}
-            {file.extension}
-          </span>
-          {file.starred && (
-            <BsStarFill className="ml-2 text-sm text-yellow-400" />
-          )}
-        </div>
+      <td className="flex items-center px-4 py-3">
+        <span className="mr-2 text-xl text-gray-500">
+          {getFileIcon(file.extension)}
+        </span>
+        <span className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+          {file.name}
+          {file.extension}
+        </span>
+        {file.starred && (
+          <BsStarFill className="ml-2 text-sm text-yellow-400" />
+        )}
       </td>
       <td className="px-4 py-3 text-gray-600">{file.owner}</td>
-      <td className="px-4 py-3 text-gray-600">
+      <td className="px-4 py-3 text-nowrap text-gray-600">
         {formatDate(file.lastModified)}
       </td>
-      <td className="px-4 py-3 text-gray-600">{formatFileSize(file.size)}</td>
+      <td className="px-4 py-3 text-nowrap text-gray-600">
+        {formatFileSize(file.size)}
+      </td>
     </tr>
   );
 };

@@ -20,7 +20,7 @@ const GridViewFileItem = ({
         )
       }
     >
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-4 flex flex-row items-start justify-between gap-3">
         <div className="flex max-w-4/5 items-center gap-3">
           <div
             className={`flex-shrink-0 rounded ${isTrash ? "bg-red-100" : "bg-gray-100"} p-2 text-xl text-gray-500`}

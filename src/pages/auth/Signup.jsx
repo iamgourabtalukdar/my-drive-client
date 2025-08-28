@@ -1,19 +1,32 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
+import {
+  FiUser,
+  FiMail,
+  FiLock,
+  FiEye,
+  FiEyeOff,
+  FiLogIn,
+} from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import useAuth from "../hooks/useAuth";
-import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
+import { toast, ToastContainer } from "react-toastify";
 
-const Login = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const { loading, error, serverErrors, setError, makeSignIn } = useAuth();
+  const { loading, error, serverErrors, setError, makeSignUp } = useAuth();
+  const [name, setName] = useState("hello");
   const [email, setEmail] = useState("hello@gmail.com");
   const [password, setPassword] = useState("abcd@123");
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
   // Clear errors when user starts typing
+  useEffect(() => {
+    if (name && validationErrors.name) {
+      setValidationErrors((prev) => ({ ...prev, name: undefined }));
+    }
+  }, [name]);
 
   useEffect(() => {
     if (email && validationErrors.email) {
@@ -29,6 +42,9 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    if (!name.trim()) newErrors.name = "Name is required";
+    else if (name.length < 3)
+      newErrors.name = "Name must be at least 3 characters";
 
     if (!email.trim()) newErrors.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -51,13 +67,14 @@ const Login = () => {
     e.preventDefault();
     setError(null);
 
-    if (!validateForm()) return;
+    // if (!validateForm()) return;
 
     try {
-      const result = await makeSignIn(email, password);
+      const result = await makeSignUp(name, email, password);
 
       if (result?.status) {
-        navigate("/drive/folder");
+        toast.success(result.message || "Registration successful!");
+        setTimeout(() => navigate("/signin"), 2000);
       }
     } catch (err) {
       // Errors are handled in useAuth
@@ -84,7 +101,7 @@ const Login = () => {
               transition={{ delay: 0.2 }}
               className="text-2xl font-bold text-white"
             >
-              Welcome Back
+              Create an Account
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -92,7 +109,7 @@ const Login = () => {
               transition={{ delay: 0.3 }}
               className="mt-1 text-green-100"
             >
-              Sign in to your account
+              Join us today!
             </motion.p>
           </div>
 
@@ -107,15 +124,45 @@ const Login = () => {
                 {error}
               </motion.div>
             )}
-            {serverErrors.message && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-lg bg-red-50 p-3 text-center text-sm text-red-600"
-              >
-                {serverErrors.message}
-              </motion.div>
-            )}
+
+            {/* Name Field */}
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="relative mb-5"
+            >
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <FiUser className="text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={`block w-full border py-2 pr-3 pl-10 ${
+                    getFieldError("name") ? "border-red-300" : "border-gray-300"
+                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
+                    getFieldError("name")
+                      ? "focus:ring-red-500"
+                      : "focus:ring-indigo-500"
+                  } transition focus:border-transparent`}
+                  placeholder="John Doe"
+                />
+              </div>
+              {getFieldError("name") && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute mt-0 text-sm text-red-600"
+                >
+                  {getFieldError("name")}
+                </motion.p>
+              )}
+            </motion.div>
 
             {/* Email Field */}
             <motion.div
@@ -210,42 +257,12 @@ const Login = () => {
               )}
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-6 flex items-center justify-between"
-            >
-              <div className="flex items-center">
-                <input
-                  id="remember"
-                  name="remember"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="remember"
-                  className="ml-2 block text-sm text-gray-700"
-                >
-                  Remember me
-                </label>
-              </div>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </motion.div>
-
             {/* Submit button */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="mt-4"
+              className="mt-8"
             >
               <button
                 type="submit"
@@ -278,12 +295,12 @@ const Login = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    Signing in...
+                    Signing up...
                   </>
                 ) : (
                   <>
                     <FiLogIn className="mr-2" />
-                    Sign in
+                    Sign up
                   </>
                 )}
               </button>
@@ -298,19 +315,20 @@ const Login = () => {
             className="bg-gray-50 px-6 py-4 text-center"
           >
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Link
-                to="/signup"
+                to="/signin"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Signup
+                Login
               </Link>
             </p>
           </motion.div>
         </div>
       </motion.div>
+      <ToastContainer />
     </div>
   );
 };
 
-export default Login;
+export default SignUp;

@@ -1,7 +1,7 @@
 import ListViewFileItem from "./ListViewFileItem";
 import { motion } from "framer-motion";
-import { DriveContext } from "../contexts/DriveContext";
-import React, { useContext, useEffect } from "react";
+
+import React from "react";
 import { MdArrowDropUp, MdOutlineRestorePage } from "react-icons/md";
 import { formatDate } from "../utils/formatDate";
 import DriveContextMenu from "./contextMenu/DriveContextMenu";
@@ -13,7 +13,7 @@ const RecentViewTable = ({ recentFiles, onTrashItem, onStarredItem }) => {
     setFileFolderModel,
     contextMenu,
     setContextMenu,
-  } = useContext(DriveContext);
+  } = {};
 
   const handleContextMenu = (e, item, type) => {
     e.preventDefault();

@@ -7,6 +7,8 @@ import {
   MdRefresh,
 } from "react-icons/md";
 import Dropdown from "./Dropdown";
+import { useContext } from "react";
+import { DriveContext } from "../contexts/DriveContext";
 
 const dropDownTypeItems = [
   { label: "Folders", icon: "📁" },
@@ -25,12 +27,13 @@ const dropDownTypeItems = [
   { label: "Shortcuts", icon: "🔗" },
 ];
 
-const Toolbar = ({ onRefresh, isListView, setIsListView, setIsMenu }) => {
+const Toolbar = ({ setIsMenu, onRefresh }) => {
+  const { isListView, setIsListView } = useContext(DriveContext);
   return (
     <div className="col-start-1 col-end-3 row-start-2 row-end-3 flex items-center justify-between border-b border-gray-200 px-2 md:px-4 lg:col-start-2">
       <div className="flex space-x-2">
         <button
-          className="block rounded border border-gray-300 px-2 text-2xl text-gray-700 lg:hidden"
+          className="block rounded border border-color/50 px-2 text-2xl lg:hidden"
           onClick={() => setIsMenu((prevState) => !prevState)}
         >
           <MdMenu />
@@ -40,26 +43,26 @@ const Toolbar = ({ onRefresh, isListView, setIsListView, setIsMenu }) => {
       </div>
       <div className="flex space-x-2">
         <button
-          className="mr-0 flex items-center rounded p-2 hover:bg-gray-100 sm:mr-2"
+          className="mr-0 flex items-center rounded p-2 hover:bg-hover sm:mr-2"
           onClick={onRefresh}
         >
-          <MdRefresh className="mr-1 text-2xl text-gray-600" />
+          <MdRefresh className="mr-1 text-2xl" />
           <span className="hidden text-sm sm:block">Refresh</span>
         </button>
         {isListView ? (
           <button
-            className="flex items-center rounded p-2 hover:bg-gray-100"
-            onClick={() => setIsListView(false)}
+            className="flex items-center rounded p-2 hover:bg-hover"
+            onClick={() => setIsListView("no")}
           >
-            <MdOutlineGridView className="mr-1 text-2xl text-gray-600" />
+            <MdOutlineGridView className="mr-1 text-2xl" />
             <span className="hidden text-sm sm:block">Grid</span>
           </button>
         ) : (
           <button
-            className="flex items-center rounded p-2 hover:bg-gray-100"
-            onClick={() => setIsListView(true)}
+            className="flex items-center rounded p-2 hover:bg-hover"
+            onClick={() => setIsListView("yes")}
           >
-            <MdOutlineFormatListBulleted className="mr-1 text-2xl text-gray-600" />
+            <MdOutlineFormatListBulleted className="mr-1 text-2xl" />
             <span className="hidden text-sm sm:block">List</span>
           </button>
         )}

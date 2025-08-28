@@ -1,12 +1,10 @@
-import { DriveContext } from "../contexts/DriveContext";
-import { useContext } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import TrashContextMenu from "./contextMenu/TrashContextMenu";
 import TrashListView from "./TrashListView";
 import GridView from "./GridView";
 
 const TrashView = ({ files, folders, onRestoreItem, onDeleteItem }) => {
-  const { isListView, contextMenu, setContextMenu } = useContext(DriveContext);
+  const { isListView, contextMenu, setContextMenu } = {};
 
   return (
     <>

@@ -1,21 +1,75 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Nunito", serif;
+}
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --text-color: 17, 24, 39;
+  --alt-text-color: 255, 255, 255;
+  --text-sub-color: 107, 114, 128;
+  --bg-color: 255, 255, 255;
+  --bg-sub-color: 248, 249, 251;
+  --bg-alt-sub-color: 55, 65, 81;
+  --bg-hover-color: 243, 244, 246;
+  --primary-color: 37, 99, 235;
+  --primary-color-dark: 29, 78, 216;
+  /* --bg-header: rgba(249, 250, 251, 0.9); --card-bg: rgb(255, 255, 255); */
+  /* color-scheme: light ; */
+}
+body .dark,
+body.dark {
+  --text-color: 255, 255, 255;
+  --alt-text-color: 17, 24, 39;
+  --text-sub-color: 156, 163, 175;
+  --bg-color: 30, 38, 49;
+  --bg-sub-color: 40, 47, 60;
+  --bg-hover-color: 55, 65, 81;
+  --bg-alt-sub-color: 249, 250, 251;
+  /* --bg-header: rgba(17, 24, 39, 0.9);
+  --card-bg: rgb(31, 41, 55); */
+  color-scheme: dark;
 }
 
-/* .file-table tbody tr:hover {
-  background-color: #f1f3f4;
-} */
+@layer components {
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-indigo-500 to-sky-500;
+  }
+  .bg-gradient-primary:hover {
+    @apply shadow-md;
+  }
 
-.file-table tbody tr.selected {
-  background-color: #e4eeff !important;
-}
-button {
-  cursor: pointer;
+  ::-webkit-scrollbar {
+    @apply w-1;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-200 dark:bg-gray-700;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded bg-gray-400 dark:bg-gray-400;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600 dark:bg-gray-300;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-icon {
+    opacity: 1;
+  }
+
+  .dark input[type="date"]::-webkit-calendar-picker-icon,
+  .dark input[type="date"]::-moz-calendar-picker,
+  .dark input[type="date"]::-ms-calendar-picker {
+    color: black;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-icon,
+  input[type="date"]::-moz-calendar-picker,
+  input[type="date"]::-ms-calendar-picker {
+    color: white !important;
+  }
 }

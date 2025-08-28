@@ -2,12 +2,9 @@ import ListViewFileItem from "./ListViewFileItem";
 import { motion } from "framer-motion";
 import ListViewFolderItem from "./ListViewFolderItem";
 import { MdArrowDropUp } from "react-icons/md";
-import { useContext } from "react";
-import { DriveContext } from "../contexts/DriveContext";
 
 const TrashListView = ({ folders, files }) => {
-  const { selectedFile, setSelectedFile, setContextMenu } =
-    useContext(DriveContext);
+  const { selectedFile, setSelectedFile, setContextMenu } = {};
 
   const handleContextMenu = (e, item, type) => {
     e.preventDefault();

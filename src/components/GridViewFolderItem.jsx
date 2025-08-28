@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 const GridViewFolderItem = ({
   folder,
-  handleContextMenu,
+  handleFolderContextMenu,
   onStarredItem,
   isTrash,
 }) => {
@@ -16,15 +16,15 @@ const GridViewFolderItem = ({
 
   return (
     <div
-      className={`flex cursor-default items-center justify-between gap-2 rounded-lg border px-4 py-3 ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-100 bg-gray-200 hover:bg-gray-300"}`}
+      className={`flex cursor-default items-center justify-between gap-2 rounded-md border border-color/10 px-4 py-3 ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "bg-sub-color hover:bg-hover"}`}
       onDoubleClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
       }
-      onContextMenu={(e) => handleContextMenu(e, folder, "folder")}
+      onContextMenu={(e) => handleFolderContextMenu(e, folder)}
     >
       <div className="flex min-w-0 items-center">
-        <BsFolderFill className="mr-2 min-w-5 text-xl text-gray-500" />
-        <span className="max-w-[90%] min-w-0 truncate text-sm font-medium text-gray-800">
+        <BsFolderFill className="mr-2 min-w-5 text-xl" />
+        <span className="min-w-0 max-w-[90%] truncate text-sm font-medium">
           {folder.name}
         </span>
       </div>
@@ -47,7 +47,7 @@ const GridViewFolderItem = ({
           </button>
         )}
         <button
-          onClick={(e) => handleContextMenu(e, folder, "folder")}
+          onClick={(e) => handleFolderContextMenu(e, folder)}
           className="rounded-full p-1 transition duration-100 hover:bg-[rgb(195,195,195)]"
         >
           <BsThreeDotsVertical />

@@ -1,14 +1,20 @@
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router";
 import "./index.css";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { DriveProvider } from "./contexts/DriveContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <BrowserRouter>
-      <App />
+      <ThemeProvider>
+        <DriveProvider>
+          <App />
+        </DriveProvider>
+      </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </StrictMode>,
 );

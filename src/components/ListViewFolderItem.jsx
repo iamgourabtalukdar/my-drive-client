@@ -6,7 +6,7 @@ const ListViewFolderItem = ({
   folder,
   setSelectedFile,
   setShowPreview,
-  handleContextMenu,
+  handleFolderContextMenu,
   fileSelectClass,
   isTrash = false,
 }) => {
@@ -19,17 +19,17 @@ const ListViewFolderItem = ({
 
   return (
     <tr
-      className={`cursor-default border-b hover:bg-[#f1f3f4] ${fileSelectClass} ${
+      className={`hover:bg-hover cursor-default border-b border-color/20 dark:border-color/30 ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
       onDoubleClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
       }
-      onContextMenu={(e) => handleContextMenu(e, folder, "folder")}
+      onContextMenu={(e) => handleFolderContextMenu(e, folder)}
     >
       <td className="px-4 py-3">
         <div className="flex items-center">
-          <BsFolderFill className="mr-2 text-xl text-gray-500" />
+          <BsFolderFill className="mr-2 text-xl" />
 
           <span>{folder.name}</span>
           {folder.starred && (
@@ -37,11 +37,11 @@ const ListViewFolderItem = ({
           )}
         </div>
       </td>
-      <td className="px-4 py-3 text-gray-600">{folder.owner}</td>
-      <td className="px-4 py-3 text-nowrap text-gray-600">
+      <td className="px-4 py-3 text-sub-color">{folder.owner}</td>
+      <td className="text-nowrap px-4 py-3 text-sub-color">
         {formatDate(folder.lastModified)}
       </td>
-      <td className="px-4 py-3 text-gray-600">-</td>
+      <td className="px-4 py-3 text-sub-color">-</td>
     </tr>
   );
 };

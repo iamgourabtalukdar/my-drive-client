@@ -7,7 +7,7 @@ const ListViewFileItem = ({
   file,
   setSelectedFile,
   setShowPreview,
-  handleContextMenu,
+  handleFileContextMenu,
   fileSelectClass,
   isTrash = false,
 }) => {
@@ -19,7 +19,7 @@ const ListViewFileItem = ({
 
   return (
     <tr
-      className={`cursor-default border-b border-gray-100 hover:bg-[#f1f3f4] ${fileSelectClass} ${
+      className={`hover:bg-hover cursor-default border-b border-color/20 dark:border-color/30 ${fileSelectClass} ${
         isTrash ? "border-white" : "border-gray-100"
       }`}
       onDoubleClick={() =>
@@ -28,12 +28,10 @@ const ListViewFileItem = ({
           "_blank",
         )
       }
-      onContextMenu={(e) => handleContextMenu(e, file, "file")}
+      onContextMenu={(e) => handleFileContextMenu(e, file)}
     >
       <td className="flex items-center px-4 py-3">
-        <span className="mr-2 text-xl text-gray-500">
-          {getFileIcon(file.extension)}
-        </span>
+        <span className="mr-2 text-xl">{getFileIcon(file.extension)}</span>
         <span className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
           {file.name}
           {file.extension}
@@ -42,11 +40,11 @@ const ListViewFileItem = ({
           <BsStarFill className="ml-2 text-sm text-yellow-400" />
         )}
       </td>
-      <td className="px-4 py-3 text-gray-600">{file.owner}</td>
-      <td className="px-4 py-3 text-nowrap text-gray-600">
+      <td className="px-4 py-3 text-sub-color">{file.owner}</td>
+      <td className="text-nowrap px-4 py-3 text-sub-color">
         {formatDate(file.lastModified)}
       </td>
-      <td className="px-4 py-3 text-nowrap text-gray-600">
+      <td className="text-nowrap px-4 py-3 text-sub-color">
         {formatFileSize(file.size)}
       </td>
     </tr>

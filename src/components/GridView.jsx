@@ -1,29 +1,14 @@
-import React, { useContext } from "react";
 import GridViewFolderItem from "./GridViewFolderItem";
 import GridViewFileItem from "./GridViewFileItem";
-import { DriveContext } from "../contexts/DriveContext";
 
-const GridView = ({ folders, files, onStarredItem, isTrash = false }) => {
-  const {
-    selectedFile,
-    setSelectedFile,
-    contextMenu,
-    setContextMenu,
-    setShowPreview,
-  } = useContext(DriveContext);
-
-  const handleContextMenu = (e, item, type) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setContextMenu({
-      visible: true,
-      x: e.clientX,
-      y: e.clientY,
-      type,
-      item,
-    });
-  };
-
+const GridView = ({
+  folders,
+  files,
+  onStarredItem,
+  handleFolderContextMenu,
+  handleFileContextMenu,
+  isTrash = false,
+}) => {
   return (
     <>
       {/* Folders */}
@@ -35,7 +20,7 @@ const GridView = ({ folders, files, onStarredItem, isTrash = false }) => {
               <GridViewFolderItem
                 key={folder.id}
                 folder={folder}
-                handleContextMenu={handleContextMenu}
+                handleFolderContextMenu={handleFolderContextMenu}
                 onStarredItem={onStarredItem}
                 isTrash={isTrash}
               />
@@ -53,7 +38,7 @@ const GridView = ({ folders, files, onStarredItem, isTrash = false }) => {
               <GridViewFileItem
                 key={file.id}
                 file={file}
-                handleContextMenu={handleContextMenu}
+                handleFileContextMenu={handleFileContextMenu}
                 onStarredItem={onStarredItem}
                 isTrash={isTrash}
               />

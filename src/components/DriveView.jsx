@@ -1,13 +1,10 @@
-import { DriveContext } from "../contexts/DriveContext";
-import { useContext } from "react";
 import { FaRegFolderOpen } from "react-icons/fa";
 import DriveContextMenu from "./contextMenu/DriveContextMenu";
 import GridView from "./GridView";
 import ListView from "./ListView";
 
 const DriveView = ({ folders, files, onTrashItem, onStarredItem }) => {
-  const { isListView, setFileFolderModel, contextMenu, setContextMenu } =
-    useContext(DriveContext);
+  const { isListView, setFileFolderModel, contextMenu, setContextMenu } = {};
 
   // console.log(isListView);
 

@@ -30,7 +30,7 @@ const ContextMenuWrapper = ({ menuPosition, targetId, onClose, children }) => {
   return (
     <div
       ref={menuRef}
-      className="absolute z-[500] min-w-40 rounded-md bg-color p-1 text-color shadow-color-sm dark:bg-sub-color"
+      className="text-color absolute z-[500] min-w-40 rounded-md bg-gray-50 p-1 shadow-sm shadow-black/10 dark:bg-gray-800 dark:shadow-white/10"
       style={{ left: menuPosition.x, top: menuPosition.y }}
       onClick={onClose}
     >

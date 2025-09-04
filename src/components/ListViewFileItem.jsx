@@ -19,8 +19,8 @@ const ListViewFileItem = ({
 
   return (
     <tr
-      className={`hover:bg-hover cursor-default border-b border-color/20 dark:border-color/30 ${fileSelectClass} ${
-        isTrash ? "border-white" : "border-gray-100"
+      className={`border-b hover:bg-gray-100 dark:hover:bg-gray-800 ${fileSelectClass} ${
+        isTrash ? "border-white" : "border-gray-700/50 dark:border-gray-300/50"
       }`}
       onDoubleClick={() =>
         window.open(
@@ -40,11 +40,13 @@ const ListViewFileItem = ({
           <BsStarFill className="ml-2 text-sm text-yellow-400" />
         )}
       </td>
-      <td className="px-4 py-3 text-sub-color">{file.owner}</td>
-      <td className="text-nowrap px-4 py-3 text-sub-color">
+      <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
+        {file.owner}
+      </td>
+      <td className="px-4 py-3 text-nowrap text-gray-600 dark:text-gray-400">
         {formatDate(file.lastModified)}
       </td>
-      <td className="text-nowrap px-4 py-3 text-sub-color">
+      <td className="px-4 py-3 text-nowrap text-gray-600 dark:text-gray-400">
         {formatFileSize(file.size)}
       </td>
     </tr>

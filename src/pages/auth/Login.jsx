@@ -137,11 +137,11 @@ const Login = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full border bg-white py-2 pl-10 pr-3 text-black ${
+                  className={`block w-full border bg-white py-2 pr-3 pl-10 text-black ${
                     getFieldError("email")
                       ? "border-red-300"
                       : "border-gray-300"
-                  } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
+                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
                     getFieldError("email")
                       ? "focus:ring-red-500"
                       : "focus:ring-indigo-500"
@@ -178,11 +178,11 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full border bg-white py-2 pl-10 pr-10 text-black ${
+                  className={`block w-full border bg-white py-2 pr-10 pl-10 text-black ${
                     getFieldError("password")
                       ? "border-red-300"
                       : "border-gray-300"
-                  } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
+                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
                     getFieldError("password")
                       ? "focus:ring-red-500"
                       : "focus:ring-indigo-500"
@@ -256,12 +256,12 @@ const Login = () => {
                   loading
                     ? "cursor-not-allowed bg-indigo-400"
                     : "bg-indigo-600 hover:bg-indigo-700"
-                } transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+                } transition focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none`}
               >
                 {loading ? (
                   <>
                     <svg
-                      className="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
+                      className="mr-2 -ml-1 h-4 w-4 animate-spin text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"

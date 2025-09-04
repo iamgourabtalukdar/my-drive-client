@@ -11,6 +11,8 @@ import {
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { toast, ToastContainer } from "react-toastify";
+import authService from "../../services/authService";
+import useApi from "../../hooks/useApi";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("abcd@123");
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const { loading: loginLoading, execute: signUp } = useApi(authService.signup);
 
   // Clear errors when user starts typing
   useEffect(() => {
@@ -67,20 +70,16 @@ const SignUp = () => {
     e.preventDefault();
     setError(null);
 
-    // if (!validateForm()) return;
+    if (!validateForm()) {
+      toast.error("Something went wrong.");
+      return;
+    }
 
     try {
-      const result = await makeSignUp(name, email, password);
-
-      if (result?.status) {
-        toast.success(result.message || "Registration successful!");
-        setTimeout(() => navigate("/signin"), 2000);
-      }
-    } catch (err) {
-      // Errors are handled in useAuth
-      if (error) {
-        toast.error(error);
-      }
+      await signUp({ name, email, password });
+      navigate("/login");
+    } catch (apiError) {
+      toast.error(apiError?.message || "Failed to signup . Please try again.");
     }
   };
 
@@ -317,7 +316,7 @@ const SignUp = () => {
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
               <Link
-                to="/signin"
+                to="/login"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Login

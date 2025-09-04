@@ -1,6 +1,10 @@
 import apiClient from "./api";
 
 const authService = {
+  // ######## signup
+  signup: (credentials) => {
+    return apiClient.post(`/auth/signup`, credentials);
+  },
   // ######## login
   login: (credentials) => {
     return apiClient.post(`/auth/login`, credentials);

@@ -13,16 +13,16 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
   } = useApi(driveService.createFolder);
 
   const {
-    loading: folderRenameLoading,
-    error: folderRenameError,
-    execute: renameFolder,
-  } = useApi(driveService.renameFolder);
+    loading: renameItemLoading,
+    error: renameItemError,
+    execute: renameItem,
+  } = useApi(driveService.renameItem);
 
   const [itemName, setItemName] = useState(data?.item?.name || "");
 
   // Combine loading and error states for simplicity
-  const isLoading = folderCreationLoading || folderRenameLoading;
-  const error = folderCreationError || folderRenameError;
+  const isLoading = folderCreationLoading || renameItemLoading;
+  const error = folderCreationError || renameItemError;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +31,9 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
     try {
       if (data.action === "create new" && data.type === "folder") {
         const parentFolderId = data.item?.parentFolderId;
-        console.log(parentFolderId);
         await createFolder({ name: itemName, parentFolderId: parentFolderId });
-      } else if (data.action === "rename" && data.type === "folder") {
-        await renameFolder(data.item.id, { name: itemName });
+      } else if (data.action === "rename") {
+        await renameItem(data.type, data.item.id, { name: itemName });
       }
 
       // If API call was successful, close popup and refresh parent component
@@ -63,11 +62,11 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 dark:bg-white/20"
       onClick={() => setIsCreatePopUp(false)}
     >
       <div
-        className="w-full max-w-md rounded-lg bg-color shadow-color-sm dark:bg-sub-color"
+        className="w-full max-w-md rounded-lg bg-gray-50 shadow dark:bg-gray-900"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b p-4">
@@ -91,11 +90,11 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
               placeholder={`Enter ${data.type} name`}
-              className="w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               autoFocus
             />
             {error && (
-              <div className="absolute left-1 top-[105%] mb-4 text-sm text-red-600">
+              <div className="absolute top-[105%] left-1 mb-4 text-sm text-red-600">
                 {error.message || "An error occurred. Please try again."}
               </div>
             )}
@@ -105,14 +104,14 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
             <button
               type="button"
               onClick={() => setIsCreatePopUp(false)}
-              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isButtonDisabled}
-              className={`rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                 isButtonDisabled ? "cursor-not-allowed opacity-75" : ""
               }`}
             >

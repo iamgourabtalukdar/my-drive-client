@@ -5,14 +5,14 @@ import { formatFileSize } from "../utils/formatFileSize";
 
 const GridViewFileItem = ({
   file,
-  handleContextMenu,
+  handleFileContextMenu,
   onStarredItem,
   isTrash,
 }) => {
   return (
     <div
-      className={`rounded-xl border p-4 shadow-sm transition hover:shadow-md ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-100 bg-white hover:bg-gray-100"}`}
-      onContextMenu={(e) => handleContextMenu(e, file, "file")}
+      className={`rounded-xl border p-4 shadow-sm transition ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-700/50 bg-gray-50 hover:bg-gray-100 dark:border-gray-300/50 dark:bg-gray-900 dark:hover:bg-gray-800"}`}
+      onContextMenu={(e) => handleFileContextMenu(e, file)}
       onDoubleClick={() =>
         window.open(
           `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,
@@ -23,13 +23,15 @@ const GridViewFileItem = ({
       <div className="mb-4 flex flex-row items-start justify-between gap-3">
         <div className="flex max-w-4/5 items-center gap-3">
           <div
-            className={`flex-shrink-0 rounded ${isTrash ? "bg-red-100" : "bg-gray-100"} p-2 text-xl text-gray-500`}
+            className={`flex-shrink-0 rounded ${isTrash ? "bg-red-100" : "bg-gray-200 dark:bg-gray-700"} p-2 text-xl text-gray-600 dark:text-gray-400`}
           >
             {getFileIcon(file.extension)}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate font-semibold text-gray-800">{file.name}</p>
-            <p className="text-xs text-gray-500">{file.extension}</p>
+            <p className="truncate font-semibold">{file.name}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              {file.extension}
+            </p>
           </div>
         </div>
         <div className="flex justify-end gap-2 sm:justify-start">
@@ -51,15 +53,15 @@ const GridViewFileItem = ({
             </button>
           )}
           <button
-            onClick={(e) => handleContextMenu(e, file, "file")}
-            className="rounded-full p-1 transition duration-100 hover:bg-gray-200"
+            onClick={(e) => handleFileContextMenu(e, file, "file")}
+            className="rounded-full p-1 transition duration-100 hover:bg-gray-200 dark:hover:bg-gray-900"
           >
             <BsThreeDotsVertical />
           </button>
         </div>
       </div>
 
-      <div className="space-y-1 text-sm text-gray-600">
+      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
         <div>
           <span className="font-medium">Size: </span>
           {formatFileSize(file.size)}

@@ -16,7 +16,7 @@ const GridViewFolderItem = ({
 
   return (
     <div
-      className={`flex cursor-default items-center justify-between gap-2 rounded-md border border-color/10 px-4 py-3 ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "bg-sub-color hover:bg-hover"}`}
+      className={`flex cursor-default items-center justify-between gap-2 rounded-md border px-4 py-3 ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-700/50 bg-gray-50 hover:bg-gray-100 dark:border-gray-300/50 dark:bg-gray-900 dark:hover:bg-gray-800"}`}
       onDoubleClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
       }
@@ -24,7 +24,7 @@ const GridViewFolderItem = ({
     >
       <div className="flex min-w-0 items-center">
         <BsFolderFill className="mr-2 min-w-5 text-xl" />
-        <span className="min-w-0 max-w-[90%] truncate text-sm font-medium">
+        <span className="max-w-[90%] min-w-0 truncate text-sm font-medium">
           {folder.name}
         </span>
       </div>
@@ -48,7 +48,7 @@ const GridViewFolderItem = ({
         )}
         <button
           onClick={(e) => handleFolderContextMenu(e, folder)}
-          className="rounded-full p-1 transition duration-100 hover:bg-[rgb(195,195,195)]"
+          className="rounded-full p-1 transition duration-100 hover:bg-gray-100 dark:hover:bg-gray-900"
         >
           <BsThreeDotsVertical />
         </button>

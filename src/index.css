@@ -1,12 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
-* {
-  font-family: "Nunito", serif;
-}
-
-body {
+:root {
   --text-color: 17, 24, 39;
   --alt-text-color: 255, 255, 255;
   --text-sub-color: 107, 114, 128;
@@ -16,11 +11,10 @@ body {
   --bg-hover-color: 243, 244, 246;
   --primary-color: 37, 99, 235;
   --primary-color-dark: 29, 78, 216;
-  /* --bg-header: rgba(249, 250, 251, 0.9); --card-bg: rgb(255, 255, 255); */
-  /* color-scheme: light ; */
+  color-scheme: light;
 }
-body .dark,
-body.dark {
+
+:root.dark {
   --text-color: 255, 255, 255;
   --alt-text-color: 17, 24, 39;
   --text-sub-color: 156, 163, 175;
@@ -28,9 +22,32 @@ body.dark {
   --bg-sub-color: 40, 47, 60;
   --bg-hover-color: 55, 65, 81;
   --bg-alt-sub-color: 249, 250, 251;
-  /* --bg-header: rgba(17, 24, 39, 0.9);
-  --card-bg: rgb(31, 41, 55); */
   color-scheme: dark;
+}
+
+@theme {
+  /* Colors */
+  --color-text: rgba(var(--text-color));
+  --color-text-sub: rgba(var(--text-sub-color));
+  --color-primary: rgba(var(--primary-color));
+  --color-primary-dark: rgba(var(--primary-color-dark));
+
+  /* Background Colors */
+  --color-bg: rgba(var(--bg-color));
+  --color-bg-sub: rgba(var(--bg-sub-color));
+  --color-bg-alt-sub: rgba(var(--bg-alt-sub-color));
+  --color-bg-hover: rgba(var(--bg-hover-color));
+
+  /* Box Shadows */
+  --shadow-primary-sm: 0 0 6px 1px rgba(var(--primary-color), 0.2);
+  --shadow-primary-md: 0 0 6px 1px rgba(var(--primary-color), 0.3);
+  --shadow-sm: 0 0 1px 1px rgba(var(--text-color), 0.1);
+  --shadow-md: 0 0 3px 1px rgba(var(--text-color), 0.2);
+  --shadow-lg: 0 0 6px 1px rgba(var(--text-color), 0.2);
+}
+
+* {
+  font-family: "Nunito", serif;
 }
 
 @layer components {
@@ -46,15 +63,15 @@ body.dark {
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-200 dark:bg-gray-700;
+    @apply bg-gray-100 dark:bg-gray-900;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded bg-gray-400 dark:bg-gray-400;
+    @apply rounded bg-gray-400 dark:bg-gray-900;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-600 dark:bg-gray-300;
+    @apply bg-gray-600 dark:bg-gray-900;
   }
 
   input[type="date"]::-webkit-calendar-picker-icon {

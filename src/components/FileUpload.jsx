@@ -2,12 +2,15 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiUpload, FiX, FiFile, FiCheck, FiAlertCircle } from "react-icons/fi";
 import { formatFileSize } from "../utils/formatFileSize";
+import useApi from "../hooks/useApi";
+import driveService from "../services/driveService";
 
-const FileUpload = ({ onAddFiles, onClose }) => {
+const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
   const [files, setFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
+  const { execute: uploadFiles } = useApi(driveService.uploadFiles, {});
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     setError(null);
@@ -40,15 +43,20 @@ const FileUpload = ({ onAddFiles, onClose }) => {
     setFiles(files.filter((file) => file.id !== id));
   };
 
-  const uploadFiles = async () => {
+  const handleUploadFiles = async () => {
     if (files.length === 0) return;
 
     setIsUploading(true);
-    setUploadProgress({});
 
+    const formData = new FormData();
+    files.forEach((file) => formData.append("files", file.file));
+
+    if (currentFolderId) formData.append("parentFolderId", currentFolderId);
+
+    setUploadProgress({});
     try {
-      // Call the parent component's upload handler
-      await onAddFiles(files);
+      await uploadFiles(formData);
+      onRefresh();
       onClose();
     } catch (error) {
       console.error("Upload error:", error);
@@ -60,12 +68,12 @@ const FileUpload = ({ onAddFiles, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 top-0 left-0 z-50 overflow-y-scroll bg-black/20"
+      className="fixed inset-0 top-0 left-0 z-50 overflow-y-scroll bg-black/20 dark:bg-white/20"
       onClick={onClose}
     >
       <div className="flex min-h-full items-center justify-center p-4">
         <div
-          className="w-full max-w-lg rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
+          className="w-full max-w-lg rounded-lg bg-gray-50 p-6 shadow dark:bg-gray-900"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="mb-4 flex items-center justify-between">
@@ -89,7 +97,7 @@ const FileUpload = ({ onAddFiles, onClose }) => {
           >
             <input {...getInputProps()} />
             <FiUpload className="mx-auto mb-3 text-3xl text-gray-400" />
-            <p className="text-lg font-medium text-gray-700">
+            <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
               {isDragActive
                 ? "Drop files here"
                 : "Drag & drop files here, or click to select"}
@@ -108,7 +116,7 @@ const FileUpload = ({ onAddFiles, onClose }) => {
 
           {files.length > 0 && (
             <div className="mt-6">
-              <h3 className="mb-3 text-lg font-medium text-gray-800">
+              <h3 className="mb-3 text-lg font-medium text-gray-950 dark:text-gray-50">
                 Selected Files ({files.length})
               </h3>
 
@@ -124,10 +132,10 @@ const FileUpload = ({ onAddFiles, onClose }) => {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-baseline justify-between">
-                        <p className="truncate text-sm font-medium text-gray-800">
+                        <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-200">
                           {file.name}
                         </p>
-                        <span className="ml-2 text-xs text-nowrap text-gray-500">
+                        <span className="ml-2 text-xs text-nowrap text-gray-700 dark:text-gray-300">
                           {formatFileSize(file.size)}
                         </span>
                       </div>
@@ -165,7 +173,7 @@ const FileUpload = ({ onAddFiles, onClose }) => {
                     {file.status !== "completed" && (
                       <button
                         onClick={() => removeFile(file.id)}
-                        className="ml-4 text-gray-400 transition-colors hover:text-gray-600"
+                        className="ml-4 text-gray-700 transition-colors hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400"
                         disabled={isUploading}
                       >
                         <FiX />
@@ -184,13 +192,13 @@ const FileUpload = ({ onAddFiles, onClose }) => {
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   onClick={() => setFiles([])}
-                  className="rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50"
+                  className="rounded-md border border-gray-500 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700"
                   disabled={isUploading}
                 >
                   Clear All
                 </button>
                 <button
-                  onClick={uploadFiles}
+                  onClick={handleUploadFiles}
                   className={`rounded-md px-4 py-2 text-white ${
                     isUploading
                       ? "cursor-not-allowed bg-blue-400"

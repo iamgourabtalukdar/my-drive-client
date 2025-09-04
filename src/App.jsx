@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Home from "./pages/Home";
 import Trash from "./pages/Trash";
 import Recent from "./pages/Recent";
@@ -13,8 +13,11 @@ import SignUp from "./pages/auth/Signup";
 
 function App() {
   const [theme] = useContext(ThemeContext);
+  useEffect(() => {
+    document.documentElement.classList = theme;
+  }, [theme]);
   return (
-    <div className={`${theme} bg-color text-color dark:bg-sub-color`}>
+    <div className="light bg-gray-50 text-gray-950 dark:bg-gray-950 dark:text-gray-50">
       <Routes>
         <Route element={<ProtectedRoutes />}>
           <Route path="drive" element={<DriveLayout />}>

@@ -29,7 +29,7 @@ const DriveLayout = () => {
 
         {isMenu ? (
           <div
-            className="absolute z-20 h-full w-full bg-black/20"
+            className="absolute z-20 h-full w-full bg-black/20 dark:bg-white/20"
             onClick={() => setIsMenu(false)}
           >
             {/* Pass state and setters to Sidebar */}
@@ -37,6 +37,7 @@ const DriveLayout = () => {
               classes="flex max-w-64 min-w-0 transition duration-200 pt-8"
               setIsCreatePopUp={setIsCreatePopUp}
               setPopUpData={setPopUpData}
+              setIsFileUpload={setIsFileUpload}
               currentFolderId={currentFolderId}
             />
           </div>
@@ -46,6 +47,7 @@ const DriveLayout = () => {
             classes="hidden"
             setIsCreatePopUp={setIsCreatePopUp}
             setPopUpData={setPopUpData}
+            setIsFileUpload={setIsFileUpload}
             currentFolderId={currentFolderId}
           />
         )}
@@ -62,7 +64,13 @@ const DriveLayout = () => {
       </div>
 
       {/* Modals are now managed by the layout */}
-      {isFileUpload && <FileUpload onClose={() => setIsFileUpload(false)} />}
+      {isFileUpload && (
+        <FileUpload
+          currentFolderId={currentFolderId}
+          onClose={() => setIsFileUpload(false)}
+          onRefresh={onRefresh}
+        />
+      )}
 
       {isCreatePopUp && (
         <CreatePopUp

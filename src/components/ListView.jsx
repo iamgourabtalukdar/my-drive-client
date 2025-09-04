@@ -18,21 +18,21 @@ const ListView = ({
       className="w-full"
     >
       <thead>
-        <tr className="border-b border-color/20 text-left">
-          <th className="hover:bg-hover cursor-pointer rounded-tl px-4 py-2 pb-2 font-medium">
+        <tr className="border-b border-gray-700/50 text-left hover:bg-gray-100 dark:border-gray-300/50 dark:hover:bg-gray-900">
+          <th className="cursor-pointer rounded-tl px-4 py-2 pb-2 font-medium hover:bg-gray-200 dark:hover:bg-gray-800">
             <div className="flex items-center">
               <span>Name</span>
 
               <MdArrowDropUp className="text-2xl" />
             </div>
           </th>
-          <th className="hover:bg-hover cursor-pointer px-4 py-2 pb-2 font-medium">
+          <th className="cursor-pointer px-4 py-2 pb-2 font-medium hover:bg-gray-200 dark:hover:bg-gray-800">
             Owner
           </th>
-          <th className="hover:bg-hover cursor-pointer text-nowrap px-4 py-2 pb-2 font-medium">
+          <th className="cursor-pointer px-4 py-2 pb-2 font-medium text-nowrap hover:bg-gray-200 dark:hover:bg-gray-800">
             Last modified
           </th>
-          <th className="hover:bg-hover cursor-pointer rounded-tr px-4 py-2 pb-2 font-medium">
+          <th className="cursor-pointer rounded-tr px-4 py-2 pb-2 font-medium hover:bg-gray-200 dark:hover:bg-gray-800">
             Size
           </th>
         </tr>

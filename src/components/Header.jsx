@@ -7,7 +7,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 const Header = () => {
   const [theme, setTheme] = useContext(ThemeContext);
   return (
-    <header className="col-span-3 border-b border-color/20 px-4 py-3">
+    <header className="col-span-3 border-b border-gray-700/50 px-4 py-3 dark:border-gray-300/50">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="mr-4 text-xl font-bold text-blue-500">Drive</div>
@@ -35,18 +35,18 @@ const Header = () => {
               type="text"
               id="search-input"
               placeholder="Search in Drive"
-              className="w-64 rounded-md border border-color/10 bg-sub-color px-4 py-2 pl-10 focus:outline-none focus:ring-1 focus:ring-blue-200"
+              className="w-64 rounded-md border border-gray-700/50 bg-gray-100/50 px-4 py-2 pl-10 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:bg-gray-900/50 dark:focus:ring-blue-800"
             />
 
             <label htmlFor="search-input">
-              <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <BsSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-500" />
             </label>
           </div>
           <div className="me-0 sm:me-2 md:me-8">
             {theme === "light" ? (
               <button
                 title="Turn On Dark Theme"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-alt-sub-color text-xl text-gray-100 shadow-color-sm"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-700/50 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:focus:ring-blue-800"
                 onClick={(e) => {
                   e.stopPropagation();
                   setTheme("dark");
@@ -57,7 +57,7 @@ const Header = () => {
             ) : (
               <button
                 title="Turn On Light Theme"
-                className="text-md flex h-8 w-8 items-center justify-center rounded-full border border-color/20 bg-alt-sub-color text-gray-100 shadow-color-sm dark:bg-sub-color"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-700/50 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:focus:ring-blue-800"
                 onClick={(e) => {
                   e.stopPropagation();
                   setTheme("light");

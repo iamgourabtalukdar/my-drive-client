@@ -19,8 +19,8 @@ const ListViewFolderItem = ({
 
   return (
     <tr
-      className={`hover:bg-hover cursor-default border-b border-color/20 dark:border-color/30 ${fileSelectClass} ${
-        isTrash ? "border-white" : "border-gray-100"
+      className={`cursor-default border-b hover:bg-gray-100 dark:hover:bg-gray-800 ${fileSelectClass} ${
+        isTrash ? "border-white" : "border-gray-700/50 dark:border-gray-300/50"
       }`}
       onDoubleClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
@@ -37,11 +37,13 @@ const ListViewFolderItem = ({
           )}
         </div>
       </td>
-      <td className="px-4 py-3 text-sub-color">{folder.owner}</td>
-      <td className="text-nowrap px-4 py-3 text-sub-color">
+      <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
+        {folder.owner}
+      </td>
+      <td className="px-4 py-3 text-nowrap text-gray-600 dark:text-gray-400">
         {formatDate(folder.lastModified)}
       </td>
-      <td className="px-4 py-3 text-sub-color">-</td>
+      <td className="px-4 py-3 text-gray-600 dark:text-gray-400">-</td>
     </tr>
   );
 };

@@ -32,7 +32,7 @@ const Home = () => {
   } = useApi(driveService.getFolderContents, {});
 
   // API hooks for actions
-  const { execute: deleteFolderApi } = useApi(driveService.deleteFolder);
+  const { execute: removeItemApi } = useApi(driveService.removeItem);
   const { execute: starItemApi } = useApi(driveService.starItem);
 
   const [isCreatePopUp, setIsCreatePopUp] = useState(false);
@@ -56,25 +56,26 @@ const Home = () => {
   } = useContextMenu({});
 
   // Handler for renaming a folder
-  const handleRenameFolder = (folder) => {
+  const handleRenameItem = (type, item) => {
     hideFolderContextMenu();
-    setPopUpData({ action: "rename", type: "folder", item: folder });
+    setPopUpData({ action: "rename", type, item });
     setIsCreatePopUp(true);
   };
 
   // Handler for deleting a folder
-  const handleDeleteFolder = async (folder) => {
+  const handleRemoveItem = async (type, itemId) => {
     hideFolderContextMenu();
+    hideFileContextMenu();
     // You might want to add a confirmation modal here
-    await deleteFolderApi(folder.id);
+    await removeItemApi(type, itemId);
     onRefresh(); // Refresh the list
   };
 
   // Handler for starring/unstarring an item
-  const onStarredItem = async (itemId, isStarred) => {
+  const onStarredItem = async (type, itemId, isStarred) => {
     hideFolderContextMenu();
     hideFileContextMenu();
-    await starItemApi(itemId, { isStarred });
+    await starItemApi(type, itemId, { isStarred });
     onRefresh(); // Refresh the list
   };
 
@@ -97,7 +98,7 @@ const Home = () => {
       >
         <Link
           to={folderId ? `../${targetedFolder?.id}` : `./${targetedFolder?.id}`}
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
           title="Open Folder"
         >
           <MdFolderOpen className="text-xl" />
@@ -106,16 +107,16 @@ const Home = () => {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
           title="Rename Folder"
-          onClick={() => handleRenameFolder(targetedFolder)}
+          onClick={() => handleRenameItem("folder", targetedFolder)}
         >
           <MdEdit className="text-xl" />
           <span>Rename</span>
         </button>
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
           title="Share Folder"
           // onClick={() => handleShareFolder(targetedFolder)} // TODO: Implement Share functionality
         >
@@ -126,19 +127,19 @@ const Home = () => {
         {targetedFolder?.starred ? (
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
             title="Remove from Starred"
-            onClick={() => onStarredItem(targetedFolder.id, false)}
+            onClick={() => onStarredItem("folder", targetedFolder.id, false)}
           >
-            <MdStar className="text-xl" />
+            <MdStar className="text-xl text-yellow-400" />
             <span>Remove from Starred</span>
           </button>
         ) : (
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
             title="Add to Starred"
-            onClick={() => onStarredItem(targetedFolder.id, true)}
+            onClick={() => onStarredItem("folder", targetedFolder.id, true)}
           >
             <MdStarOutline className="text-xl" />
             <span>Add to Starred</span>
@@ -147,12 +148,12 @@ const Home = () => {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
-          title="Delete Folder"
-          onClick={() => handleDeleteFolder(targetedFolder)}
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          title="Move folder to trash"
+          onClick={() => handleRemoveItem("folder", targetedFolder.id)}
         >
           <MdDelete className="text-xl" />
-          <span>Delete</span>
+          <span>Remove</span>
         </button>
       </ContextMenuWrapper>
       {/* Folder context menu end  */}
@@ -164,17 +165,9 @@ const Home = () => {
         onClose={hideFileContextMenu}
       >
         <Link
-          to={`./${targetedFile}`} // This path might need adjustment based on your routing
-          className="flex cursor-pointer items-baseline gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
-          title="Visit Profile"
-        >
-          <FaUser />
-          <span>Visit Profile</span>
-        </Link>
-        <Link
           to={`${import.meta.env.VITE_API_BASE_URL}/file/${targetedFile?.id}`}
           target="_blank"
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
           title="Open file in new tab"
         >
           <MdOpenInNew className="text-lg" />
@@ -183,12 +176,63 @@ const Home = () => {
         <Link
           to={`${import.meta.env.VITE_API_BASE_URL}/file/${targetedFile?.id}?action=download`}
           target="_blank"
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-hover focus:bg-hover"
+          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
           title="Download file"
         >
           <MdDownload className="text-lg" />
           <span>Download</span>
         </Link>
+
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          title="Rename File"
+          onClick={() => handleRenameItem("file", targetedFile)}
+        >
+          <MdEdit className="text-xl" />
+          <span>Rename</span>
+        </button>
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          title="Share Folder"
+          // onClick={() => handleShareFolder(targetedFolder)} // TODO: Implement Share functionality
+        >
+          <MdOutlineShare className="text-xl" />
+          <span>Share</span>
+        </button>
+
+        {targetedFile?.starred ? (
+          <button
+            type="button"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+            title="Remove from Starred"
+            onClick={() => onStarredItem("file", targetedFile.id, false)}
+          >
+            <MdStar className="text-xl text-yellow-400" />
+            <span>Remove from Starred</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+            title="Add to Starred"
+            onClick={() => onStarredItem("file", targetedFile.id, true)}
+          >
+            <MdStarOutline className="text-xl" />
+            <span>Add to Starred</span>
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          title="Move file to trash"
+          onClick={() => handleRemoveItem("file", targetedFile.id)}
+        >
+          <MdDelete className="text-xl" />
+          <span>Remove</span>
+        </button>
       </ContextMenuWrapper>
       {/* File context menu end  */}
 
@@ -210,7 +254,7 @@ const Home = () => {
           />
         )
       ) : (
-        <div className="mt-16 flex flex-col items-center justify-center text-color/50">
+        <div className="mt-16 flex flex-col items-center justify-center text-gray-400 dark:text-gray-600">
           <FaRegFolderOpen className="text-7xl lg:text-9xl" />
           <h1 className="text-2xl font-medium">Folder is empty</h1>
         </div>

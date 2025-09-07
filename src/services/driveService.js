@@ -14,7 +14,7 @@ const driveService = {
     return apiClient.post(`/file/upload`, files, true);
   },
 
-  //common
+  // ######## common
   renameItem: (type, id, body) => {
     return apiClient.patch(`/${type}/${id}`, body);
   },
@@ -23,6 +23,22 @@ const driveService = {
   },
   removeItem: (type, id) => {
     return apiClient.patch(`/${type}/${id}/trash`);
+  },
+
+  // ######## trash
+  getTrashContents: (query) => {
+    return apiClient.get(`/trash`, query);
+  },
+  restoreItem: (type, id) => {
+    return apiClient.patch(`/trash/${type}/${id}`);
+  },
+  deleteItemForever: (type, id) => {
+    return apiClient.delete(`/trash/${type}/${id}`);
+  },
+
+  // ######## starred
+  getStarredContents: (query) => {
+    return apiClient.get(`/starred`, query);
   },
 };
 

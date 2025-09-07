@@ -19,13 +19,13 @@ const ListViewFolderItem = ({
 
   return (
     <tr
-      className={`cursor-default border-b hover:bg-gray-100 dark:hover:bg-gray-800 ${fileSelectClass} ${
-        isTrash ? "border-white" : "border-gray-700/50 dark:border-gray-300/50"
-      }`}
+      className={`cursor-default border-b border-gray-700/10 hover:bg-gray-50 dark:border-gray-300/20 dark:hover:bg-gray-800 ${fileSelectClass}`}
       onDoubleClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
       }
-      onContextMenu={(e) => handleFolderContextMenu(e, folder)}
+      onContextMenu={(e) =>
+        handleFolderContextMenu(e, { type: "folder", ...folder })
+      }
     >
       <td className="px-4 py-3">
         <div className="flex items-center">

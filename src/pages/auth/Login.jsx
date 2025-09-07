@@ -1,68 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import useApi from "../../hooks/useApi";
 import authService from "../../services/authService";
+import useValidator from "../../hooks/useValidator";
+import loginValidationRules from "../../services/validationRules/login";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loading, error, serverErrors, setError, makeSignIn } = useAuth();
   const [email, setEmail] = useState("hello@gmail.com");
   const [password, setPassword] = useState("abcd@123");
   const [showPassword, setShowPassword] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({});
+  const { error, validate } = useValidator();
 
   const { loading: loginLoading, execute: login } = useApi(authService.login);
-  // const { error, validate } = useValidator();
-
-  // Clear errors when user starts typing
-
-  useEffect(() => {
-    if (email && validationErrors.email) {
-      setValidationErrors((prev) => ({ ...prev, email: undefined }));
-    }
-  }, [email]);
-
-  useEffect(() => {
-    if (password && validationErrors.password) {
-      setValidationErrors((prev) => ({ ...prev, password: undefined }));
-    }
-  }, [password]);
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!email.trim()) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      newErrors.email = "Please enter a valid email";
-
-    if (!password) newErrors.password = "Password is required";
-    else if (password.length < 4)
-      newErrors.password = "Password must be at least 4 characters";
-
-    setValidationErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  // Combine client and server errors
-  const getFieldError = (field) => {
-    return validationErrors[field] || serverErrors[field];
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
+    const loginPayload = {
+      email: email.trim(),
+      password: password.trim(),
+    };
 
-    if (!validateForm()) {
-      toast.error("Something went wrong.");
+    if (!validate(loginPayload, loginValidationRules)) {
+      toast.error("Please fill all required fields");
       return;
     }
-
     try {
-      await login({ email, password });
+      await login(loginPayload);
       navigate("/drive/folder");
     } catch (apiError) {
       toast.error(apiError?.message || "Failed to login . Please try again.");
@@ -100,25 +67,6 @@ const Login = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4 p-6">
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-lg bg-red-50 p-3 text-sm text-red-600"
-              >
-                {error}
-              </motion.div>
-            )}
-            {serverErrors.message && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-lg bg-red-50 p-3 text-center text-sm text-red-600"
-              >
-                {serverErrors.message}
-              </motion.div>
-            )}
-
             {/* Email Field */}
             <motion.div
               initial={{ opacity: 0, x: -10 }}
@@ -136,28 +84,15 @@ const Login = () => {
                 <input
                   type="email"
                   value={email}
+                  name="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full border bg-white py-2 pr-3 pl-10 text-black ${
-                    getFieldError("email")
-                      ? "border-red-300"
-                      : "border-gray-300"
-                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
-                    getFieldError("email")
-                      ? "focus:ring-red-500"
-                      : "focus:ring-indigo-500"
-                  } transition focus:border-transparent`}
+                  className="block w-full rounded-lg border border-gray-300 bg-white py-2 pr-3 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="you@example.com"
                 />
               </div>
-              {getFieldError("email") && (
-                <motion.p
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute text-sm text-red-600"
-                >
-                  {getFieldError("email")}
-                </motion.p>
-              )}
+              <p className="absolute -bottom-5 left-0 text-sm text-red-500">
+                {error.email}
+              </p>
             </motion.div>
 
             {/* Password Field */}
@@ -177,16 +112,9 @@ const Login = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
+                  name="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full border bg-white py-2 pr-10 pl-10 text-black ${
-                    getFieldError("password")
-                      ? "border-red-300"
-                      : "border-gray-300"
-                  } rounded-lg shadow-sm focus:ring-2 focus:outline-none ${
-                    getFieldError("password")
-                      ? "focus:ring-red-500"
-                      : "focus:ring-indigo-500"
-                  } transition focus:border-transparent`}
+                  className="block w-full rounded-lg border border-gray-300 bg-white py-2 pr-10 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="••••••••"
                 />
                 <button
@@ -201,15 +129,9 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              {getFieldError("password") && (
-                <motion.p
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute text-sm text-red-600"
-                >
-                  {getFieldError("password")}
-                </motion.p>
-              )}
+              <p className="absolute -bottom-5 left-0 text-sm text-red-500">
+                {error.password}
+              </p>
             </motion.div>
 
             <motion.div
@@ -251,14 +173,14 @@ const Login = () => {
             >
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loginLoading}
                 className={`flex w-full items-center justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm ${
-                  loading
+                  loginLoading
                     ? "cursor-not-allowed bg-indigo-400"
                     : "bg-indigo-600 hover:bg-indigo-700"
                 } transition focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none`}
               >
-                {loading ? (
+                {loginLoading ? (
                   <>
                     <svg
                       className="mr-2 -ml-1 h-4 w-4 animate-spin text-white"

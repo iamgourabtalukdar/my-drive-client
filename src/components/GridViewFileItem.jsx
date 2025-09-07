@@ -3,16 +3,11 @@ import { getFileIcon } from "../utils/getFileIcon";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
 
-const GridViewFileItem = ({
-  file,
-  handleFileContextMenu,
-  onStarredItem,
-  isTrash,
-}) => {
+const GridViewFileItem = ({ file, handleFileContextMenu, onStarredItem }) => {
   return (
     <div
-      className={`rounded-xl border p-4 shadow-sm transition ${isTrash ? "border-red-100 bg-red-50 hover:bg-red-100" : "border-gray-700/50 bg-gray-50 hover:bg-gray-100 dark:border-gray-300/50 dark:bg-gray-900 dark:hover:bg-gray-800"}`}
-      onContextMenu={(e) => handleFileContextMenu(e, file)}
+      className="rounded-md border border-gray-700/20 p-4 transition hover:bg-gray-50 dark:border-gray-200/20 dark:bg-gray-900 dark:hover:bg-gray-800"
+      onContextMenu={(e) => handleFileContextMenu(e, { type: "file", ...file })}
       onDoubleClick={() =>
         window.open(
           `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,
@@ -22,9 +17,7 @@ const GridViewFileItem = ({
     >
       <div className="mb-4 flex flex-row items-start justify-between gap-3">
         <div className="flex max-w-4/5 items-center gap-3">
-          <div
-            className={`flex-shrink-0 rounded ${isTrash ? "bg-red-100" : "bg-gray-200 dark:bg-gray-700"} p-2 text-xl text-gray-600 dark:text-gray-400`}
-          >
+          <div className="flex-shrink-0 rounded bg-gray-100 p-2 text-xl dark:bg-gray-700">
             {getFileIcon(file.extension)}
           </div>
           <div className="min-w-0 flex-1">

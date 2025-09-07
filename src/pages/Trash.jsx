@@ -1,64 +1,106 @@
-import { useEffect } from "react";
-import TrashView from "../components/TrashView";
-import useTrash from "../hooks/useTrash";
-import useFolder from "../hooks/useFolder";
-import SpinLoader from "../components/SpinLoader";
-import { useNavigate, useOutletContext } from "react-router";
-import { toast } from "react-toastify";
+import { useContext, useEffect } from "react";
+import { useOutletContext } from "react-router";
+import useApi from "../hooks/useApi";
+import driveService from "../services/driveService";
+import { DriveContext } from "../contexts/DriveContext";
+import useContextMenu from "../hooks/useContextMenu";
+import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
+import { MdDeleteForever, MdOutlineRestore } from "react-icons/md";
+import { FaRegFolderOpen } from "react-icons/fa";
+import ListView from "../components/ListView";
+import GridView from "../components/GridView";
 
 const Trash = () => {
-  const navigate = useNavigate();
-  const { setOnAddFiles, setOnAddFolder, setOnRefresh } = useOutletContext();
-  const { files, folders, loading, error, loadTrash, restoreItem, deleteItem } =
-    useTrash();
-  const { addFolder, addFiles } = useFolder();
+  const { refreshKey } = useOutletContext();
+  const { isListView } = useContext(DriveContext);
+  const {
+    data: { folders = [], files = [] },
+    execute: getTrashContents,
+  } = useApi(driveService.getTrashContents, {});
 
-  useEffect(() => {
-    setOnAddFiles(() => async (files) => {
-      await addFiles(files);
-    });
-    setOnAddFolder(() => async (folderName) => {
-      await addFolder(folderName);
-    });
-    setOnRefresh(() => async () => {
-      await loadTrash();
-    });
-  }, []);
+  const { execute: restoreItem } = useApi(driveService.restoreItem);
+  const { execute: deleteItemForever } = useApi(driveService.deleteItemForever);
 
-  const onRestoreItem = async (type, itemId, newName) => {
-    await restoreItem(type, itemId, newName);
-    await loadTrash();
+  const {
+    menuPosition,
+    target: targetItem,
+    handleContextMenu: handleContextMenu,
+    hideContextMenu: hideContextMenu,
+  } = useContextMenu({});
+
+  const onRefresh = () => {
+    getTrashContents();
   };
 
-  const onDeleteItem = async (type, id) => {
-    await deleteItem(type, id);
-    await loadTrash();
+  const handleRestoreItem = async (item) => {
+    hideContextMenu();
+    await restoreItem(item.type, item.id);
+    onRefresh();
+  };
+  const handleDeleteForever = async (item) => {
+    hideContextMenu();
+    await deleteItemForever(item.type, item.id);
+    onRefresh();
   };
 
   useEffect(() => {
-    loadTrash();
-  }, []);
+    getTrashContents();
+  }, [getTrashContents, refreshKey]);
 
-  useEffect(() => {
-    if (error) {
-      navigate("/signin");
-      toast.error(error);
-    }
-  }, [error]);
-
-  // Handle loading state
-  if (loading) {
-    return <SpinLoader classes="mt-16" />;
-  }
-
-  // Render table with folders and files
   return (
-    <TrashView
-      files={files}
-      folders={folders}
-      onRestoreItem={onRestoreItem}
-      onDeleteItem={onDeleteItem}
-    />
+    <>
+      {/* Folder context menu start  */}
+      <ContextMenuWrapper
+        menuPosition={menuPosition}
+        targetId={targetItem?.id}
+        onClose={hideContextMenu}
+      >
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
+          title="Restore"
+          onClick={() => handleRestoreItem(targetItem)}
+        >
+          <MdOutlineRestore className="text-xl" />
+          <span>Restore</span>
+        </button>
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
+          title="Delete Forever"
+          onClick={() => handleDeleteForever(targetItem)}
+        >
+          <MdDeleteForever className="text-xl" />
+          <span>Delete Forever</span>
+        </button>
+      </ContextMenuWrapper>
+      {/* Folder context menu end  */}
+
+      {folders.length || files.length ? (
+        isListView === "yes" ? (
+          <ListView
+            folders={folders}
+            files={files}
+            isTrash={true}
+            handleFolderContextMenu={handleContextMenu}
+            handleFileContextMenu={handleContextMenu}
+          />
+        ) : (
+          <GridView
+            folders={folders}
+            files={files}
+            isTrash={true}
+            handleFolderContextMenu={handleContextMenu}
+            handleFileContextMenu={handleContextMenu}
+          />
+        )
+      ) : (
+        <div className="mt-16 flex flex-col items-center justify-center text-gray-400 dark:text-gray-600">
+          <FaRegFolderOpen className="text-7xl lg:text-9xl" />
+          <h1 className="text-2xl font-medium">Your trash is empty</h1>
+        </div>
+      )}
+    </>
   );
 };
 

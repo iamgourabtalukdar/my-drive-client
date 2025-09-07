@@ -40,7 +40,6 @@ const GridView = ({
                 file={file}
                 handleFileContextMenu={handleFileContextMenu}
                 onStarredItem={onStarredItem}
-                isTrash={isTrash}
               />
             ))}
           </div>

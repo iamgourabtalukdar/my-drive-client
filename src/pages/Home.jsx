@@ -1,4 +1,4 @@
-import { FaRegFolderOpen, FaUser } from "react-icons/fa";
+import { FaRegFolderOpen } from "react-icons/fa";
 import useApi from "../hooks/useApi";
 import driveService from "../services/driveService";
 import useContextMenu from "../hooks/useContextMenu";
@@ -98,7 +98,7 @@ const Home = () => {
       >
         <Link
           to={folderId ? `../${targetedFolder?.id}` : `./${targetedFolder?.id}`}
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Open Folder"
         >
           <MdFolderOpen className="text-xl" />
@@ -107,7 +107,7 @@ const Home = () => {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Rename Folder"
           onClick={() => handleRenameItem("folder", targetedFolder)}
         >
@@ -116,7 +116,7 @@ const Home = () => {
         </button>
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Share Folder"
           // onClick={() => handleShareFolder(targetedFolder)} // TODO: Implement Share functionality
         >
@@ -127,7 +127,7 @@ const Home = () => {
         {targetedFolder?.starred ? (
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             title="Remove from Starred"
             onClick={() => onStarredItem("folder", targetedFolder.id, false)}
           >
@@ -137,7 +137,7 @@ const Home = () => {
         ) : (
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             title="Add to Starred"
             onClick={() => onStarredItem("folder", targetedFolder.id, true)}
           >
@@ -148,7 +148,7 @@ const Home = () => {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Move folder to trash"
           onClick={() => handleRemoveItem("folder", targetedFolder.id)}
         >
@@ -167,7 +167,7 @@ const Home = () => {
         <Link
           to={`${import.meta.env.VITE_API_BASE_URL}/file/${targetedFile?.id}`}
           target="_blank"
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Open file in new tab"
         >
           <MdOpenInNew className="text-lg" />
@@ -176,7 +176,7 @@ const Home = () => {
         <Link
           to={`${import.meta.env.VITE_API_BASE_URL}/file/${targetedFile?.id}?action=download`}
           target="_blank"
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Download file"
         >
           <MdDownload className="text-lg" />
@@ -185,7 +185,7 @@ const Home = () => {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Rename File"
           onClick={() => handleRenameItem("file", targetedFile)}
         >
@@ -194,7 +194,7 @@ const Home = () => {
         </button>
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Share Folder"
           // onClick={() => handleShareFolder(targetedFolder)} // TODO: Implement Share functionality
         >
@@ -205,7 +205,7 @@ const Home = () => {
         {targetedFile?.starred ? (
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             title="Remove from Starred"
             onClick={() => onStarredItem("file", targetedFile.id, false)}
           >
@@ -215,7 +215,7 @@ const Home = () => {
         ) : (
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             title="Add to Starred"
             onClick={() => onStarredItem("file", targetedFile.id, true)}
           >
@@ -226,7 +226,7 @@ const Home = () => {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-900"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Move file to trash"
           onClick={() => handleRemoveItem("file", targetedFile.id)}
         >

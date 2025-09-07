@@ -7,7 +7,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 const Header = () => {
   const [theme, setTheme] = useContext(ThemeContext);
   return (
-    <header className="col-span-3 border-b border-gray-700/50 px-4 py-3 dark:border-gray-300/50">
+    <header className="col-span-3 border-b border-gray-700/20 px-4 py-3 dark:border-gray-300/50">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="mr-4 text-xl font-bold text-blue-500">Drive</div>
@@ -35,7 +35,7 @@ const Header = () => {
               type="text"
               id="search-input"
               placeholder="Search in Drive"
-              className="w-64 rounded-md border border-gray-700/50 bg-gray-100/50 px-4 py-2 pl-10 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:bg-gray-900/50 dark:focus:ring-blue-800"
+              className="w-64 rounded-md border border-gray-700/20 bg-gray-50 px-4 py-2 pl-10 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:bg-gray-900/50 dark:focus:ring-blue-800"
             />
 
             <label htmlFor="search-input">

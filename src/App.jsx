@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router";
 import { useContext, useEffect } from "react";
 import Home from "./pages/Home";
 import Trash from "./pages/Trash";
-import Recent from "./pages/Recent";
 import Starred from "./pages/Starred";
 import DriveLayout from "./layouts/DriveLayout";
 import { ThemeContext } from "./contexts/ThemeContext";
@@ -17,7 +16,7 @@ function App() {
     document.documentElement.classList = theme;
   }, [theme]);
   return (
-    <div className="light bg-gray-50 text-gray-950 dark:bg-gray-950 dark:text-gray-50">
+    <div className="bg-white text-gray-950 dark:bg-gray-950 dark:text-white">
       <Routes>
         <Route element={<ProtectedRoutes />}>
           <Route path="drive" element={<DriveLayout />}>
@@ -26,7 +25,6 @@ function App() {
               <Route index element={<Home />} />
               <Route path=":folderId" element={<Home />} />
             </Route>
-            <Route path="recent" element={<Recent />} />
             <Route path="starred" element={<Starred />} />
             <Route path="trash" element={<Trash />} />
           </Route>
@@ -42,12 +40,12 @@ function App() {
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
-        closeOnClick
+        closeOnClick={true}
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme={theme}
       />
     </div>
   );

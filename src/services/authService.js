@@ -2,12 +2,15 @@ import apiClient from "./api";
 
 const authService = {
   // ######## signup
-  signup: (credentials) => {
-    return apiClient.post(`/auth/signup`, credentials);
+  signup: (credential) => {
+    return apiClient.post(`/auth/signup`, credential);
   },
   // ######## login
-  login: (credentials) => {
-    return apiClient.post(`/auth/login`, credentials);
+  login: (credential) => {
+    return apiClient.post(`/auth/login`, credential);
+  },
+  loginWithGoogle: (credential) => {
+    return apiClient.post(`/auth/login/google`, credential);
   },
   verifyLogin: () => {
     return apiClient.get(`/auth/verify`);

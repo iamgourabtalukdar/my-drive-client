@@ -7,6 +7,7 @@ import useApi from "../../hooks/useApi";
 import authService from "../../services/authService";
 import useValidator from "../../hooks/useValidator";
 import loginValidationRules from "../../services/validationRules/login";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ const Login = () => {
   const { error, validate } = useValidator();
 
   const { loading: loginLoading, execute: login } = useApi(authService.login);
+  const { loading: loginWithGoogleLoading, execute: loginWithGoogle } = useApi(
+    authService.loginWithGoogle,
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +48,7 @@ const Login = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
+        <div className="overflow-hidden rounded-xl bg-white shadow-xl">
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-blue-500 p-6 text-center">
             <motion.h1
@@ -231,6 +235,26 @@ const Login = () => {
               </Link>
             </p>
           </motion.div>
+        </div>
+        <div className="relative flex h-12 items-center justify-center">
+          <span className="absolute top-1/2 left-0 inline-block w-full border-t border-gray-500/20"></span>
+          <small className="relative z-10 bg-indigo-100 px-2 font-medium">
+            or
+          </small>
+        </div>
+        <div className="flex items-center justify-center">
+          <GoogleLogin
+            onSuccess={async ({ credential }) => {
+              await loginWithGoogle({ idToken: credential });
+              navigate("/drive/folder");
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+            shape="rectangular"
+            theme="filled_blue"
+            useOneTap
+          />
         </div>
       </motion.div>
     </div>

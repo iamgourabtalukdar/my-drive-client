@@ -1,7 +1,11 @@
 import { useContext, useEffect } from "react";
 import { useOutletContext } from "react-router";
 import useApi from "../hooks/useApi";
-import driveService from "../services/driveService";
+import {
+  deleteItemForever,
+  getTrashContents,
+  restoreItem,
+} from "../services/driveService";
 import { DriveContext } from "../contexts/DriveContext";
 import useContextMenu from "../hooks/useContextMenu";
 import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
@@ -15,11 +19,11 @@ const Trash = () => {
   const { isListView } = useContext(DriveContext);
   const {
     data: { folders = [], files = [] },
-    execute: getTrashContents,
-  } = useApi(driveService.getTrashContents, {});
+    execute: getTrashContentsHandler,
+  } = useApi(getTrashContents, {});
 
-  const { execute: restoreItem } = useApi(driveService.restoreItem);
-  const { execute: deleteItemForever } = useApi(driveService.deleteItemForever);
+  const { execute: restoreItemHandler } = useApi(restoreItem);
+  const { execute: deleteItemForeverHandler } = useApi(deleteItemForever);
 
   const {
     menuPosition,
@@ -29,23 +33,23 @@ const Trash = () => {
   } = useContextMenu({});
 
   const onRefresh = () => {
-    getTrashContents();
+    getTrashContentsHandler();
   };
 
-  const handleRestoreItem = async (item) => {
+  const handlerestoreItemHandler = async (item) => {
     hideContextMenu();
-    await restoreItem(item.type, item.id);
+    await restoreItemHandler(item.type, item.id);
     onRefresh();
   };
   const handleDeleteForever = async (item) => {
     hideContextMenu();
-    await deleteItemForever(item.type, item.id);
+    await deleteItemForeverHandler(item.type, item.id);
     onRefresh();
   };
 
   useEffect(() => {
-    getTrashContents();
-  }, [getTrashContents, refreshKey]);
+    getTrashContentsHandler();
+  }, [getTrashContentsHandler, refreshKey]);
 
   return (
     <>
@@ -59,7 +63,7 @@ const Trash = () => {
           type="button"
           className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Restore"
-          onClick={() => handleRestoreItem(targetItem)}
+          onClick={() => handlerestoreItemHandler(targetItem)}
         >
           <MdOutlineRestore className="text-xl" />
           <span>Restore</span>

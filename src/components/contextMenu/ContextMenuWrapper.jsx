@@ -1,27 +1,12 @@
 // components/common/ContextMenuWrapper.jsx
 import React, { useRef, useEffect } from "react";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 
 const ContextMenuWrapper = ({ menuPosition, targetId, onClose, children }) => {
   const menuRef = useRef(null);
 
   // Effect to close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-
-    if (menuPosition) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("wheel", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("wheel", handleClickOutside);
-    };
-  }, [menuPosition, onClose]);
+  useOnClickOutside(menuRef, onClose);
 
   if (!menuPosition || menuPosition.x === null || menuPosition.y === null) {
     return null; // Don't render if menu is not active

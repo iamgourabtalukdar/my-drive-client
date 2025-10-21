@@ -1,16 +1,16 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiUpload, FiX, FiFile, FiCheck, FiAlertCircle } from "react-icons/fi";
-import { formatFileSize } from "../utils/formatFileSize";
+import { formatSize } from "../utils/formatFileSize";
 import useApi from "../hooks/useApi";
-import driveService from "../services/driveService";
+import { uploadFiles } from "../services/driveService";
 
 const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
   const [files, setFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
-  const { execute: uploadFiles } = useApi(driveService.uploadFiles, {});
+  const { execute: uploadFilesHandler } = useApi(uploadFiles, {});
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     setError(null);
@@ -35,7 +35,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    maxSize: 50 * 1024 * 1024, // 50MB
+    // maxSize: 250 * 1024 * 1024, // 250MB
     multiple: true,
   });
 
@@ -43,7 +43,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
     setFiles(files.filter((file) => file.id !== id));
   };
 
-  const handleUploadFiles = async () => {
+  const handleUploadFilesHandler = async () => {
     if (files.length === 0) return;
 
     setIsUploading(true);
@@ -55,7 +55,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
 
     setUploadProgress({});
     try {
-      await uploadFiles(formData);
+      await uploadFilesHandler(formData);
       onRefresh();
       onClose();
     } catch (error) {
@@ -136,7 +136,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
                           {file.name}
                         </p>
                         <span className="ml-2 text-xs text-nowrap text-gray-700 dark:text-gray-300">
-                          {formatFileSize(file.size)}
+                          {formatSize(file.size)}
                         </span>
                       </div>
 
@@ -198,7 +198,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
                   Clear All
                 </button>
                 <button
-                  onClick={handleUploadFiles}
+                  onClick={handleUploadFilesHandler}
                   className={`rounded-md px-4 py-2 text-white ${
                     isUploading
                       ? "cursor-not-allowed bg-blue-400"

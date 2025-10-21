@@ -1,7 +1,7 @@
 import { BsStar, BsStarFill, BsThreeDotsVertical } from "react-icons/bs";
 import { getFileIcon } from "../utils/getFileIcon";
 import { formatDate } from "../utils/formatDate";
-import { formatFileSize } from "../utils/formatFileSize";
+import { formatSize } from "../utils/formatFileSize";
 
 const GridViewFileItem = ({ file, handleFileContextMenu, onStarredItem }) => {
   return (
@@ -57,7 +57,7 @@ const GridViewFileItem = ({ file, handleFileContextMenu, onStarredItem }) => {
       <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
         <div>
           <span className="font-medium">Size: </span>
-          {formatFileSize(file.size)}
+          {formatSize(file.size)}
         </div>
         <div>
           <span className="font-medium">Modified: </span>

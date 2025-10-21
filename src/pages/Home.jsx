@@ -1,6 +1,10 @@
 import { FaRegFolderOpen } from "react-icons/fa";
 import useApi from "../hooks/useApi";
-import driveService from "../services/driveService";
+import {
+  getFolderContents,
+  removeItem,
+  starItem,
+} from "../services/driveService";
 import useContextMenu from "../hooks/useContextMenu";
 import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
 
@@ -28,19 +32,19 @@ const Home = () => {
   const { refreshKey, setCurrentFolderId } = useOutletContext();
   const {
     data: { folders = [], files = [] },
-    execute: getFolderContents,
-  } = useApi(driveService.getFolderContents, {});
+    execute: getFolderContentsHandler,
+  } = useApi(getFolderContents, {});
 
   // API hooks for actions
-  const { execute: removeItemApi } = useApi(driveService.removeItem);
-  const { execute: starItemApi } = useApi(driveService.starItem);
+  const { execute: removeItemHandler } = useApi(removeItem);
+  const { execute: starItemHandler } = useApi(starItem);
 
   const [isCreatePopUp, setIsCreatePopUp] = useState(false);
   const [popUpData, setPopUpData] = useState(null);
 
   // This function can be simplified as it's only for local actions now
   const onRefresh = () => {
-    getFolderContents(folderId);
+    getFolderContentsHandler(folderId);
   };
   const {
     menuPosition: folderMenuPosition,
@@ -67,7 +71,7 @@ const Home = () => {
     hideFolderContextMenu();
     hideFileContextMenu();
     // You might want to add a confirmation modal here
-    await removeItemApi(type, itemId);
+    await removeItemHandler(type, itemId);
     onRefresh(); // Refresh the list
   };
 
@@ -75,7 +79,7 @@ const Home = () => {
   const onStarredItem = async (type, itemId, isStarred) => {
     hideFolderContextMenu();
     hideFileContextMenu();
-    await starItemApi(type, itemId, { isStarred });
+    await starItemHandler(type, itemId, { isStarred });
     onRefresh(); // Refresh the list
   };
 
@@ -85,8 +89,8 @@ const Home = () => {
   }, [folderId, setCurrentFolderId]);
 
   useEffect(() => {
-    getFolderContents(folderId);
-  }, [folderId, getFolderContents, refreshKey]);
+    getFolderContentsHandler(folderId);
+  }, [folderId, getFolderContentsHandler, refreshKey]);
 
   return (
     <>

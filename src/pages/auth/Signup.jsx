@@ -1,19 +1,20 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
-  FiUser,
-  FiMail,
-  FiLock,
   FiEye,
   FiEyeOff,
+  FiLock,
   FiLogIn,
+  FiMail,
+  FiUser,
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import authService from "../../services/authService";
 import useApi from "../../hooks/useApi";
 import useValidator from "../../hooks/useValidator";
+import { loginWithGoogle, signup } from "../../services/authService";
 import signUpValidationRules from "../../services/validationRules/signUp";
+import { GoogleLogin } from "@react-oauth/google";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -23,13 +24,14 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { error, validate } = useValidator();
 
-  const { loading: signUpLoading, execute: signUp } = useApi(
-    authService.signup,
-  );
+  const { loading: signUpLoading, execute: signUpHandler } = useApi(signup);
+  const { loading: loginWithGoogleLoading, execute: loginWithGoogleHandler } =
+    useApi(loginWithGoogle);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const signUpPayload = {
+      name: name.trim(),
       email: email.trim(),
       password: password.trim(),
     };
@@ -39,7 +41,7 @@ const SignUp = () => {
       return;
     }
     try {
-      await signUp(signUpPayload);
+      await signUpHandler(signUpPayload);
       navigate("/login");
     } catch (apiError) {
       toast.error(apiError?.message || "Failed to login . Please try again.");
@@ -239,6 +241,26 @@ const SignUp = () => {
               </Link>
             </p>
           </motion.div>
+        </div>
+        <div className="relative flex h-12 items-center justify-center">
+          <span className="absolute top-1/2 left-0 inline-block w-full border-t border-gray-500/20"></span>
+          <small className="relative z-10 bg-indigo-100 px-2 font-medium">
+            or
+          </small>
+        </div>
+        <div className="flex items-center justify-center">
+          <GoogleLogin
+            onSuccess={async ({ credential }) => {
+              await loginWithGoogleHandler({ idToken: credential });
+              navigate("/drive/folder");
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+            shape="rectangular"
+            theme="filled_blue"
+            useOneTap
+          />
         </div>
       </motion.div>
     </div>

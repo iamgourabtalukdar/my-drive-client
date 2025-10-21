@@ -1,6 +1,6 @@
 import { BsStarFill } from "react-icons/bs";
 import { formatDate } from "../utils/formatDate";
-import { formatFileSize } from "../utils/formatFileSize";
+import { formatSize } from "../utils/formatFileSize";
 import { getFileIcon } from "../utils/getFileIcon";
 
 const ListViewFileItem = ({
@@ -44,7 +44,7 @@ const ListViewFileItem = ({
         {formatDate(file.lastModified)}
       </td>
       <td className="px-4 py-3 text-nowrap text-gray-600 dark:text-gray-400">
-        {formatFileSize(file.size)}
+        {formatSize(file.size)}
       </td>
     </tr>
   );

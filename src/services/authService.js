@@ -1,24 +1,18 @@
 import apiClient from "./api";
 
-const authService = {
-  // ######## signup
-  signup: (credential) => {
-    return apiClient.post(`/auth/signup`, credential);
-  },
-  // ######## login
-  login: (credential) => {
-    return apiClient.post(`/auth/login`, credential);
-  },
-  loginWithGoogle: (credential) => {
-    return apiClient.post(`/auth/login/google`, credential);
-  },
-  verifyLogin: () => {
-    return apiClient.get(`/auth/verify`);
-  },
-  // ######## login
-  logout: () => {
-    return apiClient.post(`/auth/logout`);
-  },
+export const signup = (credential) => {
+  return apiClient.post(`/auth/signup`, credential);
 };
 
-export default authService;
+export const login = (credential) => {
+  return apiClient.post(`/auth/login`, credential);
+};
+export const loginWithGoogle = (credential) => {
+  return apiClient.post(`/auth/login/google`, credential);
+};
+export const verifyLogin = () => {
+  return apiClient.get(`/auth/verify`);
+};
+export const logout = () => {
+  return apiClient.post(`/auth/logout`);
+};

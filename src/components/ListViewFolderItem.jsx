@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { formatDate } from "../utils/formatDate";
 import { BsFolderFill, BsStarFill } from "react-icons/bs";
+import { formatSize } from "../utils/formatFileSize";
 
 const ListViewFolderItem = ({
   folder,
@@ -43,7 +44,9 @@ const ListViewFolderItem = ({
       <td className="px-4 py-3 text-nowrap text-gray-600 dark:text-gray-400">
         {formatDate(folder.lastModified)}
       </td>
-      <td className="px-4 py-3 text-gray-600 dark:text-gray-400">-</td>
+      <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
+        {formatSize(folder.size)}
+      </td>
     </tr>
   );
 };

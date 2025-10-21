@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { capitalize } from "../../utils/stringOperations";
 import useApi from "../../hooks/useApi";
-import driveService from "../../services/driveService";
+import { createFolder, renameItem } from "../../services/driveService";
 import { toast } from "react-toastify";
 
 const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
@@ -9,20 +9,20 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
   const {
     loading: folderCreationLoading,
     error: folderCreationError,
-    execute: createFolder,
-  } = useApi(driveService.createFolder);
+    execute: createFolderHandler,
+  } = useApi(createFolder);
 
   const {
-    loading: renameItemLoading,
-    error: renameItemError,
-    execute: renameItem,
-  } = useApi(driveService.renameItem);
+    loading: renameItemHandlerLoading,
+    error: renameItemHandlerError,
+    execute: renameItemHandler,
+  } = useApi(renameItem);
 
   const [itemName, setItemName] = useState(data?.item?.name || "");
 
   // Combine loading and error states for simplicity
-  const isLoading = folderCreationLoading || renameItemLoading;
-  const error = folderCreationError || renameItemError;
+  const isLoading = folderCreationLoading || renameItemHandlerLoading;
+  const error = folderCreationError || renameItemHandlerError;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,9 +31,12 @@ const CreatePopUp = ({ setIsCreatePopUp, data, onSuccess }) => {
     try {
       if (data.action === "create new" && data.type === "folder") {
         const parentFolderId = data.item?.parentFolderId;
-        await createFolder({ name: itemName, parentFolderId: parentFolderId });
+        await createFolderHandler({
+          name: itemName,
+          parentFolderId: parentFolderId,
+        });
       } else if (data.action === "rename") {
-        await renameItem(data.type, data.item.id, { name: itemName });
+        await renameItemHandler(data.type, data.item.id, { name: itemName });
       }
 
       // If API call was successful, close popup and refresh parent component

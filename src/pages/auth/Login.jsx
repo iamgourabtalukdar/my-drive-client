@@ -4,7 +4,7 @@ import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import useApi from "../../hooks/useApi";
-import authService from "../../services/authService";
+import { loginWithGoogle, login } from "../../services/authService";
 import useValidator from "../../hooks/useValidator";
 import loginValidationRules from "../../services/validationRules/login";
 import { GoogleLogin } from "@react-oauth/google";
@@ -16,10 +16,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { error, validate } = useValidator();
 
-  const { loading: loginLoading, execute: login } = useApi(authService.login);
-  const { loading: loginWithGoogleLoading, execute: loginWithGoogle } = useApi(
-    authService.loginWithGoogle,
-  );
+  const { loading: loginLoading, execute: loginHandler } = useApi(login);
+  const { loading: loginWithGoogleLoading, execute: loginWithGoogleHandler } =
+    useApi(loginWithGoogle);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +32,7 @@ const Login = () => {
       return;
     }
     try {
-      await login(loginPayload);
+      await loginHandler(loginPayload);
       navigate("/drive/folder");
     } catch (apiError) {
       toast.error(apiError?.message || "Failed to login . Please try again.");
@@ -245,7 +244,7 @@ const Login = () => {
         <div className="flex items-center justify-center">
           <GoogleLogin
             onSuccess={async ({ credential }) => {
-              await loginWithGoogle({ idToken: credential });
+              await loginWithGoogleHandler({ idToken: credential });
               navigate("/drive/folder");
             }}
             onError={() => {

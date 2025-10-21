@@ -1,6 +1,10 @@
-import { FaRegFolderOpen, FaUser } from "react-icons/fa";
+import { FaRegFolderOpen } from "react-icons/fa";
 import useApi from "../hooks/useApi";
-import driveService from "../services/driveService";
+import {
+  getStarredContents,
+  removeItem,
+  starItem,
+} from "../services/driveService";
 import useContextMenu from "../hooks/useContextMenu";
 import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
 
@@ -17,7 +21,7 @@ import {
   MdStarOutline,
 } from "react-icons/md";
 import CreatePopUp from "../components/modelPopUp/CreatePopUp";
-import { Link, useOutletContext, useParams } from "react-router";
+import { Link, useOutletContext } from "react-router";
 import ListView from "../components/ListView";
 import GridView from "../components/GridView";
 
@@ -27,19 +31,19 @@ const Starred = () => {
   const { refreshKey } = useOutletContext();
   const {
     data: { folders = [], files = [] },
-    execute: getStarredContents,
-  } = useApi(driveService.getStarredContents, {});
+    execute: getStarredContentsHandler,
+  } = useApi(getStarredContents, {});
 
   // API hooks for actions
-  const { execute: removeItemApi } = useApi(driveService.removeItem);
-  const { execute: starItemApi } = useApi(driveService.starItem);
+  const { execute: removeItemHandler } = useApi(removeItem);
+  const { execute: starItemHandler } = useApi(starItem);
 
   const [isCreatePopUp, setIsCreatePopUp] = useState(false);
   const [popUpData, setPopUpData] = useState(null);
 
   // This function can be simplified as it's only for local actions now
   const onRefresh = () => {
-    getStarredContents();
+    getStarredContentsHandler();
   };
   const {
     menuPosition: folderMenuPosition,
@@ -66,7 +70,7 @@ const Starred = () => {
     hideFolderContextMenu();
     hideFileContextMenu();
     // You might want to add a confirmation modal here
-    await removeItemApi(type, itemId);
+    await removeItemHandler(type, itemId);
     onRefresh(); // Refresh the list
   };
 
@@ -74,13 +78,13 @@ const Starred = () => {
   const onStarredItem = async (type, itemId, isStarred) => {
     hideFolderContextMenu();
     hideFileContextMenu();
-    await starItemApi(type, itemId, { isStarred });
+    await starItemHandler(type, itemId, { isStarred });
     onRefresh(); // Refresh the list
   };
 
   useEffect(() => {
-    getStarredContents();
-  }, [getStarredContents, refreshKey]);
+    getStarredContentsHandler();
+  }, [getStarredContentsHandler, refreshKey]);
 
   return (
     <>

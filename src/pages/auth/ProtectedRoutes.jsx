@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
-import authService from "../../services/authService";
+import { verifyLogin } from "../../services/authService";
 import useApi from "../../hooks/useApi";
 
 const ProtectedRoutes = () => {
   const [authStatus, setAuthStatus] = useState(null); // null = loading, true/false = result
   const [authUserData, setAuthUserData] = useState({}); // null = loading, true/false = result
 
-  const { execute: verifyLogin } = useApi(authService.verifyLogin);
+  const { execute: verifyLoginHandler } = useApi(verifyLogin);
 
   useEffect(() => {
-    verifyLogin()
+    verifyLoginHandler()
       .then((res) => {
         setAuthUserData(res.user || {});
         setAuthStatus(true);
       })
       .catch((err) => {
+        console.log(err);
         setAuthStatus(false);
       });
   }, []);
@@ -25,7 +26,7 @@ const ProtectedRoutes = () => {
   }
 
   return authStatus ? (
-    <Outlet context={{ user: authUserData }} />
+    <Outlet context={{ user: authUserData, setUser: setAuthUserData }} />
   ) : (
     <Navigate to={`/login`} />
   );

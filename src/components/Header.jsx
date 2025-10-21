@@ -1,11 +1,38 @@
-import { useContext } from "react";
-import { BsSearch } from "react-icons/bs";
-import { MdApps, MdSettings } from "react-icons/md";
+import { googleLogout } from "@react-oauth/google";
+import { useContext, useRef, useState } from "react";
+import { BiHelpCircle, BiLogOut, BiRocket } from "react-icons/bi";
+import { BsMoon, BsSearch, BsSun } from "react-icons/bs";
+import { MdSettings } from "react-icons/md";
+import { useNavigate, useOutletContext } from "react-router";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { FaMoon, FaSun } from "react-icons/fa";
+import useApi from "../hooks/useApi";
+import { logout } from "../services/authService";
+import { capitalize } from "../utils/stringOperations";
+import useOnClickOutside from "../hooks/useOnClickOutside";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [theme, setTheme] = useContext(ThemeContext);
+  const { execute: logoutHandler } = useApi(logout);
+  const { user } = useOutletContext();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dropdownRef = useRef(null);
+
+  // Call the hook to close the dropdown
+  useOnClickOutside(dropdownRef, () => setIsOpen(false));
+
+  // This check prevents errors if the user data is not yet loaded
+  if (!user) {
+    return null;
+  }
+
+  const menuItems = [
+    { icon: <MdSettings size={18} />, text: "Profile Settings" },
+    { icon: <BiHelpCircle size={18} />, text: "Help Center" },
+    { icon: <BiRocket size={18} />, text: "Upgrade Plan" },
+  ];
   return (
     <header className="col-span-3 border-b border-gray-700/20 px-4 py-3 dark:border-gray-300/50">
       <div className="flex items-center justify-between">
@@ -42,39 +69,101 @@ const Header = () => {
               <BsSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-500" />
             </label>
           </div>
-          <div className="me-0 sm:me-2 md:me-8">
-            {theme === "light" ? (
-              <button
-                title="Turn On Dark Theme"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-700/50 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:focus:ring-blue-800"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setTheme("dark");
-                }}
-              >
-                <FaMoon className="text-sm" />
-              </button>
-            ) : (
-              <button
-                title="Turn On Light Theme"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-700/50 focus:ring-1 focus:ring-blue-200 focus:outline-none dark:border-gray-300/50 dark:focus:ring-blue-800"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setTheme("light");
-                }}
-              >
-                <FaSun className="text-sm" />
-              </button>
+
+          <div className="relative" ref={dropdownRef}>
+            <button
+              className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-blue-500 text-white"
+              onClick={() => setIsOpen((prev) => !prev)}
+            >
+              {user.picture ? (
+                <img src={user.picture} alt="profile" />
+              ) : (
+                <span className="">{capitalize(user.name?.charAt(0))}</span>
+              )}
+            </button>
+
+            {isOpen && (
+              <div className="ring-opacity-5 absolute right-0 mt-2 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black transition-all duration-300 focus:outline-none dark:bg-gray-800">
+                {/* Profile Header */}
+                <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
+                  <div>
+                    {user.picture ? (
+                      <img
+                        src={user.picture}
+                        alt="Profile"
+                        className="h-10 w-10 rounded-full"
+                      />
+                    ) : (
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
+                        {capitalize(user.name?.charAt(0))}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800 dark:text-white">
+                      {capitalize(user.name)}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {user.email}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                      PRO
+                    </span>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-2">
+                  {menuItems.map((item, index) => (
+                    <a
+                      key={index}
+                      href="#"
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                    >
+                      {item.icon}
+                      <span>{item.text}</span>
+                    </a>
+                  ))}
+
+                  {/* Theme Toggle */}
+                  <button
+                    onClick={() =>
+                      setTheme(theme === "light" ? "dark" : "light")
+                    }
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                  >
+                    {theme === "light" ? (
+                      <>
+                        <BsSun size={18} />
+                        <span>Light Mode</span>
+                      </>
+                    ) : (
+                      <>
+                        <BsMoon size={18} />
+                        <span>Dark Mode</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Sign Out */}
+                <div className="border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={async () => {
+                      await logoutHandler();
+                      googleLogout();
+                      navigate("/login");
+                    }}
+                  >
+                    <BiLogOut size={18} />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
             )}
-          </div>
-          <button className="rounded-full p-2 text-xl">
-            <MdSettings />
-          </button>
-          <button className="rounded-full p-2 text-xl">
-            <MdApps />
-          </button>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
-            U
           </div>
         </div>
       </div>

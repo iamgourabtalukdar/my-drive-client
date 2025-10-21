@@ -8,7 +8,8 @@ import {
   MdSchedule,
   MdStar,
 } from "react-icons/md";
-import { NavLink } from "react-router";
+import { NavLink, useOutletContext } from "react-router";
+import { formatSize } from "../utils/formatFileSize";
 
 const Sidebar = ({
   classes,
@@ -25,6 +26,8 @@ const Sidebar = ({
     });
     setIsCreatePopUp(true);
   };
+
+  const { user } = useOutletContext();
 
   return (
     <>
@@ -111,11 +114,13 @@ const Sidebar = ({
           <div className="h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-400">
             <div
               className="h-2.5 rounded-full bg-blue-600"
-              style={{ width: "45%" }}
+              style={{
+                width: `${(user.usedStorage / user.storageSize) * 100}%`,
+              }}
             ></div>
           </div>
           <div className="mt-1 text-sm text-gray-500 dark:text-gray-500">
-            7.5 GB of 15 GB used
+            {`${formatSize(user.usedStorage)} of ${formatSize(user.storageSize)} used`}
           </div>
         </div>
       </aside>

@@ -60,7 +60,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
       onClose();
     } catch (error) {
       console.error("Upload error:", error);
-      setError("Failed to upload files. Please try again.");
+      setError(error.message || "Failed to upload files. Please try again.");
     } finally {
       setIsUploading(false);
     }

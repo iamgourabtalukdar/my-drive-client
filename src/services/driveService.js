@@ -12,6 +12,13 @@ export const createFolder = (body) => {
 export const uploadFiles = (files) => {
   return apiClient.post(`/file/upload`, files, true);
 };
+export const uploadInitiate = (fileData) => {
+  return apiClient.post(`/file/upload/initiate`, fileData);
+};
+
+export const uploadComplete = (fileData) => {
+  return apiClient.post(`/file/upload/complete`, fileData);
+};
 
 // ######## common
 export const renameItem = (type, id, body) => {

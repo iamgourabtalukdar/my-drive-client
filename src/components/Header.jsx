@@ -136,13 +136,13 @@ const Header = () => {
                   >
                     {theme === "light" ? (
                       <>
-                        <BsSun size={18} />
-                        <span>Light Mode</span>
+                        <BsMoon size={18} />
+                        <span>Dark Mode</span>
                       </>
                     ) : (
                       <>
-                        <BsMoon size={18} />
-                        <span>Dark Mode</span>
+                        <BsSun size={18} />
+                        <span>Light Mode</span>
                       </>
                     )}
                   </button>

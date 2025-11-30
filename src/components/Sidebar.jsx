@@ -4,8 +4,6 @@ import {
   MdFileUpload,
   MdOutlineDriveFolderUpload,
   MdOutlineStorage,
-  MdPeople,
-  MdSchedule,
   MdStar,
 } from "react-icons/md";
 import { NavLink, useOutletContext } from "react-router";

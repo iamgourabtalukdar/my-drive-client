@@ -1,9 +1,7 @@
 import {
-  MdInfoOutline,
   MdMenu,
   MdOutlineFormatListBulleted,
   MdOutlineGridView,
-  MdOutlineViewAgenda,
   MdRefresh,
 } from "react-icons/md";
 import Dropdown from "./Dropdown";
@@ -43,7 +41,7 @@ const Toolbar = ({ setIsMenu, onRefresh }) => {
       </div>
       <div className="flex space-x-2">
         <button
-          className="hover:bg-hover mr-0 flex items-center rounded p-2 sm:mr-2"
+          className="hover:bg-hover mr-0 flex cursor-pointer items-center rounded p-2 sm:mr-2"
           onClick={onRefresh}
         >
           <MdRefresh className="mr-1 text-2xl" />
@@ -51,7 +49,7 @@ const Toolbar = ({ setIsMenu, onRefresh }) => {
         </button>
         {isListView === "yes" ? (
           <button
-            className="hover:bg-hover flex items-center rounded p-2"
+            className="hover:bg-hover flex cursor-pointer items-center rounded p-2"
             onClick={() => setIsListView("no")}
           >
             <MdOutlineGridView className="mr-1 text-2xl" />
@@ -59,7 +57,7 @@ const Toolbar = ({ setIsMenu, onRefresh }) => {
           </button>
         ) : (
           <button
-            className="hover:bg-hover flex items-center rounded p-2"
+            className="hover:bg-hover flex cursor-pointer items-center rounded p-2"
             onClick={() => setIsListView("yes")}
           >
             <MdOutlineFormatListBulleted className="mr-1 text-2xl" />

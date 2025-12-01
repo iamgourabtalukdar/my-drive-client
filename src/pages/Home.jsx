@@ -83,6 +83,11 @@ const Home = () => {
     onRefresh(); // Refresh the list
   };
 
+  const handleDownloadFile = (fileId) => {
+    const downloadUrl = `${import.meta.env.VITE_API_BASE_URL}/file/${fileId}?action=download`;
+    // Trigger download in new window/tab (prevents closing app)
+    window.open(downloadUrl, "_blank");
+  };
   // inform the parent layout of the current folder ID
   useEffect(() => {
     setCurrentFolderId(folderId);
@@ -177,15 +182,14 @@ const Home = () => {
           <MdOpenInNew className="text-lg" />
           <span>Open</span>
         </Link>
-        <Link
-          to={`${import.meta.env.VITE_API_BASE_URL}/file/${targetedFile?.id}?action=download`}
-          target="_blank"
-          className="flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
+        <button
+          onClick={() => handleDownloadFile(targetedFile?.id)}
+          className="flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
           title="Download file"
         >
           <MdDownload className="text-lg" />
           <span>Download</span>
-        </Link>
+        </button>
 
         <button
           type="button"

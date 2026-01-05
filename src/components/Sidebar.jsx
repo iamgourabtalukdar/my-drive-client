@@ -25,7 +25,7 @@ const Sidebar = ({
     setIsCreatePopUp(true);
   };
 
-  const { user } = useOutletContext();
+  const { storageInfo } = useOutletContext();
 
   return (
     <>
@@ -113,12 +113,12 @@ const Sidebar = ({
             <div
               className="h-2.5 rounded-full bg-blue-600"
               style={{
-                width: `${(user.usedStorage / user.storageSize) * 100}%`,
+                width: `${(storageInfo.usedStorage / storageInfo.storageSize) * 100}%`,
               }}
             ></div>
           </div>
           <div className="mt-1 text-sm text-gray-500 dark:text-gray-500">
-            {`${formatSize(user.usedStorage)} of ${formatSize(user.storageSize)} used`}
+            {`${formatSize(storageInfo.usedStorage)} of ${formatSize(storageInfo.storageSize)} used`}
           </div>
         </div>
       </aside>

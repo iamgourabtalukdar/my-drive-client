@@ -5,6 +5,7 @@ import useApi from "../../hooks/useApi";
 
 const ProtectedRoutes = () => {
   const [authStatus, setAuthStatus] = useState(null); // null = loading, true/false = result
+  const [storageInfo, setStorageInfo] = useState(null); // null = loading, true/false = result
   const [authUserData, setAuthUserData] = useState({}); // null = loading, true/false = result
 
   const { execute: verifyLoginHandler } = useApi(verifyLogin);
@@ -12,7 +13,15 @@ const ProtectedRoutes = () => {
   useEffect(() => {
     verifyLoginHandler()
       .then((res) => {
-        setAuthUserData(res.user || {});
+        setAuthUserData({
+          email: res.user.email || "",
+          name: res.user.name || "",
+          picture: res.user.picture || "",
+        });
+        setStorageInfo({
+          storageSize: res.user.storageSize,
+          usedStorage: res.user.usedStorage,
+        });
         setAuthStatus(true);
       })
       .catch((err) => {
@@ -26,7 +35,14 @@ const ProtectedRoutes = () => {
   }
 
   return authStatus ? (
-    <Outlet context={{ user: authUserData, setUser: setAuthUserData }} />
+    <Outlet
+      context={{
+        user: authUserData,
+        setUser: setAuthUserData,
+        storageInfo,
+        setStorageInfo,
+      }}
+    />
   ) : (
     <Navigate to={`/login`} />
   );

@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { Outlet } from "react-router";
 import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
+import CreatePopUp from "../components/modelPopUp/CreatePopUp"; // Import the popup
 import Sidebar from "../components/Sidebar";
 import Toolbar from "../components/Toolbar";
-import { Outlet } from "react-router";
-import CreatePopUp from "../components/modelPopUp/CreatePopUp"; // Import the popup
 
 const DriveLayout = () => {
   const [isFileUpload, setIsFileUpload] = useState(false);

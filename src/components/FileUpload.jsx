@@ -7,14 +7,19 @@ import { formatSize } from "../utils/formatFileSize";
 // Ensure uploadComplete is defined in your driveService alongside uploadInitiate
 import { uploadInitiate, uploadComplete } from "../services/driveService";
 import useApi from "../hooks/useApi";
+import { useOutletContext } from "react-router";
 
 const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
   const [file, setFile] = useState(null); // Changed to hold a single object, not array
   const [uploadProgress, setUploadProgress] = useState(0);
   const [status, setStatus] = useState("idle"); // 'idle', 'uploading', 'completed', 'error'
   const [error, setError] = useState(null);
-  const { execute: uploadInitiateHandler } = useApi(uploadInitiate, {});
+  const { error: uploadInitiateError, execute: uploadInitiateHandler } = useApi(
+    uploadInitiate,
+    {},
+  );
   const { execute: uploadCompleteHandler } = useApi(uploadComplete, {});
+  const { setStorageInfo } = useOutletContext();
 
   // 1. Handle File Selection
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -67,7 +72,6 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
         parentDirId: currentFolderId,
       });
 
-      console.log(initData);
       // Expecting response: { signedUrl, fileKey, uploadId }
       const { signedUrl, fileKey } = initData;
 
@@ -103,7 +107,11 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
       // Optional: Close modal after short delay
       setTimeout(() => {
         onClose();
-      }, 1500);
+        setStorageInfo((prev) => ({
+          ...prev,
+          usedStorage: prev.usedStorage + file.size,
+        }));
+      }, 1000);
     } catch (err) {
       console.error("Upload flow failed:", err);
       setStatus("error");

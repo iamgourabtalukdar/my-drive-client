@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useOutletContext } from "react-router";
 import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
 import CreatePopUp from "../components/modelPopUp/CreatePopUp"; // Import the popup
@@ -10,9 +10,9 @@ const DriveLayout = () => {
   const [isFileUpload, setIsFileUpload] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
 
-  // State for the popup is now lifted here
-  const [isCreatePopUp, setIsCreatePopUp] = useState(false);
-  const [popUpData, setPopUpData] = useState(null);
+  const parentOutletContext = useOutletContext();
+
+  const [popUp, setPopUp] = useState(null);
 
   // This key will be passed down. Changing it will trigger a refresh in Home.jsx.
   const [refreshKey, setRefreshKey] = useState(0);
@@ -35,8 +35,7 @@ const DriveLayout = () => {
             {/* Pass state and setters to Sidebar */}
             <Sidebar
               classes="flex max-w-64 min-w-0 transition duration-200 pt-8"
-              setIsCreatePopUp={setIsCreatePopUp}
-              setPopUpData={setPopUpData}
+              setPopUp={setPopUp}
               setIsFileUpload={setIsFileUpload}
               currentFolderId={currentFolderId}
             />
@@ -45,25 +44,24 @@ const DriveLayout = () => {
           // Also pass to the default Sidebar view
           <Sidebar
             classes="hidden"
-            setIsCreatePopUp={setIsCreatePopUp}
-            setPopUpData={setPopUpData}
+            setPopUp={setPopUp}
             setIsFileUpload={setIsFileUpload}
             currentFolderId={currentFolderId}
           />
         )}
-        <Toolbar
-          onRefresh={onRefresh}
-          // isListView={isListView} // This state should also be managed here if needed elsewhere
-          // setIsListView={setIsListView}
-          setIsMenu={setIsMenu}
-        />
+        <Toolbar onRefresh={onRefresh} setIsMenu={setIsMenu} />
         <main className="col-start-1 col-end-3 row-start-3 row-end-4 overflow-y-scroll p-2 md:p-4 lg:col-start-2">
-          {/* Pass the refreshKey down to the children (Home.jsx) via context */}
-          <Outlet context={{ refreshKey, setCurrentFolderId }} />
+          <Outlet
+            context={{
+              refreshKey,
+              setCurrentFolderId,
+              setPopUp,
+              ...parentOutletContext,
+            }}
+          />
         </main>
       </div>
 
-      {/* Modals are now managed by the layout */}
       {isFileUpload && (
         <FileUpload
           currentFolderId={currentFolderId}
@@ -72,12 +70,8 @@ const DriveLayout = () => {
         />
       )}
 
-      {isCreatePopUp && (
-        <CreatePopUp
-          setIsCreatePopUp={setIsCreatePopUp}
-          data={popUpData}
-          onSuccess={onRefresh} // The popup will trigger the refresh
-        />
+      {popUp && (
+        <CreatePopUp popUp={popUp} setPopUp={setPopUp} onSuccess={onRefresh} />
       )}
     </>
   );

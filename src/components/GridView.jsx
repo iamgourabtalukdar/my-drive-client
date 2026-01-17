@@ -4,9 +4,8 @@ import GridViewFileItem from "./GridViewFileItem";
 const GridView = ({
   folders,
   files,
-  onStarredItem,
-  handleFolderContextMenu,
-  handleFileContextMenu,
+  openFileHandler,
+  handleContextMenu,
   isTrash = false,
 }) => {
   return (
@@ -20,8 +19,7 @@ const GridView = ({
               <GridViewFolderItem
                 key={folder.id}
                 folder={folder}
-                handleFolderContextMenu={handleFolderContextMenu}
-                onStarredItem={onStarredItem}
+                handleContextMenu={handleContextMenu}
                 isTrash={isTrash}
               />
             ))}
@@ -38,8 +36,9 @@ const GridView = ({
               <GridViewFileItem
                 key={file.id}
                 file={file}
-                handleFileContextMenu={handleFileContextMenu}
-                onStarredItem={onStarredItem}
+                isTrash={isTrash}
+                handleContextMenu={handleContextMenu}
+                openFileHandler={openFileHandler}
               />
             ))}
           </div>

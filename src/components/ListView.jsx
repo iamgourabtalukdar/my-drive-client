@@ -7,8 +7,8 @@ const ListView = ({
   folders,
   files,
   isTrash = false,
-  handleFolderContextMenu,
-  handleFileContextMenu,
+  openFileHandler,
+  handleContextMenu,
 }) => {
   const { setSelectedFile, setShowPreview, selectedFile } = {};
   return (
@@ -46,7 +46,7 @@ const ListView = ({
             isTrash={isTrash}
             setSelectedFile={setSelectedFile}
             setShowPreview={setShowPreview}
-            handleFolderContextMenu={handleFolderContextMenu}
+            handleContextMenu={handleContextMenu}
             fileSelectClass={selectedFile?.id === folder.id ? "selected" : ""}
           />
         ))}
@@ -56,8 +56,10 @@ const ListView = ({
             file={file}
             setSelectedFile={setSelectedFile}
             setShowPreview={setShowPreview}
-            handleFileContextMenu={handleFileContextMenu}
+            handleContextMenu={handleContextMenu}
+            openFileHandler={openFileHandler}
             fileSelectClass={selectedFile?.id === file.id ? "selected" : ""}
+            isTrash={isTrash}
           />
         ))}
       </tbody>

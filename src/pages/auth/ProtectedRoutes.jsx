@@ -1,44 +1,46 @@
 import { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router";
-import { verifyLogin } from "../../services/authService";
-import useApi from "../../hooks/useApi";
+import { Navigate, Outlet, useNavigate } from "react-router";
+import { me } from "../../services/auth.service";
 
 const ProtectedRoutes = () => {
-  const [authStatus, setAuthStatus] = useState(null); // null = loading, true/false = result
+  const navigate = useNavigate();
   const [storageInfo, setStorageInfo] = useState(null); // null = loading, true/false = result
-  const [authUserData, setAuthUserData] = useState({}); // null = loading, true/false = result
+  const [authUser, setAuthUser] = useState(null); // null = loading, true/false = result
 
-  const { execute: verifyLoginHandler } = useApi(verifyLogin);
+  const fetchAuthUser = async () => {
+    try {
+      const { data } = await me();
+      setAuthUser({
+        email: data.user.email || "",
+        name: data.user.name || "",
+        picture: data.user.picture || "",
+      });
+      setStorageInfo({
+        storageSize: data.user.storageSize,
+        usedStorage: data.user.usedStorage,
+      });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        return navigate(`/login`);
+      }
+      console.error("Error fetchAuthUser data:", error);
+      setAuthUser(null);
+    }
+  };
 
   useEffect(() => {
-    verifyLoginHandler()
-      .then((res) => {
-        setAuthUserData({
-          email: res.user.email || "",
-          name: res.user.name || "",
-          picture: res.user.picture || "",
-        });
-        setStorageInfo({
-          storageSize: res.user.storageSize,
-          usedStorage: res.user.usedStorage,
-        });
-        setAuthStatus(true);
-      })
-      .catch((err) => {
-        console.log(err);
-        setAuthStatus(false);
-      });
+    fetchAuthUser();
   }, []);
 
-  if (authStatus === null) {
+  if (authUser === null) {
     return <div>Loading...</div>;
   }
 
-  return authStatus ? (
+  return authUser ? (
     <Outlet
       context={{
-        user: authUserData,
-        setUser: setAuthUserData,
+        user: authUser,
+        setUser: setAuthUser,
         storageInfo,
         setStorageInfo,
       }}

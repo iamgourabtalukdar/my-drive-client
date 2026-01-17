@@ -1,8 +1,8 @@
 // components/common/ContextMenuWrapper.jsx
-import React, { useRef, useEffect } from "react";
+import { useRef } from "react";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 
-const ContextMenuWrapper = ({ menuPosition, targetId, onClose, children }) => {
+const ContextMenuWrapper = ({ menuPosition, onClose, children }) => {
   const menuRef = useRef(null);
 
   // Effect to close menu when clicking outside

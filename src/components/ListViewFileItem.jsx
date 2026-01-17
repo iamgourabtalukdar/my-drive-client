@@ -7,8 +7,10 @@ const ListViewFileItem = ({
   file,
   setSelectedFile,
   setShowPreview,
-  handleFileContextMenu,
+  openFileHandler,
+  handleContextMenu,
   fileSelectClass,
+  isTrash = false,
 }) => {
   // const handleClick = () => {
 
@@ -18,14 +20,9 @@ const ListViewFileItem = ({
 
   return (
     <tr
-      className={`border-b border-gray-700/10 hover:bg-gray-50 dark:border-gray-300/20 dark:hover:bg-gray-800 ${fileSelectClass}`}
-      onDoubleClick={() =>
-        window.open(
-          `${import.meta.env.VITE_API_BASE_URL}/file/${file.id}`,
-          "_blank",
-        )
-      }
-      onContextMenu={(e) => handleFileContextMenu(e, { type: "file", ...file })}
+      className={`border-b border-gray-700/10 dark:border-gray-300/20 ${isTrash ? "bg-red-300 dark:bg-rose-950" : "hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800"} ${fileSelectClass}`}
+      onClick={() => openFileHandler(file.id)}
+      onContextMenu={(e) => handleContextMenu(e, { type: "file", ...file })}
     >
       <td className="flex items-center px-4 py-3">
         <span className="mr-2 text-xl">{getFileIcon(file.extension)}</span>
@@ -33,7 +30,7 @@ const ListViewFileItem = ({
           {file.name}
           {file.extension}
         </span>
-        {file.starred && (
+        {file.isStarred && (
           <BsStarFill className="ml-2 text-sm text-yellow-400" />
         )}
       </td>

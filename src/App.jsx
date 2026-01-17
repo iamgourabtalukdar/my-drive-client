@@ -9,27 +9,33 @@ import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./pages/auth/ProtectedRoutes";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
+import DriveHome from "./pages/DriveHome";
+
+// reduce context menu at drive/folder
+// delete extra files
 
 function App() {
   const [theme] = useContext(ThemeContext);
+
   useEffect(() => {
     document.documentElement.classList = theme;
   }, [theme]);
+
   return (
     <div className="bg-white text-gray-950 dark:bg-gray-950 dark:text-white">
       <Routes>
         <Route element={<ProtectedRoutes />}>
           <Route path="drive" element={<DriveLayout />}>
-            <Route index element={<Home />} />
+            <Route index element={<DriveHome />} />
             <Route path="folder">
-              <Route index element={<Home />} />
-              <Route path=":folderId" element={<Home />} />
+              <Route index element={<DriveHome />} />
+              <Route path=":folderId" element={<DriveHome />} />
             </Route>
             <Route path="starred" element={<Starred />} />
             <Route path="trash" element={<Trash />} />
           </Route>
         </Route>
-        <Route index element={<Login />} />
+        <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
       </Routes>

@@ -9,22 +9,7 @@ import {
 import { NavLink, useOutletContext } from "react-router";
 import { formatSize } from "../utils/formatFileSize";
 
-const Sidebar = ({
-  classes,
-  setIsCreatePopUp,
-  setPopUpData,
-  setIsFileUpload,
-  currentFolderId,
-}) => {
-  const handleNewFolderClick = () => {
-    setPopUpData({
-      action: "create new",
-      type: "folder",
-      item: { parentFolderId: currentFolderId },
-    });
-    setIsCreatePopUp(true);
-  };
-
+const Sidebar = ({ classes, setPopUp, setIsFileUpload, currentFolderId }) => {
   const { storageInfo } = useOutletContext();
 
   return (
@@ -34,10 +19,6 @@ const Sidebar = ({
       >
         <div>
           <div className="space-y-1">
-            <button className="flex w-full cursor-pointer items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800">
-              <MdOutlineDriveFolderUpload className="text-2xl text-blue-500" />
-              <span>New</span>
-            </button>
             <button
               className="flex w-full cursor-pointer items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setIsFileUpload(true)}
@@ -47,7 +28,15 @@ const Sidebar = ({
             </button>
             <button
               className="flex w-full cursor-pointer items-center space-x-3 rounded p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800"
-              onClick={handleNewFolderClick}
+              onClick={() => {
+                setPopUp({
+                  actionType: "create_folder",
+                  title: "Create New Folder",
+                  subText: "Folder Name",
+                  placeholder: "Enter folder name",
+                  data: { parentFolderId: currentFolderId },
+                });
+              }}
             >
               <MdCreateNewFolder className="text-2xl text-blue-500" />
 

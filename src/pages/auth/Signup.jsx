@@ -1,3 +1,4 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -10,41 +11,41 @@ import {
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import useApi from "../../hooks/useApi";
-import useValidator from "../../hooks/useValidator";
-import { loginWithGoogle, signup } from "../../services/authService";
-import signUpValidationRules from "../../services/validationRules/signUp";
-import { GoogleLogin } from "@react-oauth/google";
+import { loginWithGoogle, register } from "../../services/auth.service";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("hello");
-  const [email, setEmail] = useState("hello@gmail.com");
-  const [password, setPassword] = useState("abcd@123");
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  const { error, validate } = useValidator();
+  const [error, setError] = useState({});
+  const [registerLoading, setRegisterLoading] = useState(false);
 
-  const { loading: signUpLoading, execute: signUpHandler } = useApi(signup);
-  const { loading: loginWithGoogleLoading, execute: loginWithGoogleHandler } =
-    useApi(loginWithGoogle);
-
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const signUpPayload = {
-      name: name.trim(),
+    const registerPayload = {
       email: email.trim(),
       password: password.trim(),
+      name: name.trim(),
     };
 
-    if (!validate(signUpPayload, signUpValidationRules)) {
-      toast.error("Please fill all required fields");
-      return;
-    }
     try {
-      await signUpHandler(signUpPayload);
+      setRegisterLoading(true);
+      const response = await register(registerPayload);
+      if (response.error) {
+        setError(response.error);
+        return;
+      }
+      toast.success("Registration successful");
       navigate("/login");
-    } catch (apiError) {
-      toast.error(apiError?.message || "Failed to login . Please try again.");
+    } catch (err) {
+      const error = err.response?.data || {};
+      toast.error(
+        error.error?.message || "Failed to register. Please try again.",
+      );
+    } finally {
+      setRegisterLoading(false);
     }
   };
 
@@ -78,7 +79,7 @@ const SignUp = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 p-6">
+          <form onSubmit={handleRegister} className="space-y-4 p-6">
             {/* Name Field */}
             <motion.div
               initial={{ opacity: 0, x: -10 }}
@@ -183,14 +184,14 @@ const SignUp = () => {
             >
               <button
                 type="submit"
-                disabled={signUpLoading}
+                disabled={registerLoading}
                 className={`flex w-full items-center justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm ${
-                  signUpLoading
+                  registerLoading
                     ? "cursor-not-allowed bg-indigo-400"
                     : "bg-indigo-600 hover:bg-indigo-700"
                 } transition focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none`}
               >
-                {signUpLoading ? (
+                {registerLoading ? (
                   <>
                     <svg
                       className="mr-2 -ml-1 h-4 w-4 animate-spin text-white"
@@ -251,7 +252,7 @@ const SignUp = () => {
         <div className="flex items-center justify-center">
           <GoogleLogin
             onSuccess={async ({ credential }) => {
-              await loginWithGoogleHandler({ idToken: credential });
+              await loginWithGoogle({ idToken: credential });
               navigate("/drive/folder");
             }}
             onError={() => {
@@ -259,7 +260,7 @@ const SignUp = () => {
             }}
             shape="rectangular"
             theme="filled_blue"
-            useOneTap
+            // useOneTap
           />
         </div>
       </motion.div>

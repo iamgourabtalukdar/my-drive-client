@@ -6,7 +6,13 @@ const useContextMenu = (targetValue) => {
 
   const handleContextMenu = useCallback((e, data) => {
     e.preventDefault();
-    setMenuPosition({ x: e.clientX + 2, y: e.clientY + 2 });
+    const distanceFromRight = data.isStarred ? 210 : 170;
+    if (e.clientX + distanceFromRight > window.innerWidth) {
+      setMenuPosition({ x: e.clientX - distanceFromRight, y: e.clientY + 2 });
+    } else {
+      setMenuPosition({ x: e.clientX + 2, y: e.clientY + 2 });
+    }
+
     setTarget(data);
   }, []);
 

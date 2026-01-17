@@ -1,44 +1,43 @@
-import { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import { motion } from "framer-motion";
-import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
+import { useState } from "react";
+import { FiEye, FiEyeOff, FiLock, FiLogIn, FiMail } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import useApi from "../../hooks/useApi";
-import { loginWithGoogle, login } from "../../services/authService";
-import useValidator from "../../hooks/useValidator";
-import loginValidationRules from "../../services/validationRules/login";
-import { GoogleLogin } from "@react-oauth/google";
+import { login, loginWithGoogle } from "../../services/auth.service";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("hello@gmail.com");
-  const [password, setPassword] = useState("abcd@123");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  const { error, validate } = useValidator();
+  const [error, setError] = useState({});
+  const [loginLoading, setLoginLoading] = useState(false);
 
-  const { loading: loginLoading, execute: loginHandler } = useApi(login);
-  const { loading: loginWithGoogleLoading, execute: loginWithGoogleHandler } =
-    useApi(loginWithGoogle);
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const loginPayload = {
       email: email.trim(),
       password: password.trim(),
     };
 
-    if (!validate(loginPayload, loginValidationRules)) {
-      toast.error("Please fill all required fields");
-      return;
-    }
     try {
-      await loginHandler(loginPayload);
+      setLoginLoading(true);
+
+      const response = await login(loginPayload);
+      if (response.error) {
+        setError(response.error);
+        return;
+      }
+      toast.success("Login successful");
       navigate("/drive/folder");
-    } catch (apiError) {
-      toast.error(apiError?.message || "Failed to login . Please try again.");
+    } catch (err) {
+      const error = err.response?.data || {};
+      toast.error(error.error?.message || "Failed to login. Please try again.");
+    } finally {
+      setLoginLoading(false);
     }
   };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <motion.div
@@ -69,7 +68,7 @@ const Login = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 p-6">
+          <form onSubmit={handleLogin} className="space-y-4 p-6">
             {/* Email Field */}
             <motion.div
               initial={{ opacity: 0, x: -10 }}
@@ -244,7 +243,7 @@ const Login = () => {
         <div className="flex items-center justify-center">
           <GoogleLogin
             onSuccess={async ({ credential }) => {
-              await loginWithGoogleHandler({ idToken: credential });
+              await loginWithGoogle({ idToken: credential });
               navigate("/drive/folder");
             }}
             onError={() => {
@@ -252,7 +251,7 @@ const Login = () => {
             }}
             shape="rectangular"
             theme="filled_blue"
-            useOneTap
+            // useOneTap
           />
         </div>
       </motion.div>

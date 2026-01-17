@@ -1,30 +1,47 @@
-import { useContext, useEffect, useState } from "react";
 import { FaRegFolderOpen } from "react-icons/fa";
-import { useOutletContext } from "react-router";
-import { toast } from "react-toastify";
-import ContextMenu from "../components/contextMenu/ContextMenu";
 import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
+import useContextMenu from "../hooks/useContextMenu";
+import { useContext, useEffect, useState } from "react";
+import { useOutletContext, useParams } from "react-router";
+import { toast } from "react-toastify";
 import GridView from "../components/GridView";
 import ListView from "../components/ListView";
 import { DriveContext } from "../contexts/DriveContext";
-import useContextMenu from "../hooks/useContextMenu";
+import ContextMenu from "../components/contextMenu/ContextMenu";
 import { getFile } from "../services/file.service";
-import { getStarredContents } from "../services/starred.service";
+import { getFolderContents } from "../services/folder.service";
 
-const Starred = () => {
-  const { isListView } = useContext(DriveContext);
-  const { refreshKey } = useOutletContext();
-  const [starredContents, setStarredContents] = useState({
+const DriveHome = () => {
+  const { folderId } = useParams();
+  const [folderContents, setFolderContents] = useState({
     folders: [],
     files: [],
   });
+  const { isListView } = useContext(DriveContext);
+  const { refreshKey, setCurrentFolderId } = useOutletContext();
 
+  const onRefresh = () => {
+    getFolderContentsHandler(folderId);
+  };
   const {
     menuPosition,
     target: targetItem,
     handleContextMenu,
     hideContextMenu,
   } = useContextMenu({});
+
+  const getFolderContentsHandler = async () => {
+    try {
+      const response = await getFolderContents(folderId);
+      setFolderContents({
+        folders: response.data.folders,
+        files: response.data.files,
+      });
+    } catch (error) {
+      console.error("Error fetching folder contents:", error);
+      toast.error("Failed to load folder contents.");
+    }
+  };
 
   const openFileHandler = async (fileId) => {
     try {
@@ -36,22 +53,13 @@ const Starred = () => {
     }
   };
 
-  const getStarredContentsHandler = async () => {
-    try {
-      const { data } = await getStarredContents();
-      setStarredContents({
-        folders: data.folders,
-        files: data.files,
-      });
-    } catch (error) {
-      console.error("Error fetching starred contents:", error);
-      toast.error("Failed to load starred contents.");
-    }
-  };
+  useEffect(() => {
+    setCurrentFolderId(folderId || null);
+  }, [folderId]);
 
   useEffect(() => {
-    getStarredContentsHandler();
-  }, [refreshKey]);
+    getFolderContentsHandler();
+  }, [folderId, refreshKey]);
 
   return (
     <>
@@ -61,25 +69,22 @@ const Starred = () => {
         targetId={targetItem?.id}
         onClose={hideContextMenu}
       >
-        <ContextMenu
-          targetItem={targetItem}
-          onRefresh={getStarredContentsHandler}
-        />
+        <ContextMenu targetItem={targetItem} onRefresh={onRefresh} />
       </ContextMenuWrapper>
       {/* Folder context menu end  */}
 
-      {starredContents.folders.length || starredContents.files.length ? (
+      {folderContents.folders.length || folderContents.files.length ? (
         isListView === "yes" ? (
           <ListView
-            folders={starredContents.folders}
-            files={starredContents.files}
+            folders={folderContents.folders}
+            files={folderContents.files}
             openFileHandler={openFileHandler}
             handleContextMenu={handleContextMenu}
           />
         ) : (
           <GridView
-            folders={starredContents.folders}
-            files={starredContents.files}
+            folders={folderContents.folders}
+            files={folderContents.files}
             openFileHandler={openFileHandler}
             handleContextMenu={handleContextMenu}
           />
@@ -94,4 +99,4 @@ const Starred = () => {
   );
 };
 
-export default Starred;
+export default DriveHome;

@@ -7,7 +7,7 @@ const ListViewFolderItem = ({
   folder,
   setSelectedFile,
   setShowPreview,
-  handleFolderContextMenu,
+  handleContextMenu,
   fileSelectClass,
   isTrash = false,
 }) => {
@@ -20,20 +20,18 @@ const ListViewFolderItem = ({
 
   return (
     <tr
-      className={`cursor-default border-b border-gray-700/10 hover:bg-gray-50 dark:border-gray-300/20 dark:hover:bg-gray-800 ${fileSelectClass}`}
-      onDoubleClick={
+      className={`cursor-default border-b border-gray-700/10 dark:border-gray-300/20 ${isTrash ? "bg-red-300 dark:bg-rose-950" : "hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800"} ${fileSelectClass}`}
+      onClick={
         isTrash ? () => {} : () => navigate(`/drive/folder/${folder.id}`)
       }
-      onContextMenu={(e) =>
-        handleFolderContextMenu(e, { type: "folder", ...folder })
-      }
+      onContextMenu={(e) => handleContextMenu(e, { type: "folder", ...folder })}
     >
       <td className="px-4 py-3">
         <div className="flex items-center">
           <BsFolderFill className="mr-2 text-xl" />
 
           <span>{folder.name}</span>
-          {folder.starred && (
+          {folder.isStarred && (
             <BsStarFill className="ml-2 text-sm text-yellow-400" />
           )}
         </div>

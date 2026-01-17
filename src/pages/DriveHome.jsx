@@ -3,7 +3,7 @@ import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
 import useContextMenu from "../hooks/useContextMenu";
 import { useContext, useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import GridView from "../components/GridView";
 import ListView from "../components/ListView";
 import { DriveContext } from "../contexts/DriveContext";

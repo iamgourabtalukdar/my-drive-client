@@ -10,14 +10,14 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { loginWithGoogle, register } from "../../services/auth.service";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({});
   const [registerLoading, setRegisterLoading] = useState(false);

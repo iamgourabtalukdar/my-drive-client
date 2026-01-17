@@ -36,9 +36,9 @@ const Header = () => {
   return (
     <header className="col-span-3 border-b border-gray-700/20 px-4 py-3 dark:border-gray-300/50">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <Link to="/drive/folder">
-            <img src={logo} alt="Logo" className="mr-4 h-8 w-auto" />
+            <img src={logo} alt="Logo" className="h-8 w-auto" />
           </Link>
 
           <nav className="hidden space-x-6 md:flex">

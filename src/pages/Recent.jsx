@@ -5,7 +5,7 @@ import useRecent from "../hooks/useRecent";
 import SpinLoader from "../components/SpinLoader";
 import useStarred from "../hooks/useStarred";
 import { useNavigate, useOutletContext } from "react-router";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const Recent = () => {
   const navigate = useNavigate();

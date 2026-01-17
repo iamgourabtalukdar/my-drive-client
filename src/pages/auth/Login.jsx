@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FiEye, FiEyeOff, FiLock, FiLogIn, FiMail } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import { login, loginWithGoogle } from "../../services/auth.service";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({});
   const [loginLoading, setLoginLoading] = useState(false);

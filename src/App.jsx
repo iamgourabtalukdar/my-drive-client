@@ -5,11 +5,11 @@ import Trash from "./pages/Trash";
 import Starred from "./pages/Starred";
 import DriveLayout from "./layouts/DriveLayout";
 import { ThemeContext } from "./contexts/ThemeContext";
-import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./pages/auth/ProtectedRoutes";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
 import DriveHome from "./pages/DriveHome";
+import { Toaster } from "react-hot-toast";
 
 // reduce context menu at drive/folder
 // delete extra files
@@ -40,19 +40,7 @@ function App() {
         <Route path="signup" element={<SignUp />} />
       </Routes>
 
-      <ToastContainer
-        className="print:hidden"
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme}
-      />
+      <Toaster toastOptions={{ theme }} />
     </div>
   );
 }

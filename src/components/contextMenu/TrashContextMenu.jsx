@@ -1,6 +1,6 @@
 import { MdDeleteForever, MdOutlineRestore } from "react-icons/md";
 import { useOutletContext } from "react-router";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { deleteFile, updateFile } from "../../services/file.service";
 import { deleteFolder, updateFolder } from "../../services/folder.service";
 

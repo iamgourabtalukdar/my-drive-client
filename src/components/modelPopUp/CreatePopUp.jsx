@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { updateFile } from "../../services/file.service";
 import { createFolder, updateFolder } from "../../services/folder.service";
 

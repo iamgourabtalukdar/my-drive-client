@@ -6,7 +6,7 @@ import {
   MdStar,
   MdStarOutline,
 } from "react-icons/md";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { updateFolder } from "../../services/folder.service";
 import { useNavigate, useOutletContext } from "react-router";
 import { getFile, updateFile } from "../../services/file.service";

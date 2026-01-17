@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { FaRegFolderOpen } from "react-icons/fa";
 import { useOutletContext } from "react-router";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
 import TrashContextMenu from "../components/contextMenu/TrashContextMenu";
 import GridView from "../components/GridView";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router";
-import { me } from "../../services/auth.service";
+import { me } from "../services/auth.service";
 
 const ProtectedRoutes = () => {
   const navigate = useNavigate();

@@ -1,6 +1,11 @@
 import * as api from "../api/auth.api";
 import formatError from "../utils/formatError";
-import { loginSchema, registerSchema } from "../validators/auth.zod";
+import {
+  loginSchema,
+  registerSchema,
+  resendEmailOTPSchema,
+  verifyEmailSchema,
+} from "../validators/auth.zod";
 
 export const login = async (payload) => {
   try {
@@ -26,6 +31,36 @@ export const register = async (payload) => {
       return { error: formattedErrors };
     }
     const resp = await api.register(data);
+    return resp;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const verifyEmail = async (payload) => {
+  try {
+    const { data, success, error } = verifyEmailSchema.safeParse(payload);
+
+    if (!success) {
+      const formattedErrors = formatError(error);
+      return { error: formattedErrors };
+    }
+    const resp = await api.verifyEmail(data);
+    return resp;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const resendEmailOTP = async (payload) => {
+  try {
+    const { data, success, error } = resendEmailOTPSchema.safeParse(payload);
+
+    if (!success) {
+      const formattedErrors = formatError(error);
+      return { error: formattedErrors };
+    }
+    const resp = await api.resendEmailOTP(data);
     return resp;
   } catch (err) {
     throw err;

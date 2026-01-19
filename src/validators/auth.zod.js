@@ -14,3 +14,14 @@ export const registerSchema = loginSchema.extend({
     .min(3, "Name must be at least 3 characters long")
     .max(30, "Name must be at most 30 characters long"),
 });
+
+export const verifyEmailSchema = z.object({
+  email: z.email("Please enter a valid email"),
+  otp: z
+    .string("Please enter a valid OTP")
+    .min(6, "OTP must be 6 characters long"),
+});
+
+export const resendEmailOTPSchema = z.object({
+  email: z.email("Please enter a valid email"),
+});

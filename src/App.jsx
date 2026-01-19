@@ -5,14 +5,12 @@ import Trash from "./pages/Trash";
 import Starred from "./pages/Starred";
 import DriveLayout from "./layouts/DriveLayout";
 import { ThemeContext } from "./contexts/ThemeContext";
-import ProtectedRoutes from "./pages/auth/ProtectedRoutes";
-import Login from "./pages/auth/Login";
-import SignUp from "./pages/auth/Signup";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
 import DriveHome from "./pages/DriveHome";
 import { Toaster } from "react-hot-toast";
-
-// reduce context menu at drive/folder
-// delete extra files
+import VerifyOTP from "./pages/VerifyOTP";
 
 function App() {
   const [theme] = useContext(ThemeContext);
@@ -38,9 +36,18 @@ function App() {
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
+        <Route path="verify-otp" element={<VerifyOTP />} />
       </Routes>
 
-      <Toaster toastOptions={{ theme }} />
+      <Toaster
+      // toastOptions={{
+      //   style: {
+      //     textAlign: "center",
+      //     backgroundColor: theme === "dark" ? "#1a202c" : "#fff",
+      //     color: theme === "dark" ? "#f7fafc" : "#1a202c",
+      //   },
+      // }}
+      />
     </div>
   );
 }

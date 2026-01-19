@@ -11,7 +11,7 @@ import {
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import { loginWithGoogle, register } from "../../services/auth.service";
+import { loginWithGoogle, register } from "../services/auth.service";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ const SignUp = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
     const registerPayload = {
       email: email.trim(),
       password: password.trim(),
@@ -37,8 +38,7 @@ const SignUp = () => {
         setError(response.error);
         return;
       }
-      toast.success("Registration successful");
-      navigate("/login");
+      navigate("/verify-otp", { state: { email: email.trim() } });
     } catch (err) {
       const error = err.response?.data || {};
       toast.error(
@@ -57,7 +57,7 @@ const SignUp = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
+        <div className="overflow-hidden rounded-md bg-white shadow-xl">
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-blue-500 p-6 text-center">
             <motion.h1
@@ -74,7 +74,7 @@ const SignUp = () => {
               transition={{ delay: 0.3 }}
               className="mt-1 text-green-100"
             >
-              Join us today!
+              Join us now!
             </motion.p>
           </div>
 
@@ -99,7 +99,7 @@ const SignUp = () => {
                   value={name}
                   name="name"
                   onChange={(e) => setName(e.target.value)}
-                  className="block w-full rounded-lg border border-gray-300 py-2 pr-3 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="block w-full rounded-sm border border-gray-300 py-2 pr-3 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="John Doe"
                 />
               </div>
@@ -127,7 +127,7 @@ const SignUp = () => {
                   value={email}
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-lg border border-gray-300 py-2 pr-3 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="block w-full rounded-sm border border-gray-300 py-2 pr-3 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="you@example.com"
                 />
               </div>
@@ -155,7 +155,7 @@ const SignUp = () => {
                   value={password}
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-lg border border-gray-300 py-2 pr-10 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="block w-full rounded-sm border border-gray-300 py-2 pr-10 pl-10 text-black shadow-sm transition focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="••••••••"
                 />
                 <button
@@ -185,7 +185,7 @@ const SignUp = () => {
               <button
                 type="submit"
                 disabled={registerLoading}
-                className={`flex w-full items-center justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm ${
+                className={`flex w-full items-center justify-center rounded-sm border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm ${
                   registerLoading
                     ? "cursor-not-allowed bg-indigo-400"
                     : "bg-indigo-600 hover:bg-indigo-700"

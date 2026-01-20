@@ -10,6 +10,7 @@ import { DriveContext } from "../contexts/DriveContext";
 import useContextMenu from "../hooks/useContextMenu";
 import { getFile } from "../services/file.service";
 import { getStarredContents } from "../services/starred.service";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const Starred = () => {
   const { isListView } = useContext(DriveContext);
@@ -26,28 +27,34 @@ const Starred = () => {
     hideContextMenu,
   } = useContextMenu({});
 
-  const openFileHandler = async (fileId) => {
-    try {
+  const openFileHandler = asyncHandler(
+    async (fileId) => {
       const { data: fileData } = await getFile(fileId);
       window.open(fileData.url, "_blank");
-    } catch (error) {
-      console.error("Error fetching file URL:", error);
-      toast.error("Failed to load file URL.");
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error while opening file:", error);
+        toast.error("Failed to open file.");
+      },
+    },
+  );
 
-  const getStarredContentsHandler = async () => {
-    try {
+  const getStarredContentsHandler = asyncHandler(
+    async () => {
       const { data } = await getStarredContents();
       setStarredContents({
         folders: data.folders,
         files: data.files,
       });
-    } catch (error) {
-      console.error("Error fetching starred contents:", error);
-      toast.error("Failed to load starred contents.");
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error in getStarredContentsHandler:", error);
+        toast.error("An unexpected error occurred.");
+      },
+    },
+  );
 
   useEffect(() => {
     getStarredContentsHandler();

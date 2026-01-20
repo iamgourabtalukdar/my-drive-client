@@ -7,89 +7,54 @@ import {
   verifyEmailSchema,
 } from "../validators/auth.zod";
 
-export const login = async (payload) => {
-  try {
-    const { data, success, error } = loginSchema.safeParse(payload);
+export const register = async (payload) => {
+  const { data, success, error } = registerSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.login(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.register(data);
 };
 
-export const register = async (payload) => {
-  try {
-    const { data, success, error } = registerSchema.safeParse(payload);
+export const login = async (payload) => {
+  const { data, success, error } = loginSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.register(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.login(data);
 };
 
 export const verifyEmail = async (payload) => {
-  try {
-    const { data, success, error } = verifyEmailSchema.safeParse(payload);
+  const { data, success, error } = verifyEmailSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.verifyEmail(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.verifyEmail(data);
 };
 
 export const resendEmailOTP = async (payload) => {
-  try {
-    const { data, success, error } = resendEmailOTPSchema.safeParse(payload);
+  const { data, success, error } = resendEmailOTPSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.resendEmailOTP(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.resendEmailOTP(data);
 };
 
 export const loginWithGoogle = async (payload) => {
-  try {
-    const resp = await api.loginWithGoogle(payload);
-    return resp;
-  } catch (err) {
-    throw err;
-  }
+  return await api.loginWithGoogle(payload);
 };
 
 export const logout = async () => {
-  try {
-    const resp = await api.logout();
-    return resp;
-  } catch (error) {
-    throw error;
-  }
+  return await api.logout();
 };
 
 export const me = async () => {
-  try {
-    const resp = await api.me();
-    return resp;
-  } catch (error) {
-    throw error;
-  }
+  return await api.me();
 };

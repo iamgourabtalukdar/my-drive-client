@@ -8,69 +8,48 @@ import {
 } from "../validators/folder.zod";
 
 export const getFolderContents = async (folderId) => {
-  try {
-    const { data, success, error } = getFolderContentsSchema.safeParse({
-      folderId,
-    });
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.getFolderContents(data.folderId);
-    return resp;
-  } catch (error) {
-    throw error;
+  const { data, success, error } = getFolderContentsSchema.safeParse({
+    folderId,
+  });
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.getFolderContents(data.folderId);
 };
-
 export const createFolder = async (payload = {}) => {
-  try {
-    const { data, success, error } = createFolderSchema.safeParse(payload);
+  const { data, success, error } = createFolderSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-
-    const resp = await api.createFolder(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+
+  return await api.createFolder(data);
 };
 
 export const updateFolder = async (id, payload = {}) => {
-  try {
-    const { data, success, error } = updateFolderSchema.safeParse({
-      body: payload,
-      folderId: id,
-    });
+  const { data, success, error } = updateFolderSchema.safeParse({
+    body: payload,
+    folderId: id,
+  });
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-
-    const resp = await api.updateFolder(data.folderId, data.body);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+
+  return await api.updateFolder(data.folderId, data.body);
 };
 
 export const deleteFolder = async (id) => {
-  try {
-    const { data, success, error } = deleteFolderSchema.safeParse({
-      folderId: id,
-    });
+  const { data, success, error } = deleteFolderSchema.safeParse({
+    folderId: id,
+  });
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.deleteFolder(data.folderId);
-    return resp;
-  } catch (error) {
-    throw error;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.deleteFolder(data.folderId);
 };

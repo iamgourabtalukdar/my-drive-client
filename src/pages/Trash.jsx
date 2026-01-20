@@ -9,6 +9,7 @@ import ListView from "../components/ListView";
 import { DriveContext } from "../contexts/DriveContext";
 import useContextMenu from "../hooks/useContextMenu";
 import { getTrashContents } from "../services/trash.service";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const Trash = () => {
   const { refreshKey } = useOutletContext();
@@ -30,18 +31,21 @@ const Trash = () => {
     getTrashContentsHandler();
   };
 
-  const getTrashContentsHandler = async () => {
-    try {
+  const getTrashContentsHandler = asyncHandler(
+    async () => {
       const { data } = await getTrashContents();
       setTrashContents({
         folders: data.folders,
         files: data.files,
       });
-    } catch (error) {
-      console.error("Error fetching trash contents:", error);
-      toast.error("Failed to load trash contents.");
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error fetching trash contents:", error);
+        toast.error("Failed to load trash contents.");
+      },
+    },
+  );
 
   useEffect(() => {
     getTrashContentsHandler();

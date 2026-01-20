@@ -3,12 +3,13 @@ import { useOutletContext } from "react-router";
 import toast from "react-hot-toast";
 import { deleteFile, updateFile } from "../../services/file.service";
 import { deleteFolder, updateFolder } from "../../services/folder.service";
+import { asyncHandler } from "../../utils/asyncHandler";
 
 const TrashContextMenu = ({ targetItem, onRefresh = () => {} }) => {
   const { setStorageInfo } = useOutletContext();
 
-  const deleteHandler = async ({ type, id, callbackFn, message, size }) => {
-    try {
+  const deleteHandler = asyncHandler(
+    async ({ type, id, callbackFn, message, size }) => {
       await callbackFn(id);
       setStorageInfo((prev) => ({
         ...prev,
@@ -16,20 +17,28 @@ const TrashContextMenu = ({ targetItem, onRefresh = () => {} }) => {
       }));
       onRefresh();
       toast.success(message || `${type} deleted successfully!`);
-    } catch (err) {
-      toast.error(`Failed to delete ${type}. Please try again.`);
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error in deleteHandler:", error);
+        toast.error(`Failed to delete ${type}.`);
+      },
+    },
+  );
 
-  const restoreHandler = async ({ type, id, payload, callbackFn, message }) => {
-    try {
+  const restoreHandler = asyncHandler(
+    async ({ type, id, payload, callbackFn, message }) => {
       await callbackFn(id, payload);
       onRefresh();
       toast.success(message || `${type} restored successfully!`);
-    } catch (err) {
-      toast.error(`Failed to restore ${type}. Please try again.`);
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error in restoreHandler:", error);
+        toast.error(`Failed to restore ${type}. Please try again.`);
+      },
+    },
+  );
 
   return (
     <>

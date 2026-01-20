@@ -12,6 +12,8 @@ import {
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { loginWithGoogle, register } from "../services/auth.service";
+import { asyncHandler } from "../utils/asyncHandler";
+import { formErrorHandler } from "../utils/formErrorHandler";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -22,32 +24,25 @@ const SignUp = () => {
   const [error, setError] = useState({});
   const [registerLoading, setRegisterLoading] = useState(false);
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    const registerPayload = {
-      email: email.trim(),
-      password: password.trim(),
-      name: name.trim(),
-    };
-
-    try {
+  const handleRegister = asyncHandler(
+    async (e) => {
+      e.preventDefault();
       setRegisterLoading(true);
-      const response = await register(registerPayload);
-      if (response.error) {
-        setError(response.error);
-        return;
-      }
-      navigate("/verify-otp", { state: { email: email.trim() } });
-    } catch (err) {
-      const error = err.response?.data || {};
-      toast.error(
-        error.error?.message || "Failed to register. Please try again.",
-      );
-    } finally {
-      setRegisterLoading(false);
-    }
-  };
+      setError({});
+      const registerPayload = {
+        email: email.trim(),
+        password: password.trim(),
+        name: name.trim(),
+      };
+
+      await register(registerPayload);
+      navigate("/verify-otp", { state: { email: registerPayload.email } });
+    },
+    {
+      onError: formErrorHandler(setError),
+      onFinally: () => setRegisterLoading(false),
+    },
+  );
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">

@@ -2,7 +2,6 @@ import {
   MdCreateNewFolder,
   MdDelete,
   MdFileUpload,
-  MdOutlineDriveFolderUpload,
   MdOutlineStorage,
   MdStar,
 } from "react-icons/md";

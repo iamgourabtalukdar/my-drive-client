@@ -2,6 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { updateFile } from "../../services/file.service";
 import { createFolder, updateFolder } from "../../services/folder.service";
+import { asyncHandler } from "../../utils/asyncHandler";
+import { formErrorHandler } from "../../utils/formErrorHandler";
 
 const CreatePopUp = ({ popUp, setPopUp, onSuccess }) => {
   const [error, setError] = useState(null);
@@ -9,13 +11,8 @@ const CreatePopUp = ({ popUp, setPopUp, onSuccess }) => {
 
   const [itemName, setItemName] = useState(popUp.data?.name || "");
 
-  const apiHandler = async ({
-    payload,
-    apiFunction,
-    successMessage,
-    paramsCallback,
-  }) => {
-    try {
+  const apiHandler = asyncHandler(
+    async ({ payload, apiFunction, successMessage, paramsCallback }) => {
       setIsLoading(true);
 
       await apiFunction(...paramsCallback(payload));
@@ -25,18 +22,14 @@ const CreatePopUp = ({ popUp, setPopUp, onSuccess }) => {
       setPopUp(null);
       setItemName("");
       toast.success(successMessage || "Operation successful!");
-    } catch (err) {
-      const error = err.response?.data || {};
-      toast.error(
-        error.error?.message ||
-          "Failed to perform operation. Please try again.",
-      );
-
-      setError(error.error.fields.body || {});
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    {
+      onError: formErrorHandler(setError),
+      onFinally: () => {
+        setIsLoading(false);
+      },
+    },
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,7 +116,9 @@ const CreatePopUp = ({ popUp, setPopUp, onSuccess }) => {
             />
             {error && (
               <div className="absolute top-[105%] left-1 mb-4 text-sm text-red-600">
-                {error.name || "An error occurred. Please try again."}
+                {error.name ||
+                  error.body.name ||
+                  "An error occurred. Please try again."}
               </div>
             )}
           </div>

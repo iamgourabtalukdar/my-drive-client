@@ -4,7 +4,8 @@ import { useState } from "react";
 import { FiEye, FiEyeOff, FiLock, FiLogIn, FiMail } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import { login, loginWithGoogle } from "../services/auth.service";
-import toast from "react-hot-toast";
+import { asyncHandler } from "../utils/asyncHandler";
+import { formErrorHandler } from "../utils/formErrorHandler";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,30 +15,26 @@ const Login = () => {
   const [error, setError] = useState({});
   const [loginLoading, setLoginLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const loginPayload = {
-      email: email.trim(),
-      password: password.trim(),
-    };
-
-    try {
+  const handleLogin = asyncHandler(
+    async (e) => {
+      e.preventDefault();
       setLoginLoading(true);
+      setError({});
 
-      const response = await login(loginPayload);
-      if (response.error) {
-        setError(response.error);
-        return;
-      }
-      toast.success("Login successful");
+      const loginPayload = {
+        email: email.trim(),
+        password: password.trim(),
+      };
+
+      await login(loginPayload);
       navigate("/drive/folder");
-    } catch (err) {
-      const error = err.response?.data || {};
-      toast.error(error.error?.message || "Failed to login. Please try again.");
-    } finally {
-      setLoginLoading(false);
-    }
-  };
+    },
+    {
+      onError: formErrorHandler(setError),
+      onFinally: () => setLoginLoading(false),
+    },
+  );
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <motion.div

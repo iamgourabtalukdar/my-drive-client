@@ -1,15 +1,16 @@
-import { FaRegFolderOpen } from "react-icons/fa";
-import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
-import useContextMenu from "../hooks/useContextMenu";
 import { useContext, useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router";
 import toast from "react-hot-toast";
+import { FaRegFolderOpen } from "react-icons/fa";
+import { useOutletContext, useParams } from "react-router";
+import ContextMenu from "../components/contextMenu/ContextMenu";
+import ContextMenuWrapper from "../components/contextMenu/ContextMenuWrapper";
 import GridView from "../components/GridView";
 import ListView from "../components/ListView";
 import { DriveContext } from "../contexts/DriveContext";
-import ContextMenu from "../components/contextMenu/ContextMenu";
+import useContextMenu from "../hooks/useContextMenu";
 import { getFile } from "../services/file.service";
 import { getFolderContents } from "../services/folder.service";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const DriveHome = () => {
   const { folderId } = useParams();
@@ -30,28 +31,32 @@ const DriveHome = () => {
     hideContextMenu,
   } = useContextMenu({});
 
-  const getFolderContentsHandler = async () => {
-    try {
+  const getFolderContentsHandler = asyncHandler(
+    async () => {
       const response = await getFolderContents(folderId);
       setFolderContents({
         folders: response.data.folders,
         files: response.data.files,
       });
-    } catch (error) {
-      console.error("Error fetching folder contents:", error);
-      toast.error("Failed to load folder contents.");
-    }
-  };
+    },
+    {
+      onError: () => {
+        toast.error("Failed to load Folder");
+      },
+    },
+  );
 
-  const openFileHandler = async (fileId) => {
-    try {
+  const openFileHandler = asyncHandler(
+    async (fileId) => {
       const { data: fileData } = await getFile(fileId);
       window.open(fileData.url, "_blank");
-    } catch (error) {
-      console.error("Error fetching file URL:", error);
-      toast.error("Failed to load file URL.");
-    }
-  };
+    },
+    {
+      onError: () => {
+        toast.error("Failed to open file");
+      },
+    },
+  );
 
   useEffect(() => {
     setCurrentFolderId(folderId || null);

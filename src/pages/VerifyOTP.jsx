@@ -5,6 +5,8 @@ import { BsFillSendFill } from "react-icons/bs";
 import { FiLogIn } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router";
 import { resendEmailOTP, verifyEmail } from "../services/auth.service";
+import { asyncHandler } from "../utils/asyncHandler";
+import { formErrorHandler } from "../utils/formErrorHandler";
 
 const resendTimerCountdown = 90;
 
@@ -18,52 +20,46 @@ const VerifyOTP = () => {
   const [isResending, setIsResending] = useState(false);
   const [resendTimer, setResendTimer] = useState(resendTimerCountdown);
 
-  const handleResendOTP = async () => {
-    if (resendTimer > 0) return;
-    try {
+  const handleResendOTP = asyncHandler(
+    async () => {
+      if (resendTimer > 0) return;
       setIsResending(true);
       setOtp("");
+
       await resendEmailOTP({ email });
       toast.success("OTP resent successfully");
+
       setResendTimer(resendTimerCountdown);
-    } catch (err) {
-      const error = err.response?.data || {};
-      toast.error(
-        error.error?.message || "Failed to send OTP. Please try again.",
-      );
-    } finally {
-      setIsResending(false);
-    }
-  };
+    },
+    {
+      onError: formErrorHandler(setError),
+      onFinally: () => setIsResending(false),
+    },
+  );
 
-  const handleVerifyEmail = async (e) => {
-    e.preventDefault();
-    const payload = {
-      email: email.trim(),
-      otp: otp.trim(),
-    };
-
-    try {
+  const handleVerifyEmail = asyncHandler(
+    async (e) => {
+      e.preventDefault();
       setIsLoading(true);
-      const response = await verifyEmail(payload);
+      setError({});
 
-      if (response.error) {
-        setError(response.error);
-        return;
-      }
+      const payload = {
+        email: email.trim(),
+        otp: otp.trim(),
+      };
 
+      await verifyEmail(payload);
       toast.success("Verification successful");
       navigate("/login");
-    } catch (err) {
-      const error = err.response?.data || {};
-      toast.error(
-        error.error?.message || "Failed to verify. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
-      setOtp("");
-    }
-  };
+    },
+    {
+      onError: formErrorHandler(setError),
+      onFinally: () => {
+        setIsLoading(false);
+        setOtp("");
+      },
+    },
+  );
 
   useEffect(() => {
     if (!email) {

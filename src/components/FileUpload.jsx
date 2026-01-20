@@ -5,6 +5,8 @@ import { FiAlertCircle, FiCheck, FiFile, FiUpload, FiX } from "react-icons/fi";
 import { formatSize } from "../utils/formatFileSize";
 import { useOutletContext } from "react-router";
 import { uploadComplete, uploadInitiate } from "../services/file.service";
+import { asyncHandler } from "../utils/asyncHandler";
+import { formErrorHandler } from "../utils/formErrorHandler";
 
 const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
   const [file, setFile] = useState(null);
@@ -48,15 +50,13 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
   };
 
   // 2. Main Upload Logic
-  const handleUpload = async () => {
-    if (!file) return;
+  const handleUpload = asyncHandler(
+    async () => {
+      if (!file) return;
 
-    setStatus("uploading");
-    setError(null);
+      setStatus("uploading");
+      setError(null);
 
-    try {
-      // --- STEP A: INITIATE (Backend) ---
-      // Request a Pre-Signed URL from your Node.js backend
       const { data } = await uploadInitiate({
         name: file.name,
         size: file.size,
@@ -64,14 +64,11 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
         parentFolderId: currentFolderId,
       });
 
-      // Expecting response: { signedUrl, fileKey, uploadId }
       const { uploadId, signedUrl } = data;
 
-      // --- STEP B: UPLOAD TO S3 (Direct) ---
-      // Note: We use axios directly here because this request goes to AWS, not your backend
       await axios.put(signedUrl, file.rawFile, {
         headers: {
-          "Content-Type": file.type, // MUST match what you sent in Step A
+          "Content-Type": file.type,
         },
         onUploadProgress: (progressEvent) => {
           const percent = Math.round(
@@ -81,34 +78,30 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
         },
       });
 
-      // --- STEP C: COMPLETE (Backend) ---
-      // Tell backend the upload is done so it can save the file metadata to MongoDB
       await uploadComplete({
         uploadId,
       });
 
       setStatus("completed");
 
-      // Refresh the drive list
       onRefresh();
 
-      // Optional: Close modal after short delay
       setTimeout(() => {
         onClose();
         setStorageInfo((prev) => ({
           ...prev,
           usedStorage: prev.usedStorage + file.size,
         }));
-      }, 200);
-    } catch (err) {
-      console.log(err);
-      console.error("Upload flow failed:", err);
-      setStatus("error");
-      setError(
-        err.response?.data?.error?.message || err.message || "Upload failed",
-      );
-    }
-  };
+      }, 100);
+    },
+    {
+      onError: (err) => {
+        console.error("Upload error:", err);
+        setStatus("error");
+        formErrorHandler(setError, { defaultErrorValue: null })(err);
+      },
+    },
+  );
 
   return (
     <div
@@ -208,10 +201,10 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
             )}
 
             {/* Error Message */}
-            {status === "error" && (
+            {(error || status === "error") && (
               <div className="mt-3 flex items-center text-xs text-red-500">
                 <FiAlertCircle className="mr-1" />
-                <span>{error}</span>
+                <span>{error.name || "An error occurred"}</span>
               </div>
             )}
           </div>
@@ -221,7 +214,7 @@ const FileUpload = ({ currentFolderId, onClose, onRefresh }) => {
         {!file && error && (
           <div className="mt-4 flex items-center rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20">
             <FiAlertCircle className="mr-2" />
-            {error}
+            {error.name}
           </div>
         )}
 

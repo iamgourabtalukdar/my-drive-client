@@ -10,30 +10,38 @@ import toast from "react-hot-toast";
 import { updateFolder } from "../../services/folder.service";
 import { useNavigate, useOutletContext } from "react-router";
 import { getFile, updateFile } from "../../services/file.service";
+import { asyncHandler } from "../../utils/asyncHandler";
 
 const ContextMenu = ({ targetItem, onRefresh = () => {} }) => {
   const navigate = useNavigate();
   const { setPopUp } = useOutletContext();
 
-  const updateHandler = async ({ type, id, payload, callbackFn, message }) => {
-    try {
+  const updateHandler = asyncHandler(
+    async ({ type, id, payload, callbackFn, message }) => {
       await callbackFn(id, payload);
       onRefresh();
       toast.success(message || `${type} updated successfully!`);
-    } catch (err) {
-      toast.error(`Failed to update ${type}. Please try again.`);
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error in updateHandler:", error);
+        toast.error("An unexpected error occurred.");
+      },
+    },
+  );
 
-  const openFileHandler = async (fileId) => {
-    try {
+  const openFileHandler = asyncHandler(
+    async (fileId) => {
       const { data: fileData } = await getFile(fileId);
       window.open(fileData.url, "_blank");
-    } catch (error) {
-      console.error("Error fetching file URL:", error);
-      toast.error("Failed to load file URL.");
-    }
-  };
+    },
+    {
+      onError: (error) => {
+        console.error("Error in openFileHandler:", error);
+        toast.error("An unexpected error occurred.");
+      },
+    },
+  );
 
   return (
     <>

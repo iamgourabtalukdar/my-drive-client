@@ -9,82 +9,57 @@ import {
 } from "../validators/file.zod";
 
 export const getFile = async (id) => {
-  try {
-    const { data, success, error } = getFileSchema.safeParse({ fileId: id });
+  const { data, success, error } = getFileSchema.safeParse({ fileId: id });
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.getFile(data.fileId);
-    return resp;
-  } catch (error) {
-    throw error;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.getFile(data.fileId);
 };
 
 export const updateFile = async (id, payload = {}) => {
-  try {
-    const { data, success, error } = updateFileSchema.safeParse({
-      body: payload,
-      fileId: id,
-    });
+  const { data, success, error } = updateFileSchema.safeParse({
+    body: payload,
+    fileId: id,
+  });
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-
-    const resp = await api.updateFile(data.fileId, data.body);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+
+  return await api.updateFile(data.fileId, data.body);
 };
 
 export const deleteFile = async (id) => {
-  try {
-    const { data, success, error } = deleteFileSchema.safeParse({ fileId: id });
+  const { data, success, error } = deleteFileSchema.safeParse({ fileId: id });
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-    const resp = await api.deleteFile(data.fileId);
-    return resp;
-  } catch (error) {
-    throw error;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+  return await api.deleteFile(data.fileId);
 };
 
 export const uploadInitiate = async (payload = {}) => {
-  try {
-    const { data, success, error } = uploadInitiateSchema.safeParse(payload);
+  const { data, success, error } = uploadInitiateSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-
-    const resp = await api.uploadInitiate(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+
+  return await api.uploadInitiate(data);
 };
 
 export const uploadComplete = async (payload = {}) => {
-  try {
-    const { data, success, error } = uploadCompleteSchema.safeParse(payload);
+  const { data, success, error } = uploadCompleteSchema.safeParse(payload);
 
-    if (!success) {
-      const formattedErrors = formatError(error);
-      return { error: formattedErrors };
-    }
-
-    const resp = await api.uploadComplete(data);
-    return resp;
-  } catch (err) {
-    throw err;
+  if (!success) {
+    const formattedErrors = formatError(error);
+    throw { type: "VALIDATION_ERROR", errors: formattedErrors };
   }
+
+  return await api.uploadComplete(data);
 };
